@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -94,7 +94,7 @@
 
     <!-- Hero Section -->
     <section id="inicio" class="hero h-96 flex items-center justify-center text-center text-white">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 pt-12">
             <h1 class="title-font text-4xl md:text-5xl font-bold mb-4">Arte en Metal y Vidrio, a Tu Estilo</h1>
             <p class="text-xl mb-8 max-w-3xl mx-auto">Creamos piezas únicas a medida y te ofrecemos nuestra nueva colección de espejos decorativos listos para llevar. Tu idea, nuestra artesanía.</p>
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -157,7 +157,6 @@
                 <div id="product-carousel" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
                     
                     <!-- Product 1 -->
-                    <!-- CAMBIO: Ancho de tarjeta reducido a w-2/3 y margen a mx-1 para vista móvil -->
                     <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
                         <div class="relative">
                             <img src="https://media.falabella.com/falabellaPE/883334281_6/" alt="Espejo decorativo" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x600/e2e8f0/4a5568?text=Imagen+no+disponible';">
@@ -416,7 +415,8 @@
             <h2 class="title-font text-3xl font-bold mb-4">Suscríbete a nuestro newsletter</h2>
             <p class="max-w-2xl mx-auto mb-8">Recibe inspiración, promociones exclusivas y novedades directamente en tu correo.</p>
             
-            <form class="max-w-md mx-auto flex">
+            <!-- CAMBIO: Se añade flex-nowrap para evitar que el botón salte de línea en móvil -->
+            <form class="max-w-md mx-auto flex flex-nowrap">
                 <input type="email" placeholder="Tu correo electrónico" class="flex-grow px-4 py-3 rounded-l-lg focus:outline-none text-gray-800">
                 <button type="submit" class="bg-gray-800 hover:bg-gray-900 px-6 py-3 rounded-r-lg font-medium transition-slow">Suscribirse</button>
             </form>

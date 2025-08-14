@@ -13,10 +13,13 @@
             font-family: 'Poppins', sans-serif;
         }
         
-        /* CAMBIO: Se elimina el background-image del hero para dar paso al video */
         .hero {
             position: relative;
             overflow: hidden;
+            /* CAMBIO: Se añade un fondo de imagen como respaldo principal */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.pinimg.com/1200x/79/3e/c5/793ec54b47bc10290b28a454d157bb56.jpg');
+            background-size: cover;
+            background-position: center;
         }
 
         #hero-video {
@@ -107,8 +110,8 @@
 
     <!-- Hero Section -->
     <section id="inicio" class="hero h-96 min-h-96 flex flex-col items-center justify-center text-center text-white">
-        <!-- CAMBIO: Se añade el video de fondo y una capa de superposición para oscurecerlo -->
-        <video autoplay loop muted playsinline id="hero-video">
+        <!-- CAMBIO: Se añade un atributo 'poster' al video para mostrar una imagen de respaldo -->
+        <video autoplay loop muted playsinline id="hero-video" poster="https://i.pinimg.com/1200x/79/3e/c5/793ec54b47bc10290b28a454d157bb56.jpg">
             <source src="https://videos.pexels.com/video-files/3209828/3209828-hd.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
         </video>

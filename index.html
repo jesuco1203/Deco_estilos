@@ -13,10 +13,23 @@
             font-family: 'Poppins', sans-serif;
         }
         
+        /* CAMBIO: Se elimina el background-image del hero para dar paso al video */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.pinimg.com/1200x/79/3e/c5/793ec54b47bc10290b28a454d157bb56.jpg');
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
             background-size: cover;
-            background-position: center;
         }
         
         .title-font {
@@ -69,7 +82,7 @@
                 
                 <div class="flex items-center space-x-4">
                     <a href="#" class="text-gray-800 hover:text-amber-600 transition-slow"><i class="fas fa-search"></i></a>
-                    <a href="#" class="text-gray-800 hover:text-amber-600 transition-slow"><i class="fas fa-heart"></i></a>
+                    <a href="#" class="text-gray-800 hover:text-amber-600 transition-slow"><i class="fas fa-user"></i></a>
                     <a href="#" class="text-gray-800 hover:text-amber-600 transition-slow relative">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="absolute -top-2 -right-2 bg-amber-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
@@ -93,9 +106,15 @@
     </header>
 
     <!-- Hero Section -->
-    <!-- CAMBIO: Se ajusta la altura mínima y el padding para mejor visualización en móvil -->
-    <section id="inicio" class="hero min-h-96 flex flex-col items-center justify-center text-center text-white">
-        <div class="container mx-auto px-4 py-8">
+    <section id="inicio" class="hero h-96 min-h-96 flex flex-col items-center justify-center text-center text-white">
+        <!-- CAMBIO: Se añade el video de fondo y una capa de superposición para oscurecerlo -->
+        <video autoplay loop muted playsinline id="hero-video">
+            <source src="https://videos.pexels.com/video-files/3209828/3209828-hd.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <div class="absolute top-0 left-0 w-full h-full bg-black/50"></div>
+        
+        <div class="container mx-auto px-4 py-8 relative z-10">
             <h1 class="title-font text-4xl md:text-5xl font-bold mb-4">Arte en Metal y Vidrio, a Tu Estilo</h1>
             <p class="text-xl mb-8 max-w-3xl mx-auto">Creamos piezas únicas a medida y te ofrecemos nuestra nueva colección de espejos decorativos listos para llevar. Tu idea, nuestra artesanía.</p>
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
@@ -249,15 +268,16 @@
                     </div>
                 </div>
                 <!-- Fin de los productos -->
-                <!-- Botones de navegación del carrusel (Solo visibles en móvil) -->
-                <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                    <button id="prevBtn" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button id="nextBtn" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
+            </div>
+            
+            <!-- Botones de navegación del carrusel (Solo visibles en móvil) -->
+            <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
+                <button id="prevBtn" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="nextBtn" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -368,7 +388,7 @@
                 <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
                 <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
                 <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
-                <div class="overflow-hidden rounded-lg"><img src="https://esdefer.com/wp-content/uploads/2023/12/interrior-plano-vacio-elementos-decoracion.jpg" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
+                <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1583845112208-8455d892b136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
             </div>
             
             <div class="text-center mt-8">

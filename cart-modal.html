@@ -1,0 +1,62 @@
+<div id="cart-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-11/12 md:w-1/2 lg:w-1/3 max-h-[90vh] flex flex-col">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center p-4 border-b border-gray-200">
+            <h3 class="text-xl font-bold title-font">Tu Carrito de Compras</h3>
+            <button id="close-cart-modal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart View -->
+        <div id="cart-view" class="flex-grow flex flex-col">
+            <!-- Modal Body - Cart Items -->
+            <div id="cart-items-container" class="p-4 flex-grow overflow-y-auto">
+                <!-- Cart items will be dynamically loaded here -->
+                <p class="text-center text-gray-500" id="empty-cart-message">Tu carrito está vacío.</p>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-bold">Total:</span>
+                    <span class="text-lg font-bold text-amber-600">S/ <span id="cart-total">0.00</span></span>
+                </div>
+                <button id="checkout-button" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    Proceder al Pago
+                </button>
+                <button id="continue-shopping-button" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    Seguir Comprando
+                </button>
+            </div>
+        </div>
+
+        <!-- Checkout View (initially hidden) -->
+        <div id="checkout-view" class="flex-grow flex flex-col p-4 overflow-y-auto hidden">
+            <form id="checkout-form" class="space-y-4">
+                <div>
+                    <label for="customer-name" class="block text-gray-700 text-sm font-bold mb-2">Nombre Completo:</label>
+                    <input type="text" id="customer-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div>
+                    <label for="customer-email" class="block text-gray-700 text-sm font-bold mb-2">Correo Electrónico:</label>
+                    <input type="email" id="customer-email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div>
+                    <label for="customer-address" class="block text-gray-700 text-sm font-bold mb-2">Dirección de Envío:</label>
+                    <textarea id="customer-address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3" required></textarea>
+                </div>
+                <div>
+                    <label for="customer-phone" class="block text-gray-700 text-sm font-bold mb-2">Teléfono:</label>
+                    <input type="tel" id="customer-phone" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <button type="submit" id="confirm-order-button" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    Confirmar Pedido
+                </button>
+                <button type="button" id="back-to-cart-button" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    ← Volver al Carrito
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

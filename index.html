@@ -6,568 +6,110 @@
     <title>DecoEstilos - Diseño y Fabricación a Medida</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.pinimg.com/1200x/79/3e/c5/793ec54b47bc10290b28a454d157bb56.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .title-font {
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .transition-slow {
-            transition: all 0.3s ease;
-        }
-        
-        .instagram-feed {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-    </style>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-50">
-    <!-- Header/Navigation -->
-    <header class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center h-full">
-                    <a href="#" class="h-full">
-                        <img src="https://i.imgur.com/nKN165j.png" alt="DecoEstilos Logo" class="h-full w-auto">
-                    </a>
-                </div>
-                
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#inicio" class="text-gray-800 hover:text-amber-600 transition-slow font-medium">Inicio</a>
-                    <a href="#productos" class="text-gray-800 hover:text-amber-600 transition-slow font-medium">Productos</a>
-                    <a href="#inspiracion" class="text-gray-800 hover:text-amber-600 transition-slow font-medium">Inspiración</a>
-                    <a href="#nosotros" class="text-gray-800 hover:text-amber-600 transition-slow font-medium">Nosotros</a>
-                    <a href="#contacto" class="text-gray-800 hover:text-amber-600 transition-slow font-medium">Contacto</a>
-                </nav>
-
-                <div class="hidden md:flex items-center relative">
-                    <input type="text" placeholder="Buscar..." class="bg-gray-100 rounded-full px-4 py-2 w-64 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    <i class="fas fa-search absolute right-4 text-gray-500"></i>
-                </div>
-                
-                <div class="flex items-center space-x-4">
-                    <button class="md:hidden text-gray-800" id="mobile-search-button">
-                        <i class="fas fa-search text-xl"></i>
-                    </button>
-                    <a href="#" class="text-gray-800 hover:text-amber-600 transition-slow">
-                        <i class="fas fa-heart text-xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-800 hover:text-amber-600 transition-slow">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                    </a>
-                    <button class="md:hidden text-gray-800" id="mobile-menu-button">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile Search Bar -->
-        <div id="mobile-search-bar" class="hidden md:hidden p-4 bg-white border-t">
-            <div class="relative">
-                <input type="text" placeholder="Buscar..." class="bg-gray-100 rounded-full px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div class="md:hidden hidden py-4" id="mobile-menu">
-            <a href="#inicio" class="block py-2 px-4 text-gray-800 hover:text-amber-600 mobile-menu-link">Inicio</a>
-            <a href="#productos" class="block py-2 px-4 text-gray-800 hover:text-amber-600 mobile-menu-link">Productos</a>
-            <a href="#inspiracion" class="block py-2 px-4 text-gray-800 hover:text-amber-600 mobile-menu-link">Inspiración</a>
-            <a href="#nosotros" class="block py-2 px-4 text-gray-800 hover:text-amber-600 mobile-menu-link">Nosotros</a>
-            <a href="#contacto" class="block py-2 px-4 text-gray-800 hover:text-amber-600 mobile-menu-link">Contacto</a>
-        </div>
-    </header>
+<body>
+    <div id="header-placeholder"></div>
 
     <main id="main-content">
-        <!-- Hero Section -->
-        <section id="inicio" class="hero min-h-72 flex flex-col items-center justify-center text-center text-white">
-            <div class="container mx-auto px-4 py-8">
-                <h1 class="title-font text-4xl md:text-5xl font-bold mb-4">Arte en Metal y Vidrio, a Tu Estilo</h1>
-                <p class="text-xl mb-8 max-w-3xl mx-auto">Creamos piezas únicas a medida y te ofrecemos nuestra nueva colección de espejos decorativos listos para llevar. Tu idea, nuestra artesanía.</p>
-                <div class="mt-8">
-                    <a href="#nuestras-especialidades" id="hero-specialties-button" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 px-8 rounded-full transition-slow">Nuestras Especialidades</a>
+        <section id="inicio">
+            <div class="swiper hero-slider h-80">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="background-image: url('https://i.pinimg.com/1200x/79/3e/c5/793ec54b47bc10290b28a454d157bb56.jpg');">
+                        <div class="slide-content h-full flex flex-col items-center justify-center text-center text-white p-4">
+                            <h1 class="title-font text-4xl md:text-5xl font-bold mb-4">Arte en Metal y Vidrio, a Tu Estilo</h1>
+                            <p class="text-xl mb-8 max-w-3xl mx-auto">Creamos piezas únicas a medida y te ofrecemos nuestra nueva colección de espejos decorativos listos para llevar. Tu idea, nuestra artesanía.</p>
+                            <a href="#nuestras-especialidades" id="hero-specialties-button" class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-slow">Nuestras Especialidades</a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1567016432819-03a7a356b249?auto=format&fit=crop&w=1470&q=80');">
+                         <div class="slide-content h-full flex flex-col items-center justify-center text-center text-white p-4">
+                            <h1 class="title-font text-4xl md:text-5xl font-bold mb-4">Espejos que Definen tu Espacio</h1>
+                            <p class="text-xl mb-8 max-w-3xl mx-auto">Descubre nuestra colección de espejos con marcos de metal, MDF o diseños sin marco que se adaptan a tu estilo.</p>
+                            <a href="#productos" class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-slow">Ver Colección de Espejos</a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1556228453-efd6c1ff02f6?auto=format&fit=crop&w=1470&q=80');">
+                         <div class="slide-content h-full flex flex-col items-center justify-center text-center text-white p-4">
+                            <h1 class="title-font text-4xl md:text-5xl font-bold mb-4">Proyectos a Medida</h1>
+                            <p class="text-xl mb-8 max-w-3xl mx-auto">Desde mamparas de ducha hasta estanterías industriales, convertimos tus ideas en realidad con diseños personalizados.</p>
+                            <a href="#contacto" class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-slow">Cotizar un Proyecto</a>
+                        </div>
+                    </div>
                 </div>
+                <div class="swiper-pagination"></div>
             </div>
         </section>
 
-        <!-- Products Section -->
-        <section id="productos" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
-
-                <!-- Specialties -->
+        <section id="productos" class="py-16">
+            <div class="container mx-auto px-4" id="product-section-container">
+                <h2 class="title-font text-3xl font-bold text-center my-12">Nuestros Productos</h2>
                 <div id="specialties-container" class="hidden">
                     <div id="nuestras-especialidades" class="mb-16">
                         <h2 class="title-font text-3xl font-bold text-center mb-12">Nuestras Especialidades</h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            <a href="#" class="category-card bg-gray-100 rounded-lg overflow-hidden transition-slow hover:shadow-lg">
-                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://cdn.todomueblesdebano.com/image/upload/c_lpad,f_auto,q_auto/v1/blog/ESTM/t0rk5z6taceuf3ohkvau');"></div>
-                                <div class="p-4 text-center">
-                                    <h3 class="font-medium text-lg">Mamparas</h3>
-                                    <p class="text-gray-600 text-sm">Diseño a medida</p>
-                                </div>
-                            </a>
-                            <a href="#" class="category-card bg-gray-100 rounded-lg overflow-hidden transition-slow hover:shadow-lg">
-                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://img.kwcdn.com/product/fancy/50e1d4d3-553d-4ddd-804b-d73ea169edf5.jpg?imageView2/2/w/800/q/70/format/webp');"></div>
-                                <div class="p-4 text-center">
-                                    <h3 class="font-medium text-lg">Espejos</h3>
-                                    <p class="text-gray-600 text-sm">Personalizados y estándar</p>
-                                </div>
-                            </a>
-                            <a href="#" class="category-card bg-gray-100 rounded-lg overflow-hidden transition-slow hover:shadow-lg">
-                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://www.baixmoduls.com/wp-content/uploads/2019/12/estanterias-decorativas-colgadas-a-pared.webp');"></div>
-                                <div class="p-4 text-center">
-                                    <h3 class="font-medium text-lg">Estructuras Metálicas</h3>
-                                    <p class="text-gray-600 text-sm">Diseños exclusivos</p>
-                                </div>
-                            </a>
-                            <a href="#" class="category-card bg-gray-100 rounded-lg overflow-hidden transition-slow hover:shadow-lg">
-                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
-                                <div class="p-4 text-center">
-                                    <h3 class="font-medium text-lg">Productos Estándar</h3>
-                                    <p class="text-gray-600 text-sm">Nueva línea disponible</p>
-                                </div>
-                            </a>
+                            <a href="#" class="category-card bg-white rounded-lg overflow-hidden transition-slow hover:shadow-lg"><div class="h-40 bg-cover bg-center" style="background-image: url('https://cdn.todomueblesdebano.com/image/upload/c_lpad,f_auto,q_auto/v1/blog/ESTM/t0rk5z6taceuf3ohkvau');"></div><div class="p-4 text-center"><h3 class="font-medium text-lg">Mamparas</h3><p class="text-gray-600 text-sm">Diseño a medida</p></div></a>
+                            <a href="#" class="category-card bg-white rounded-lg overflow-hidden transition-slow hover:shadow-lg"><div class="h-40 bg-cover bg-center" style="background-image: url('https://img.kwcdn.com/product/fancy/50e1d4d3-553d-4ddd-804b-d73ea169edf5.jpg?imageView2/2/w/800/q/70/format/webp');"></div><div class="p-4 text-center"><h3 class="font-medium text-lg">Espejos</h3><p class="text-gray-600 text-sm">Personalizados y estándar</p></div></a>
+                            <a href="#" class="category-card bg-white rounded-lg overflow-hidden transition-slow hover:shadow-lg"><div class="h-40 bg-cover bg-center" style="background-image: url('https://www.baixmoduls.com/wp-content/uploads/2019/12/estanterias-decorativas-colgadas-a-pared.webp');"></div><div class="p-4 text-center"><h3 class="font-medium text-lg">Estructuras Metálicas</h3><p class="text-gray-600 text-sm">Diseños exclusivos</p></div></a>
+                            <a href="#" class="category-card bg-white rounded-lg overflow-hidden transition-slow hover:shadow-lg"><div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div><div class="p-4 text-center"><h3 class="font-medium text-lg">Productos Estándar</h3><p class="text-gray-600 text-sm">Nueva línea disponible</p></div></a>
                         </div>
                     </div>
                 </div>
-
-                <h2 class="title-font text-3xl font-bold text-center my-12">Nuestros Productos</h2>
-
-                <!-- Carousel 1: Espejos con marco de metal -->
-                <div class="mb-16">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="title-font text-3xl font-bold">Espejos con marco de metal</h2>
-                        <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Ver todos →</a>
-                    </div>
-                    <div class="relative">
-                        <div id="carousel-metal-mirrors" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
-                            <!-- Product Card -->
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Metal+1" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo Metálico Circular</h3>
-                                    <span class="font-bold text-lg">S/ 259.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Metal+2" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo Metálico Industrial</h3>
-                                    <span class="font-bold text-lg">S/ 349.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Metal+3" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo Metálico Dorado</h3>
-                                    <span class="font-bold text-lg">S/ 299.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Metal+4" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo Metálico Negro</h3>
-                                    <span class="font-bold text-lg">S/ 279.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                            <button id="prev-metal-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-metal-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carousel 2: Espejos sin marco -->
-                <div class="mb-16">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="title-font text-3xl font-bold">Espejos sin marco</h2>
-                        <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Ver todos →</a>
-                    </div>
-                    <div class="relative">
-                        <div id="carousel-frameless-mirrors" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
-                            <!-- Product Card -->
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Sin+Marco+1" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo Biselado Rectangular</h3>
-                                    <span class="font-bold text-lg">S/ 189.00</span>
-                                </div>
-                            </div>
-                             <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Sin+Marco+2" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo de Forma Orgánica</h3>
-                                    <span class="font-bold text-lg">S/ 220.00</span>
-                                </div>
-                            </div>
-                             <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Sin+Marco+3" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo Circular Pulido</h3>
-                                    <span class="font-bold text-lg">S/ 159.00</span>
-                                </div>
-                            </div>
-                             <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Sin+Marco+4" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Juego de Espejos Geométricos</h3>
-                                    <span class="font-bold text-lg">S/ 299.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                            <button id="prev-frameless-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-frameless-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carousel 3: Espejos con marco MDF -->
-                <div class="mb-16">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="title-font text-3xl font-bold">Espejos con marco MDF</h2>
-                        <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Ver todos →</a>
-                    </div>
-                    <div class="relative">
-                        <div id="carousel-mdf-mirrors" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
-                            <!-- Product Card -->
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+MDF+1" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo MDF Tipo Madera</h3>
-                                    <span class="font-bold text-lg">S/ 199.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+MDF+2" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo MDF Color Blanco</h3>
-                                    <span class="font-bold text-lg">S/ 189.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+MDF+3" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo MDF Estilo Nórdico</h3>
-                                    <span class="font-bold text-lg">S/ 239.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+MDF+4" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo MDF Infantil</h3>
-                                    <span class="font-bold text-lg">S/ 159.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                            <button id="prev-mdf-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-mdf-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carousel 4: Espejos corporativos -->
-                <div class="mb-16">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="title-font text-3xl font-bold">Espejos corporativos</h2>
-                        <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Ver todos →</a>
-                    </div>
-                    <div class="relative">
-                        <div id="carousel-corp-mirrors" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
-                            <!-- Product Card -->
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Corp+1" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo para Gimnasio</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Corp+2" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo para Salón de Belleza</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Corp+3" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo para Tienda de Ropa</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Espejo+Corp+4" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Espejo con Logo Grabado</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                            <button id="prev-corp-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-corp-mirrors" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carousel 5: Mamparas -->
-                <div class="mb-16">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="title-font text-3xl font-bold">Mamparas</h2>
-                        <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Ver todos →</a>
-                    </div>
-                    <div class="relative">
-                        <div id="carousel-mamparas" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
-                            <!-- Product Card -->
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Mampara+1" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Mampara de Ducha Fija</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Mampara+2" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Mampara de Ducha Corrediza</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Mampara+3" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Mampara para Tina</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Mampara+4" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Mampara con Perfil Negro</h3>
-                                    <span class="font-bold text-lg">Consultar</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                            <button id="prev-mamparas" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-mamparas" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carousel 6: Estructuras decorativas -->
-                <div class="mb-16">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="title-font text-3xl font-bold">Estructuras decorativas</h2>
-                        <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Ver todos →</a>
-                    </div>
-                    <div class="relative">
-                        <div id="carousel-structures" class="flex items-stretch overflow-x-auto snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 scrollbar-hide">
-                            <!-- Product Card -->
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Estructura+1" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Estantería de Pared</h3>
-                                    <span class="font-bold text-lg">S/ 450.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Estructura+2" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Mesa de Centro Industrial</h3>
-                                    <span class="font-bold text-lg">S/ 680.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Estructura+3" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Consola Recibidor</h3>
-                                    <span class="font-bold text-lg">S/ 550.00</span>
-                                </div>
-                            </div>
-                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-2/3 md:w-full flex-shrink-0 snap-center mx-1 md:mx-0">
-                                <img src="https://placehold.co/400x600/e2e8f0/4a5568?text=Estructura+4" alt="Producto" class="w-full h-64 object-cover">
-                                <div class="p-4">
-                                    <h3 class="font-medium text-lg mb-1">Barra de Cocina</h3>
-                                    <span class="font-bold text-lg">S/ 890.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:hidden absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center left-0 px-2 pointer-events-none">
-                            <button id="prev-structures" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-structures" class="bg-white/70 backdrop-blur-sm rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700 hover:bg-white transition-slow pointer-events-auto"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
+                <div id="carousels-wrapper"></div>
             </div>
         </section>
 
         <div id="hidden-content" class="hidden">
-            <!-- About Section -->
             <section id="nosotros" class="py-16 bg-white">
                 <div class="container mx-auto px-4">
                     <div class="flex flex-col md:flex-row items-center">
-                        <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-                            <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Nuestra tienda" class="rounded-lg shadow-lg w-full">
-                        </div>
+                        <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8"><img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Nuestra tienda" class="rounded-lg shadow-lg w-full"></div>
                         <div class="md:w-1/2">
                             <h2 class="title-font text-3xl font-bold mb-4">Fabricantes de Diseño</h2>
                             <p class="text-gray-600 mb-4">Desde 2010, nos especializamos en la fabricación de productos decorativos y funcionales a medida. Mamparas, espejos y estructuras metálicas creadas artesanalmente según tus necesidades.</p>
                             <p class="text-gray-600 mb-6">Ahora ampliamos nuestro catálogo con una línea de productos estándar, manteniendo nuestra esencia de calidad y diseño personalizado. Cada pieza es fabricada por nuestro equipo de expertos artesanos.</p>
-                            <div class="flex flex-wrap gap-4">
-                                <div class="flex items-center">
-                                    <div class="bg-amber-100 text-amber-600 rounded-full p-3 mr-3">
-                                        <i class="fas fa-medal text-xl"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Calidad Garantizada</h4>
-                                        <p class="text-gray-600 text-sm">Productos seleccionados</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="bg-amber-100 text-amber-600 rounded-full p-3 mr-3">
-                                        <i class="fas fa-truck text-xl"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Envío Rápido</h4>
-                                        <p class="text-gray-600 text-sm">Entrega en 2-5 días</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="bg-amber-100 text-amber-600 rounded-full p-3 mr-3">
-                                        <i class="fas fa-headset text-xl"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Soporte 24/7</h4>
-                                        <p class="text-gray-600 text-sm">Estamos para ayudarte</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="flex flex-wrap gap-4"><div class="flex items-center"><div class="bg-amber-100 text-amber-500 rounded-full p-3 mr-3"><i class="fas fa-medal text-xl"></i></div><div><h4 class="font-bold">Calidad Garantizada</h4><p class="text-gray-600 text-sm">Productos seleccionados</p></div></div><div class="flex items-center"><div class="bg-amber-100 text-amber-500 rounded-full p-3 mr-3"><i class="fas fa-truck text-xl"></i></div><div><h4 class="font-bold">Envío Rápido</h4><p class="text-gray-600 text-sm">Entrega en 2-5 días</p></div></div><div class="flex items-center"><div class="bg-amber-100 text-amber-500 rounded-full p-3 mr-3"><i class="fas fa-headset text-xl"></i></div><div><h4 class="font-bold">Soporte 24/7</h4><p class="text-gray-600 text-sm">Estamos para ayudarte</p></div></div></div>
                         </div>
                     </div>
                 </div>
             </section>
-
-            <!-- Testimonials -->
-            <section class="py-16 bg-gray-50">
+            <section class="py-16">
                 <div class="container mx-auto px-4">
                     <h2 class="title-font text-3xl font-bold text-center mb-12">Lo que dicen nuestros clientes</h2>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-white p-6 rounded-lg shadow-sm">
-                            <div class="flex items-center mb-4 text-amber-400">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-gray-600 mb-4">"La mampara que encargué superó mis expectativas. Calidad y diseño impecables. El servicio al cliente fue excelente."</p>
-                            <div class="flex items-center">
-                                <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="María González" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <h4 class="font-medium">María González</h4>
-                                    <p class="text-gray-500 text-sm">Lima</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-lg shadow-sm">
-                            <div class="flex items-center mb-4 text-amber-400">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <p class="text-gray-600 mb-4">"El espejo decorativo es tal como en la foto. Llegó muy bien empaquetado y antes de lo esperado. Definitivamente volveré a comprar."</p>
-                            <div class="flex items-center">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Martínez" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <h4 class="font-medium">Carlos Martínez</h4>
-                                    <p class="text-gray-500 text-sm">Arequipa</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-lg shadow-sm">
-                            <div class="flex items-center mb-4 text-amber-400">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-gray-600 mb-4">"El servicio de diseño a medida fue increíble. Me ayudaron a crear la estantería perfecta para mi sala. ¡Encantada con el resultado!"</p>
-                            <div class="flex items-center">
-                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Laura Sánchez" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <h4 class="font-medium">Laura Sánchez</h4>
-                                    <p class="text-gray-500 text-sm">Trujillo</p>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm"><div class="flex items-center mb-4 text-amber-500"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="text-gray-600 mb-4">"La mampara que encargué superó mis expectativas. Calidad y diseño impecables. El servicio al cliente fue excelente."</p><div class="flex items-center"><img src="https://randomuser.me/api/portraits/women/43.jpg" alt="María González" class="w-10 h-10 rounded-full mr-3"><div><h4 class="font-medium">María González</h4><p class="text-gray-500 text-sm">Lima</p></div></div></div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm"><div class="flex items-center mb-4 text-amber-500"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div><p class="text-gray-600 mb-4">"El espejo decorativo es tal como en la foto. Llegó muy bien empaquetado y antes de lo esperado. Definitivamente volveré a comprar."</p><div class="flex items-center"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Martínez" class="w-10 h-10 rounded-full mr-3"><div><h4 class="font-medium">Carlos Martínez</h4><p class="text-gray-500 text-sm">Arequipa</p></div></div></div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm"><div class="flex items-center mb-4 text-amber-500"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="text-gray-600 mb-4">"El servicio de diseño a medida fue increíble. Me ayudaron a crear la estantería perfecta para mi sala. ¡Encantada con el resultado!"</p><div class="flex items-center"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Laura Sánchez" class="w-10 h-10 rounded-full mr-3"><div><h4 class="font-medium">Laura Sánchez</h4><p class="text-gray-500 text-sm">Trujillo</p></div></div></div>
                     </div>
                 </div>
             </section>
-
-            <!-- Instagram Feed -->
             <section id="inspiracion" class="py-16 bg-white">
                 <div class="container mx-auto px-4">
                     <h2 class="title-font text-3xl font-bold text-center mb-8">Síguenos en Instagram</h2>
                     <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">Inspírate con nuestros diseños y comparte cómo decoras tus espacios con nuestros productos usando #DecoEstilos</p>
-                    
                     <div class="instagram-feed">
                         <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
                         <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
                         <div class="overflow-hidden rounded-lg"><img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
                         <div class="overflow-hidden rounded-lg"><img src="https://esdefer.com/wp-content/uploads/2023/12/interrior-plano-vacio-elementos-decoracion.jpg" alt="Instagram post" class="w-full h-full object-cover transition-slow hover:scale-105"></div>
                     </div>
-                    
-                    <div class="text-center mt-8">
-                        <a href="#" class="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium">
-                            <i class="fab fa-instagram mr-2 text-xl"></i> @DecoEstilos
-                        </a>
-                    </div>
+                    <div class="text-center mt-8"><a href="#" class="inline-flex items-center text-amber-500 hover:text-amber-600 font-medium"><i class="fab fa-instagram mr-2 text-xl"></i> @DecoEstilos</a></div>
                 </div>
             </section>
-
-            <!-- Custom Design CTA -->
             <section class="py-16 bg-gray-800 text-white">
                 <div class="container mx-auto px-4 text-center">
                     <h2 class="title-font text-3xl font-bold mb-4">¿Necesitas un diseño personalizado?</h2>
                     <p class="max-w-2xl mx-auto mb-8">Nuestro equipo de diseñadores y artesanos puede crear la pieza perfecta para tu espacio.</p>
-                    <a href="#contacto" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 px-8 rounded-full transition-slow inline-block">Solicita tu presupuesto</a>
+                    <a href="#contacto" class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-slow inline-block">Solicita tu presupuesto</a>
                 </div>
             </section>
         </div>
 
-        <!-- Newsletter -->
-        <section class="py-16 bg-amber-600 text-white">
+        <section class="py-16 bg-amber-500 text-white">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="title-font text-3xl font-bold mb-4">Suscríbete a nuestro newsletter</h2>
                 <p class="max-w-2xl mx-auto mb-8">Recibe inspiración, promociones exclusivas y novedades directamente en tu correo.</p>
-                
                 <form class="max-w-md mx-auto flex flex-nowrap">
                     <input type="email" placeholder="Tu correo electrónico" class="w-full px-4 py-3 rounded-l-lg focus:outline-none text-gray-800">
                     <button type="submit" class="bg-gray-800 hover:bg-gray-900 px-6 py-3 rounded-r-lg font-medium transition-slow">Suscribirse</button>
@@ -576,185 +118,77 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer id="contacto" class="bg-gray-800 text-white pt-16 pb-8">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <h3 class="title-font text-xl font-bold mb-4">DecoEstilos</h3>
-                    <p class="text-gray-400 mb-4">Tu destino para encontrar los mejores productos de decoración y diseño para tu hogar.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-slow"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-slow"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-slow"><i class="fab fa-pinterest-p"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-slow"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-4">Tienda</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-slow">Todos los productos</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-slow">Nuevos lanzamientos</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-slow">Ofertas</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-4">Información</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-slow">Sobre nosotros</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-slow">Blog</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-slow">Preguntas frecuentes</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-4">Métodos de Pago</h4>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-8 bg-white p-1 rounded">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard" class="h-8 bg-white p-1 rounded">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Icono_de_la_aplicaci%C3%B3n_Yape.png" alt="Yape" class="h-8 rounded">
-                    </div>
-                    <h4 class="font-bold mb-4">Contacto</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li class="flex items-start">
-                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
-                            <span>Av. Industrial 123, Ate, Lima, Perú</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-phone-alt mr-3"></i>
-                            <span>+51 947 432 228</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-envelope mr-3"></i>
-                            <span>hola@decoestilos.com</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-clock mr-3"></i>
-                            <span>L-V: 9:00 - 19:00</span>
-                        </li>
-                    </ul>
-                </div>
+    <div id="footer-placeholder"></div>
+
+    <a href="https://wa.me/51947432228" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 z-50">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="main.js"></script>
+    <!-- Cart Modal -->
+<div id="cart-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-11/12 md:w-1/2 lg:w-1/3 max-h-[90vh] flex flex-col">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center p-4 border-b border-gray-200">
+            <h3 class="text-xl font-bold title-font">Tu Carrito de Compras</h3>
+            <button id="close-cart-modal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart View -->
+        <div id="cart-view" class="flex-grow flex flex-col">
+            <!-- Modal Body - Cart Items -->
+            <div id="cart-items-container" class="p-4 flex-grow overflow-y-auto">
+                <!-- Cart items will be dynamically loaded here -->
+                <p class="text-center text-gray-500" id="empty-cart-message">Tu carrito está vacío.</p>
             </div>
-            
-            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">© 2025 DecoEstilos. Todos los derechos reservados.</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-slow">Términos y condiciones</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-slow">Política de privacidad</a>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-bold">Total:</span>
+                    <span class="text-lg font-bold text-amber-600">S/ <span id="cart-total">0.00</span></span>
                 </div>
+                <button id="checkout-button" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    Proceder al Pago
+                </button>
+                <button id="continue-shopping-button" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    Seguir Comprando
+                </button>
             </div>
         </div>
-    </footer>
 
-    <script>
-        const menuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const searchButton = document.getElementById('mobile-search-button');
-        const searchBar = document.getElementById('mobile-search-bar');
-        const hiddenContent = document.getElementById('hidden-content');
-        const allAnchorLinks = document.querySelectorAll('a[href^="#"]:not(#hero-specialties-button)');
-        const heroSpecialtiesButton = document.getElementById('hero-specialties-button');
-        const specialtiesContainer = document.getElementById('specialties-container');
-
-        // Mobile menu toggle
-        menuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            searchBar.classList.add('hidden'); // Hide search if open
-        });
-
-        // Mobile search toggle
-        searchButton.addEventListener('click', () => {
-            searchBar.classList.toggle('hidden');
-            mobileMenu.classList.add('hidden'); // Hide menu if open
-        });
-
-        // Smooth scrolling and content reveal for nav links
-        allAnchorLinks.forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-
-                if (hiddenContent.classList.contains('hidden')) {
-                    hiddenContent.classList.remove('hidden');
-                }
-
-                if (this.classList.contains('mobile-menu-link')) {
-                    mobileMenu.classList.add('hidden');
-                }
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    setTimeout(() => {
-                        const headerOffset = 80;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                    }, 100);
-                }
-            });
-        });
-
-        // Specific listener for the hero button to reveal specialties
-        if (heroSpecialtiesButton) {
-            heroSpecialtiesButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                if (specialtiesContainer.classList.contains('hidden')) {
-                    specialtiesContainer.classList.remove('hidden');
-                }
-
-                const targetElement = document.querySelector(this.getAttribute('href'));
-                if (targetElement) {
-                    setTimeout(() => {
-                        const headerOffset = 80;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                    }, 100);
-                }
-            });
-        }
-
-        // Script for product carousels
-        const carousels = [
-            { carousel: 'carousel-metal-mirrors', prev: 'prev-metal-mirrors', next: 'next-metal-mirrors' },
-            { carousel: 'carousel-frameless-mirrors', prev: 'prev-frameless-mirrors', next: 'next-frameless-mirrors' },
-            { carousel: 'carousel-mdf-mirrors', prev: 'prev-mdf-mirrors', next: 'next-mdf-mirrors' },
-            { carousel: 'carousel-corp-mirrors', prev: 'prev-corp-mirrors', next: 'next-corp-mirrors' },
-            { carousel: 'carousel-mamparas', prev: 'prev-mamparas', next: 'next-mamparas' },
-            { carousel: 'carousel-structures', prev: 'prev-structures', next: 'next-structures' }
-        ];
-
-        const setupCarousel = (carouselId, prevBtnId, nextBtnId) => {
-            const carouselContainer = document.getElementById(carouselId);
-            if (!carouselContainer) return;
-
-            const prevButton = document.getElementById(prevBtnId);
-            const nextButton = document.getElementById(nextBtnId);
-            
-            const scrollAmount = () => {
-                const firstCard = carouselContainer.querySelector('.product-card');
-                if (!firstCard) return 0;
-                const cardStyle = window.getComputedStyle(firstCard);
-                const cardMarginRight = parseInt(cardStyle.marginRight, 10) || 0;
-                const cardMarginLeft = parseInt(cardStyle.marginLeft, 10) || 0;
-                return firstCard.offsetWidth + cardMarginLeft + cardMarginRight;
-            };
-
-            nextButton.addEventListener('click', () => {
-                carouselContainer.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-            });
-
-            prevButton.addEventListener('click', () => {
-                carouselContainer.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-            });
-        };
-
-        carousels.forEach(c => setupCarousel(c.carousel, c.prev, c.next));
-
-    </script>
+        <!-- Checkout View (initially hidden) -->
+        <div id="checkout-view" class="flex-grow flex flex-col p-4 overflow-y-auto hidden">
+            <form id="checkout-form" class="space-y-4">
+                <div>
+                    <label for="customer-name" class="block text-gray-700 text-sm font-bold mb-2">Nombre Completo:</label>
+                    <input type="text" id="customer-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div>
+                    <label for="customer-email" class="block text-gray-700 text-sm font-bold mb-2">Correo Electrónico:</label>
+                    <input type="email" id="customer-email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div>
+                    <label for="customer-address" class="block text-gray-700 text-sm font-bold mb-2">Dirección de Envío:</label>
+                    <textarea id="customer-address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3" required></textarea>
+                </div>
+                <div>
+                    <label for="customer-phone" class="block text-gray-700 text-sm font-bold mb-2">Teléfono:</label>
+                    <input type="tel" id="customer-phone" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <button type="submit" id="confirm-order-button" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    Confirmar Pedido
+                </button>
+                <button type="button" id="back-to-cart-button" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg w-full transition-slow">
+                    ← Volver al Carrito
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

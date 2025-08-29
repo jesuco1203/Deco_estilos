@@ -99,7 +99,7 @@ function initUI() {
     }
 
     // --- Search Logic ---
-    const desktopSearchInput = document.querySelector('.hidden.md\:flex input[type="text"]');
+    const desktopSearchInput = document.getElementById('desktop-search-input');
     const desktopSearchButton = document.getElementById('desktop-search-button');
     const mobileSearchInput = document.querySelector('#mobile-search-bar input[type="text"]');
     const mobileSearchSubmitButton = document.getElementById('mobile-search-submit-button');
@@ -289,7 +289,7 @@ async function loadProducts() {
         const searchTerm = urlParams.get('search');
         if (searchTerm) {
             // Populate search boxes and filter
-            const desktopSearchInput = document.querySelector('.hidden.md\:flex input[type="text"]');
+            const desktopSearchInput = document.getElementById('desktop-search-input');
             const mobileSearchInput = document.querySelector('#mobile-search-bar input[type="text"]');
             if(desktopSearchInput) desktopSearchInput.value = searchTerm;
             if(mobileSearchInput) mobileSearchInput.value = searchTerm;

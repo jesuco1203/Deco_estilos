@@ -37,7 +37,7 @@ function initUI() {
     const searchButton = document.getElementById('mobile-search-button'); // This is the button to show the mobile search bar
     const searchBar = document.getElementById('mobile-search-bar');
     const hiddenContent = document.getElementById('hidden-content');
-    const allAnchorLinks = document.querySelectorAll('a[href^="#"]:not([href="#"])');
+    const allAnchorLinks = document.querySelectorAll('a[href*="#"]');
     const heroSpecialtiesButton = document.getElementById('hero-specialties-button');
     const specialtiesContainer = document.getElementById('specialties-container');
 
@@ -55,28 +55,42 @@ function initUI() {
         });
     }
     
+    const getFilename = (path) => path.substring(path.lastIndexOf('/') + 1);
+
     allAnchorLinks.forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            // If it's a link to another page, let the browser handle it
-            if (targetId.startsWith('index.html#')) {
-                return;
+            const href = this.getAttribute('href');
+            const url = new URL(href, window.location.href);
+            
+            const currentFile = getFilename(window.location.pathname);
+            const targetFile = getFilename(url.pathname);
+
+            if ((currentFile === targetFile || (currentFile === '' && targetFile === 'index.html')) && url.hash) {
+                e.preventDefault();
+                
+                const targetElement = document.querySelector(url.hash);
+
+                if (targetElement) {
+                    if (hiddenContent && hiddenContent.classList.contains('hidden')) {
+                        hiddenContent.classList.remove('hidden');
+                    }
+
+                    if (mobileMenu && this.classList.contains('mobile-menu-link')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+
+                    setTimeout(() => {
+                        const headerOffset = 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }, 100);
+                }
             }
-            e.preventDefault();
-            if (!document.querySelector(targetId)) return;
-            if (hiddenContent && hiddenContent.classList.contains('hidden')) {
-                hiddenContent.classList.remove('hidden');
-            }
-            if (mobileMenu && this.classList.contains('mobile-menu-link')) {
-                mobileMenu.classList.add('hidden');
-            }
-            setTimeout(() => {
-                const targetElement = document.querySelector(targetId);
-                const headerOffset = 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-            }, 100);
         });
     });
 

@@ -145,7 +145,7 @@ export function renderCartModal() {
         }
 
         cart.forEach(item => {
-            console.log('Rendering cart item:', item); // DEBUG
+            
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
 

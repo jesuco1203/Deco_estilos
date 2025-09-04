@@ -22,3 +22,13 @@ yarn-error.log*
 .idea/
 .vscode/
 *.swp
+
+# System files
+.DS_Store
+
+# Test files
+TEST_WRITE.txt
+
+# Image files in root directory
+/*.png
+/*.jpeg

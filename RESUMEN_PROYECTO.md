@@ -5,7 +5,7 @@ Resumen del Plan de Proyecto: DecoEstilos
   para clientes y un dashboard de administración para la gestión de productos, todo
   respaldado por una base de datos en la nube.
 
-  2. Estado Actual del Proyecto:
+  2. Estado Actual del Proyecto: [TEST_MARKER]
   Desarrollo de funcionalidades completado. Estamos listos para la fase final de despliegue.
 
   3. Arquitectura y Tecnologías Clave:

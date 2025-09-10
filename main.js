@@ -25,9 +25,7 @@ const loadComponent = (elementId, url) => {
 
 // --- Supabase Client ---
 // This should be in its own module to avoid duplication
-const supabaseUrl = 'https://qehmrxrrtestgxvqjjze.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlaG1yeHJydGVzdGd4dnFqanplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzMTI2OTIsImV4cCI6MjA3MTg4ODY5Mn0.hGXhKwBh-gNjx1sq195nnOdOm2yg2NcHvigF9RkCeAc';
-export const _supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+export const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- UI Logic ---
 function initUI() {

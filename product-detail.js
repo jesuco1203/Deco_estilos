@@ -1,6 +1,12 @@
 import { addToCart } from './cart.js';
 import { _supabase } from './main.js';
 
+const colorMap = {
+    'negro': 'black',
+    'plateado': 'silver',
+    'dorado': 'gold',
+};
+
 async function loadProductDetail() {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
@@ -30,31 +36,49 @@ async function loadProductDetail() {
         }
 
         let variantsHtml = '';
-        let sizeOptions = '';
-        let colorOptions = '';
         const sizes = new Set();
         const colors = new Set();
+        let availableColors = [];
 
         if (product.variants && product.variants.length > 0) {
             product.variants.forEach(variant => {
                 if (variant.size) sizes.add(variant.size);
                 if (variant.color) colors.add(variant.color);
             });
-
-            if (sizes.size > 0) {
+            availableColors = Array.from(colors).filter(Boolean);
+            let sizeOptions = '';
+            if (sizes.size > 1) {
                 sizeOptions = `<label for="size-select" class="block text-gray-700 text-sm font-bold mb-2">Medida:</label>
                                <select id="size-select" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
                                    <option value="">Selecciona una medida</option>
                                    ${Array.from(sizes).map(size => `<option value="${size}">${size}</option>`).join('')}
                                </select>`;
+            } else if (sizes.size === 1) {
+                const singleSize = Array.from(sizes)[0];
+                sizeOptions = `<div class="mb-4">
+                                    <p class="text-gray-700"><span class="font-bold">Medida:</span> ${singleSize || 'No especificada'}</p>
+                               </div>`;
             }
 
-            if (colors.size > 0) {
-                colorOptions = `<label for="color-select" class="block text-gray-700 text-sm font-bold mb-2">Color:</label>
-                                <select id="color-select" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
-                                    <option value="">Selecciona un color</option>
-                                    ${Array.from(colors).map(color => `<option value="${color}">${color}</option>`).join('')}
-                                </select>`;
+            let colorOptions = '';
+            if (availableColors.length > 1) {
+                colorOptions = `<label class="block text-gray-700 text-sm font-bold mb-2">Color:</label>
+                                <div id="color-selector" class="flex items-center space-x-2">
+                                    ${availableColors.map(color => {
+                                        const colorKey = color.toLowerCase();
+                                        return `<div class="color-dot w-8 h-8 rounded-full border cursor-pointer" title="${color}" data-color="${color}" style="background-color: ${colorMap[colorKey] || color};"></div>`;
+                                    }).join('')}
+                                </div>`;
+            } else if (availableColors.length === 1) {
+                const singleColor = availableColors[0];
+                const colorKey = singleColor.toLowerCase();
+                colorOptions = `<div class="mb-6">
+                                    <p class="font-bold text-gray-700 mb-2">Color:</p>
+                                    <div class="flex items-center">
+                                        <span class="w-6 h-6 rounded-full border" style="background-color: ${colorMap[colorKey] || singleColor};"></span>
+                                        <span class="ml-2">${singleColor}</span>
+                                    </div>
+                                </div>`;
             }
 
             variantsHtml = `
@@ -62,6 +86,9 @@ async function loadProductDetail() {
                     ${sizeOptions}
                     ${colorOptions}
                 </div>
+            `;
+
+            variantsHtml += `
                 <div class="mb-6">
                     <label for="quantity-input" class="block text-gray-700 text-sm font-bold mb-2">Cantidad:</label>
                     <input type="number" id="quantity-input" value="1" min="1" class="shadow appearance-none border rounded w-24 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -92,12 +119,12 @@ async function loadProductDetail() {
 
         // Lógica para actualizar el precio según la selección de variantes
         const sizeSelect = document.getElementById('size-select');
-        const colorSelect = document.getElementById('color-select');
+        const colorSelector = document.getElementById('color-selector');
         const displayedPrice = document.getElementById('displayed-price');
+        let selectedColor = availableColors.length > 0 ? availableColors[0] : null;
 
         const updatePrice = () => {
-            const selectedSize = sizeSelect ? sizeSelect.value : null;
-            const selectedColor = colorSelect ? colorSelect.value : null;
+            const selectedSize = sizeSelect ? sizeSelect.value : (sizes.size === 1 ? Array.from(sizes)[0] : null);
 
             const matchingVariant = product.variants.find(v => {
                 const sizeMatch = selectedSize ? v.size === selectedSize : true;
@@ -113,7 +140,18 @@ async function loadProductDetail() {
         };
 
         if (sizeSelect) sizeSelect.addEventListener('change', updatePrice);
-        if (colorSelect) colorSelect.addEventListener('change', updatePrice);
+        if (colorSelector) {
+            colorSelector.addEventListener('click', (e) => {
+                if (e.target.classList.contains('color-dot')) {
+                    selectedColor = e.target.dataset.color;
+                    // Remove border from all dots
+                    document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('ring-2', 'ring-offset-2', 'ring-amber-500'));
+                    // Add border to selected dot
+                    e.target.classList.add('ring-2', 'ring-offset-2', 'ring-amber-500');
+                    updatePrice();
+                }
+            });
+        }
 
         // Add to Cart button event listener
         const addToCartButton = document.getElementById('add-to-cart-button');
@@ -121,8 +159,7 @@ async function loadProductDetail() {
 
         if (addToCartButton) {
             addToCartButton.addEventListener('click', () => {
-                const selectedSize = sizeSelect ? sizeSelect.value : null;
-                const selectedColor = colorSelect ? colorSelect.value : null;
+                const selectedSize = sizeSelect ? sizeSelect.value : (sizes.size === 1 ? Array.from(sizes)[0] : null);
                 const quantity = parseInt(quantityInput.value, 10);
 
                 if (isNaN(quantity) || quantity <= 0) {

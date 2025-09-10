@@ -1,5 +1,9 @@
 import { initCart, addToCart } from './cart.js';
-import { supabase } from './supabase-client.js';
+
+const SUPABASE_URL = 'https://qehmrxrrtestgxvqjjze.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlaG1yeHJydGVzdGd4dnFqanplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzMTI2OTIsImV4cCI6MjA3MTg4ODY5Mn0.hGXhKwBh-gNjx1sq195nnOdOm2yg2NcHvigF9RkCeAc';
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- Global State ---
 let allProducts = [];
@@ -280,7 +284,7 @@ async function loadProducts() {
     }
 
     try {
-        const { data: products, error } = await supabase.from('products').select('*, variants(*)').order('created_at', { ascending: false });
+        const { data: products, error } = await supabaseClient.from('products').select('*, variants(*)').order('created_at', { ascending: false });
         if (error) throw error;
 
         allProducts = products.map(product => {

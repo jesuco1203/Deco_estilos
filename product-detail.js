@@ -1,5 +1,5 @@
 import { addToCart } from './cart.js';
-import { _supabase } from './main.js';
+import { supabase } from './supabase-client.js';
 
 const colorMap = {
     'negro': 'black',
@@ -20,7 +20,7 @@ async function loadProductDetail() {
     }
 
     try {
-        const { data: product, error } = await _supabase
+        const { data: product, error } = await supabase
             .from('products')
             .select('*, variants(*)')
             .eq('id', productId)

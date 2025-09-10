@@ -1,4 +1,5 @@
 import { initCart, addToCart } from './cart.js';
+import { supabase } from './supabase-client.js';
 
 // --- Global State ---
 let allProducts = [];
@@ -22,10 +23,6 @@ const loadComponent = (elementId, url) => {
             }
         });
 };
-
-// --- Supabase Client ---
-// This should be in its own module to avoid duplication
-export const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- UI Logic ---
 function initUI() {
@@ -283,7 +280,7 @@ async function loadProducts() {
     }
 
     try {
-        const { data: products, error } = await _supabase.from('products').select('*, variants(*)').order('created_at', { ascending: false });
+        const { data: products, error } = await supabase.from('products').select('*, variants(*)').order('created_at', { ascending: false });
         if (error) throw error;
 
         allProducts = products.map(product => {

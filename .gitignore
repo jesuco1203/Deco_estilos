@@ -32,6 +32,3 @@ TEST_WRITE.txt
 # Image files in root directory
 /*.png
 /*.jpeg
-
-# Environment variables
-env.js

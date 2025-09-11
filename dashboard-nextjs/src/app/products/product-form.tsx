@@ -103,6 +103,20 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // --- Validation ---
+    for (let i = 0; i < variants.length; i++) {
+        const variant = variants[i];
+        if (!variant.price || parseFloat(variant.price) <= 0) {
+            alert(`Por favor, introduce un precio válido para la Variante #${i + 1}.`);
+            return;
+        }
+        if (!variant.size || variant.size.trim() === '') {
+            alert(`Por favor, introduce una medida para la Variante #${i + 1}.`);
+            return;
+        }
+    }
+
     setLoading(true);
 
     const dataToSubmit = {

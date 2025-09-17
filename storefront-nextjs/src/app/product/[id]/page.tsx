@@ -2,9 +2,10 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import ProductOptions from '@/components/ProductOptions';
 
-interface Props {
+type Props = {
   params: { id: string };
-}
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export default async function ProductPage({ params }: Props) {
   const id = params.id; // Access id here

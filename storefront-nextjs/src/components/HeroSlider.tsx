@@ -1,18 +1,19 @@
+'use client';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/navigation';
+
 import 'swiper/css/pagination';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
 
 export default function HeroSlider() {
   return (
     <section id="inicio">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[Pagination, Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
-        navigation
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000 }}
         loop={true}

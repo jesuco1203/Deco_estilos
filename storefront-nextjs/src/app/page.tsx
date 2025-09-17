@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
 import { createClient } from '@/lib/supabase/server';
+import ProductCarousels from '@/components/ProductCarousels';
 
 export default async function HomePage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: products, error } = await supabase.from('products').select('*, variants(*)');
 
   if (error) {
@@ -32,7 +33,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div id="hidden-content" className="hidden">
+      <div id="hidden-content">
         <section id="nosotros" className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">
@@ -83,15 +84,13 @@ export default async function HomePage() {
           <h2 className="title-font text-3xl font-bold mb-4">Suscríbete a nuestro newsletter</h2>
           <p className="max-w-2xl mx-auto mb-8">Recibe inspiración, promociones exclusivas y novedades directamente en tu correo.</p>
           <form className="max-w-md mx-auto flex flex-nowrap">
-            <input type="email" placeholder="Tu correo electrónico" className="w-full px-4 py-3 rounded-l-lg focus:outline-none text-gray-800" />
-            <button type="submit" className="bg-gray-800 hover:bg-gray-900 px-6 py-3 rounded-r-lg font-medium transition-slow">Suscribirse</button>
+            <input type="email" placeholder="Tu correo electrónico" className="w-full px-4 py-3 rounded-l-full focus:outline-none text-gray-800 bg-white" />
+            <button type="submit" className="bg-gray-800 hover:bg-gray-900 px-6 py-3 rounded-r-full font-medium transition-slow">Suscribirse</button>
           </form>
         </div>
       </section>
 
-      <a href="https://wa.me/51947432228" target="_blank" className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 z-50">
-        <i className="fab fa-whatsapp text-3xl"></i>
-      </a>
+
     </>
   );
 }

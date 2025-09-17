@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { CartProvider } from "@/context/CartContext";
+import CartModal from "@/components/CartModal";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-poppins',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+});
 
 export const metadata: Metadata = {
   title: "DecoEstilos - Diseño y Fabricación a Medida",
@@ -23,13 +31,16 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
         <link rel="icon" href="https://i.imgur.com/nKN165j.png" />
       </head>
-      <body className={inter.className}>
-        <Header />
-        <main id="main-content" className="mt-16">
-          {children}
-        </main>
-        <Footer />
-      </body>
+      <body className={`${poppins.variable} font-sans pt-16`}>
+                    <CartProvider>
+                      <Header />
+                      <main id="main-content">
+                        {children}
+                      </main>
+                      <Footer />
+                      <CartModal />
+                      <WhatsAppButton />
+                    </CartProvider>      </body>
     </html>
   );
 }

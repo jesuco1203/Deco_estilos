@@ -67,26 +67,27 @@ Estamos en la fase de migración del frontend público a Next.js y hemos impleme
         * Añadido tooltip al pasar el ratón por los puntos de color.
     * **Corrección Crítica:** Inicialización del cliente Supabase refactorizada para evitar errores en despliegue (claves directamente en `main.js` y `product-detail.js`).
 
-* Fase 4: Migración del Frontend Público a Next.js (En Progreso):
+* Fase 4: Migración del Frontend Público a Next.js (Completada):
     * Nuevo proyecto Next.js (`storefront-nextjs`) creado y configurado.
-    * Layout principal replicado (`layout.tsx`).
-    * Componentes `Header.tsx` y `Footer.tsx` creados y utilizados.
+    * Layout principal (`layout.tsx`), Header y Footer replicados.
     * Estilos personalizados de `style.css` migrados a `globals.css`.
-    * Componente `HeroSlider.tsx` creado y utilizado.
-    * Cliente Supabase configurado para el nuevo frontend Next.js.
-    * Productos siendo obtenidos desde Supabase en `page.tsx`.
-    * Componentes `ProductCard.tsx` y `ProductCarousels.tsx` creados.
+    * Componente `HeroSlider.tsx` implementado.
+    * Cliente Supabase configurado y obteniendo datos correctamente.
+    * Página principal (`page.tsx`) renderiza productos desde Supabase.
+    * Componentes `ProductCard.tsx` y `ProductCarousels.tsx` creados y funcionales, mostrando productos por categorías.
+    * Página de detalle de producto (`product/[id]/page.tsx`) creada y funcional, mostrando detalles, variantes y galería de imágenes.
+    * Componentes base del carrito (`CartModal.tsx`, `CartContext.tsx`) creados.
 
 5. Tareas Pendientes (Próximos Pasos):
 
-* Fase 4.1: Completar la migración del Frontend Público a Next.js:
-    * Implementar la lógica de renderizado de productos en `ProductCarousels.tsx`.
-    * Recrear la página de detalle de producto (`product/[id]/page.tsx`).
-    * Reimplementar la funcionalidad del carrito de compras.
-    * Reimplementar el proceso de checkout básico.
-* Fase 4.2: Despliegue y Pruebas Finales:
-    * Desplegar el nuevo frontend Next.js (storefront) en Vercel.
-    * Realizar pruebas de integración completas en el entorno de producción.
+*   **Finalizar Carrito de Compras:**
+    *   Implementar la lógica de `ProductOptions.tsx` para seleccionar variantes.
+    *   Conectar el botón "Agregar al Carrito" para actualizar el estado global (`CartContext`).
+    *   Implementar la funcionalidad completa del `CartModal.tsx` (ver, actualizar, eliminar productos).
+    *   Reimplementar el proceso de checkout básico.
+*   **Despliegue y Pruebas:**
+    *   Desplegar el nuevo frontend Next.js (storefront) en Vercel.
+    *   Realizar pruebas de integración completas en el entorno de producción.
 
 6. Estructura de Carpetas Relevantes:
 

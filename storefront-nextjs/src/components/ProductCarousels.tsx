@@ -33,10 +33,24 @@ export default function ProductCarousels({ products }: { products: Product[] }) 
           </div>
           <Swiper
             modules={[Navigation]}
-            spaceBetween={24}
-            slidesPerView={4}
+            spaceBetween={16}
+            slidesPerView={1} // Default for mobile
             navigation
-            className="relative px-12"
+            className="relative"
+            breakpoints={{
+              640: { // sm
+                slidesPerView: 2,
+                spaceBetween: 16,
+              },
+              768: { // md
+                slidesPerView: 3,
+                spaceBetween: 16,
+              },
+              1024: { // lg
+                slidesPerView: 4,
+                spaceBetween: 16,
+              },
+            }}
           >
             {products.map(product => (
               <SwiperSlide key={product.id}>

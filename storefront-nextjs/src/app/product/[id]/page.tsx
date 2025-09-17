@@ -7,8 +7,8 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default async function ProductPage({ params }: Props) {
-  const id = params.id; // Access id here
+export default async function ProductPage(props: Props) {
+  const id = props.params.id; // Access id here
   const supabase = await createClient();
   // Fetch product and its variants. 
   // The join with colors and sizes might need adjustment based on actual table names.

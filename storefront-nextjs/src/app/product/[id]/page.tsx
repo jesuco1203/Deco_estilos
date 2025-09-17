@@ -2,7 +2,11 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import ProductOptions from '@/components/ProductOptions';
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+interface Props {
+  params: { id: string };
+}
+
+export default async function ProductPage({ params }: Props) {
   const id = params.id; // Access id here
   const supabase = await createClient();
   // Fetch product and its variants. 

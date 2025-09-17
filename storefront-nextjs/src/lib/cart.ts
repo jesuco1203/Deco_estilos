@@ -1,23 +1,43 @@
 import { createClient } from '@/lib/supabase/client';
 
-// --- Supabase Client ---
+// --- Definiciones de Tipos ---
+interface Variant {
+  id: number;
+  product_id: number;
+  size: string;
+  color: string;
+  price: number;
+  image_url: string | null;
+}
+
+interface CartItem {
+  productId: number;
+  variantId: number;
+  name: string;
+  size: string;
+  color: string;
+  price: number;
+  image_url: string | null;
+  quantity: number;
+}
+
+// --- Cliente Supabase (parece no usarse, pero se deja por ahora) ---
 const supabase = createClient();
 
-// --- Core Cart Functions ---
+// --- Funciones del Carrito ---
 
-export function getCart() {
+export function getCart(): CartItem[] {
     const cart = localStorage.getItem('shoppingCart');
-    return cart ? JSON.parse(cart) : [];
+    return cart ? JSON.parse(cart) as CartItem[] : [];
 }
 
-export function saveCart(cart: any[]) {
+export function saveCart(cart: CartItem[]) {
     localStorage.setItem('shoppingCart', JSON.stringify(cart));
-    // In a real app, you'd also update UI elements here
 }
 
-export function addToCart(variant: any, quantity: number, product_name: string, product_image_url: string | null) {
+export function addToCart(variant: Variant, quantity: number, product_name: string, product_image_url: string | null) {
     const cart = getCart();
-    const existingItemIndex = cart.findIndex((item: any) => item.variantId === variant.id);
+    const existingItemIndex = cart.findIndex((item: CartItem) => item.variantId === variant.id);
 
     if (existingItemIndex > -1) {
         cart[existingItemIndex].quantity += quantity;
@@ -35,7 +55,4 @@ export function addToCart(variant: any, quantity: number, product_name: string, 
     }
     saveCart(cart);
     alert('Producto añadido al carrito!');
-    // In a real app, you'd open a cart modal here
 }
-
-// You can add updateQuantity, removeFromCart, etc. here as well

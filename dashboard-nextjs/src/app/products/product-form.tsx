@@ -200,26 +200,26 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
       <div>
         <label htmlFor={`size-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Medida</label>
-        <input type="text" name="size" id={`size-${index}`} value={variant.size} onChange={(e) => handleVariantChange(index, e as any)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="Ej: 0.60 x 0.90 m" />
+        <input type="text" name="size" id={`size-${index}`} value={variant.size} onChange={(e) => handleVariantChange(index, e)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="Ej: 0.60 x 0.90 m" />
       </div>
       <div>
         <label htmlFor={`color-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Color</label>
-        <select name="color" id={`color-${index}`} value={variant.color} onChange={(e) => handleVariantChange(index, e as any)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
+        <select name="color" id={`color-${index}`} value={variant.color} onChange={(e) => handleVariantChange(index, e)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
           {colors.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
       <div>
         <label htmlFor={`price-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Precio (S/)</label>
-        <input type="number" name="price" id={`price-${index}`} value={variant.price} onChange={(e) => handleVariantChange(index, e as any)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" step="0.01" required />
+        <input type="number" name="price" id={`price-${index}`} value={variant.price} onChange={(e) => handleVariantChange(index, e)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" step="0.01" required />
       </div>
       <div className="col-span-1 md:col-span-3">
         <label htmlFor={`stock-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Cantidad en Stock</label>
-        <input type="number" name="stock_quantity" id={`stock-${index}`} value={variant.stock_quantity} onChange={(e) => handleVariantChange(index, e as any)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" />
+        <input type="number" name="stock_quantity" id={`stock-${index}`} value={variant.stock_quantity} onChange={(e) => handleVariantChange(index, e)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" />
       </div>
       {isMultiVariant && (
         <div className="col-span-1 md:col-span-3">
           <label htmlFor={`variant-image-${index}`} className="block text-gray-700 text-sm font-bold mb-2">URL de Imagen de Variante (Opcional)</label>
-          <input type="url" name="image_url" id={`variant-image-${index}`} value={variant.image_url} onChange={(e) => handleVariantChange(index, e as any)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="https://ejemplo.com/variante.jpg" />
+          <input type="url" name="image_url" id={`variant-image-${index}`} value={variant.image_url} onChange={(e) => handleVariantChange(index, e)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="https://ejemplo.com/variante.jpg" />
         </div>
       )}
     </div>

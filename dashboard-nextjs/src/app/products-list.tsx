@@ -1,9 +1,8 @@
-'use client'
-
 import { useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { FiPlus, FiEdit, FiTrash2, FiPackage, FiLoader } from 'react-icons/fi'
+import { FiPlus, FiEdit, FiTrash2, FiPackage } from 'react-icons/fi'
+import Image from 'next/image' // Import Image component
 
 // Define the type for a product
 interface Product {
@@ -14,22 +13,16 @@ interface Product {
   minPrice: number;
 }
 
-// Spinner component
-const Spinner = () => (
-  <div className="flex justify-center items-center py-10">
-    <FiLoader className="animate-spin text-4xl text-amber-500" />
-  </div>
-);
-
 // ProductCard component
 const ProductCard = ({ product, onDelete }: { product: Product; onDelete: (id: number) => void }) => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:transform hover:-translate-y-1">
     <Link href={`/products/edit/${product.id}`}>
         <div className="h-48 relative">
-            <img 
+            <Image 
                 src={product.image_url || 'https://placehold.co/600x400/e2e8f0/4a5568?text=No+Image'} 
                 alt={product.name} 
-                className="absolute top-0 left-0 w-full h-full object-cover"
+                fill // Use fill to cover the parent div
+                style={{ objectFit: 'cover' }} // Apply object-fit via style prop
             />
         </div>
     </Link>

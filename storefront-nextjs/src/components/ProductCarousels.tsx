@@ -13,7 +13,11 @@ interface Product {
   tag: string | null;
   category: string;
   variants: {
+    id: number;
     price: number;
+    color: string | null;
+    size: string | null;
+    image_url: string | null;
   }[];
 }
 

@@ -172,15 +172,20 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
 
     // Step 3: Upsert the current variants
     if (variants.length > 0) {
-        const variantsToUpsert = variants.map(v => ({
-            id: v.id === undefined || v.id === 0 ? null : v.id, // Explicitly set undefined or 0 IDs to null for new variants
-            product_id: currentProductId,
-            size: v.size,
-            color: v.color,
-            price: parseFloat(v.price), // Ensure price is a number
-            stock_quantity: v.stock_quantity,
-            image_url: v.image_url || null,
-        }));
+        const variantsToUpsert = variants.map(v => {
+            const variantData: any = {
+                product_id: currentProductId,
+                size: v.size,
+                color: v.color,
+                price: parseFloat(v.price), // Ensure price is a number
+                stock_quantity: v.stock_quantity,
+                image_url: v.image_url || null,
+            };
+            if (v.id !== undefined && v.id !== 0) { // Only include id if it's a valid existing ID
+                variantData.id = v.id;
+            }
+            return variantData;
+        });
 
         const { error: upsertError } = await supabase.from('variants').upsert(variantsToUpsert);
 

@@ -119,7 +119,7 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
 
     setLoading(true);
 
-    const dataToSubmit = {
+    const productData = {
         name: product.name,
         description: product.description,
         category: product.category,
@@ -127,55 +127,71 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
         tag: product.tag === 'Ninguna' ? null : product.tag,
     };
 
-    let currentProductId = product.id;
-    let error;
+    let currentProductId = initialProduct?.id;
+    let productError;
 
-    if (product.id) {
-      ({ error } = await supabase.from('products').update(dataToSubmit).match({ id: product.id }));
+    // Step 1: Upsert the main product data
+    if (currentProductId) {
+      const { error } = await supabase.from('products').update(productData).match({ id: currentProductId });
+      productError = error;
     } else {
-      const { data, error: insertError } = await supabase.from('products').insert([dataToSubmit]).select('id').single();
-      if (insertError) {
-        error = insertError;
-      } else {
+      const { data, error } = await supabase.from('products').insert([productData]).select('id').single();
+      if (data) {
         currentProductId = data.id;
       }
+      productError = error;
     }
 
-    if (error) {
-      alert('Error al guardar el producto principal: ' + error.message);
+    if (productError) {
+      alert('Error al guardar el producto: ' + productError.message);
       setLoading(false);
       return;
     }
 
-    if (currentProductId) {
-        const { error: deleteVariantsError } = await supabase
-        .from('variants')
-        .delete()
-        .eq('product_id', currentProductId);
+    if (!currentProductId) {
+        alert('No se pudo obtener el ID del producto para guardar las variantes.');
+        setLoading(false);
+        return;
+    }
 
-        if (deleteVariantsError) {
-            alert('Error al eliminar variantes antiguas: ' + deleteVariantsError.message);
-            setLoading(false);
-            return;
-        }
+    // Step 2: Determine which variants to delete
+    if (initialProduct) {
+        const initialVariantIds = initialProduct.variants.map(v => v.id);
+        const finalVariantIds = variants.map(v => v.id).filter(id => id);
+        const variantIdsToDelete = initialVariantIds.filter(id => !finalVariantIds.includes(id));
 
-        if (variants.length > 0) {
-            const variantsToInsert = variants.map(({ id, ...variant }) => ({
-                ...variant,
-                product_id: currentProductId,
-                created_at: new Date().toISOString(),
-            }));
-            const { error: insertVariantsError } = await supabase.from('variants').insert(variantsToInsert);
-
-            if (insertVariantsError) {
-                alert('Error al guardar las nuevas variantes: ' + insertVariantsError.message);
+        if (variantIdsToDelete.length > 0) {
+            const { error: deleteError } = await supabase.from('variants').delete().in('id', variantIdsToDelete);
+            if (deleteError) {
+                alert('Error al eliminar variantes antiguas: ' + deleteError.message);
                 setLoading(false);
                 return;
             }
         }
     }
 
-    alert(`¡Producto ${product.id ? 'actualizado' : 'creado'} exitosamente!`);
+    // Step 3: Upsert the current variants
+    if (variants.length > 0) {
+        const variantsToUpsert = variants.map(v => ({
+            id: v.id, // Pass ID for upsert to work
+            product_id: currentProductId,
+            size: v.size,
+            color: v.color,
+            price: parseFloat(v.price), // Ensure price is a number
+            stock_quantity: v.stock_quantity,
+            image_url: v.image_url || null,
+        }));
+
+        const { error: upsertError } = await supabase.from('variants').upsert(variantsToUpsert);
+
+        if (upsertError) {
+            alert('Error al guardar las variantes: ' + upsertError.message);
+            setLoading(false);
+            return;
+        }
+    }
+
+    alert(`¡Producto ${initialProduct ? 'actualizado' : 'creado'} exitosamente!`);
     router.push('/');
     setLoading(false);
   };

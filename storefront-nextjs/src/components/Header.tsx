@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useUI } from '@/context/UIContext';
 
 export default function Header() {
   const { itemCount, openCart } = useCart();
+  const { showSection } = useUI();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
@@ -34,10 +36,11 @@ export default function Header() {
   };
 
   const handleSearch = (searchTerm: string) => {
-    if (searchTerm.trim()) {
-      router.push(`/?search=${encodeURIComponent(searchTerm.trim())}`);
+    const term = searchTerm.trim();
+    if (term) {
+      router.push(`/search?q=${encodeURIComponent(term)}`);
     } else {
-      router.push('/'); // Clear search if empty
+      router.push('/'); // Or maybe to '/search' to show all products?
     }
     setIsMobileSearchOpen(false); // Close mobile search after search
   };
@@ -73,10 +76,10 @@ export default function Header() {
             <Link href="/#productos" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
               Productos
             </Link>
-            <Link href="/#inspiracion" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
+            <Link href="/#inspiracion" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('inspiracion')}>
               Inspiración
             </Link>
-            <Link href="/#nosotros" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
+            <Link href="/#nosotros" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('nosotros')}>
               Nosotros
             </Link>
             <Link href="/#contacto" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
@@ -155,10 +158,10 @@ export default function Header() {
           <Link href="/#productos" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
             Productos
           </Link>
-          <Link href="/#inspiracion" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
+          <Link href="/#inspiracion" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('inspiracion'); }}>
             Inspiración
           </Link>
-          <Link href="/#nosotros" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
+          <Link href="/#nosotros" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('nosotros'); }}>
             Nosotros
           </Link>
           <Link href="/#contacto" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>

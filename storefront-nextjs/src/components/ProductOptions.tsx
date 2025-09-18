@@ -162,7 +162,7 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
         <button 
           onClick={handleAddToCart}
           disabled={!selectedVariant || isAdded}
-          className={`w-full text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 ${isAdded ? 'bg-teal-500' : 'bg-amber-500 hover:bg-amber-600'} disabled:bg-gray-300 disabled:cursor-not-allowed`}
+          className={`w-full text-white font-bold py-3 px-6 rounded-full transition-all duration-300 ${isAdded ? 'bg-teal-500' : 'bg-amber-500 hover:bg-amber-600'} disabled:bg-gray-300 disabled:cursor-not-allowed`}
         >
           {isAdded ? '¡Añadido al carrito!' : 'Añadir al Carrito'}
         </button>

@@ -1,39 +1,28 @@
-import React from 'react';
+'use client';
 
 interface ProductTagProps {
-  tag: string | null;
+  tag: string;
 }
 
-const getTagStyle = (tag: string): string => {
-  const lowerCaseTag = tag.toLowerCase();
+export default function ProductTag({ tag }: ProductTagProps) {
+  const getTagColor = (tagName: string) => {
+    switch (tagName.toLowerCase()) {
+      case 'a medida':
+        return 'bg-sky-500';
+      case '15% dcto':
+        return 'bg-emerald-500';
+      case 'nuevo':
+        return 'bg-amber-500';
+      default:
+        return 'bg-red-500';
+    }
+  };
 
-  if (lowerCaseTag.includes('%')) {
-    return 'bg-red-500'; // Discount
-  }
-  if (lowerCaseTag.includes('nuevo')) {
-    return 'bg-teal-500'; // New Product
-  }
-  if (lowerCaseTag.includes('medida')) {
-    return 'bg-sky-500'; // Custom
-  }
-  // Add more cases as needed
-  return 'bg-amber-500'; // Default color
-};
-
-const ProductTag: React.FC<ProductTagProps> = ({ tag }) => {
-  if (!tag) {
-    return null;
-  }
-
-  const bgColorClass = getTagStyle(tag);
+  const colorClass = getTagColor(tag);
 
   return (
-    <div
-      className={`absolute top-1 -right-4 flex items-center justify-center text-white font-bold transform rotate-6 px-3 py-1.5 rounded-md ${bgColorClass}`}
-    >
-      <span className="text-sm">{tag}</span>
+    <div className={`absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded-full ${colorClass}`}>
+      {tag}
     </div>
   );
-};
-
-export default ProductTag;
+}

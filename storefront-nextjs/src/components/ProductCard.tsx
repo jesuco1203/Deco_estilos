@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useCart, type CartItem } from '@/context/CartContext';
+import ProductTag from './ProductTag';
 
 interface Product {
   id: number;
@@ -56,7 +57,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="relative">
           <img src={product.image_url || 'https://placehold.co/400x600'} alt={product.name} className="w-full h-64 object-cover" />
           
-          {product.tag && <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">{product.tag}</div>}
+          {product.tag && <ProductTag tag={product.tag} />}
         </div>
         <div className="p-4 h-28">
           <h3 className="font-medium text-lg mb-1 line-clamp-2">{product.name}</h3>
@@ -67,7 +68,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <button 
           onClick={handleAddToCart}
           disabled={isAdded || product.variants.length === 0}
-          className={`add-to-cart-btn w-full text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 ${isAdded ? 'bg-teal-500' : 'bg-amber-500 hover:bg-amber-600'} disabled:bg-gray-300 disabled:cursor-not-allowed`}
+          className={`add-to-cart-btn w-full text-white font-bold py-2 px-4 rounded-full transition-all duration-300 ${isAdded ? 'bg-teal-500' : 'bg-amber-500 hover:bg-amber-600'} disabled:bg-gray-300 disabled:cursor-not-allowed`}
         >
           {isAdded ? '¡Añadido!' : 'Añadir al Carrito'}
         </button>

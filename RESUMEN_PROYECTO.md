@@ -6,7 +6,21 @@ para clientes y un dashboard de administración para la gestión de productos, t
 respaldado por una base de datos en la nube.
 
 2. Estado Actual del Proyecto:
-Estamos en la fase de migración del frontend público a Next.js y hemos implementado varias mejoras y correcciones.
+El frontend público ha sido migrado a Next.js y desplegado exitosamente en Vercel. Se han implementado mejoras significativas en la interfaz de usuario y se han resuelto múltiples errores de compilación y configuración.
+
+Mejoras de UI/UX:
+*   **Botón de WhatsApp Animado:** Implementado como un componente React dedicado (`WhatsAppButton.tsx`) con estilos CSS Modules (`WhatsAppButton.module.css`) para animaciones complejas (pulso, vibración del icono, texto desplegable al pasar el cursor). Se instaló la dependencia `react-icons`.
+*   **Secciones "Nosotros" e "Inspiración":** Implementado un sistema de control de visibilidad basado en `UIContext`. Las secciones están ocultas por defecto y se muestran dinámicamente al hacer clic en sus respectivos enlaces en la barra de navegación.
+*   **Carrusel Móvil:** Ajustada la configuración de Swiper en `ProductCarousels.tsx` para mostrar 1.5 tarjetas en la vista móvil, mejorando la visualización.
+
+Resolución de Errores Críticos de Compilación:
+Se han resuelto numerosos errores que impedían el despliegue en entornos de producción, incluyendo:
+*   Errores de tipos en `product/[id]/page.tsx` (definición de props y compatibilidad de tipos).
+*   Errores de uso de `any` en `cart.ts`.
+*   Errores de comillas sin escapar en `page.tsx`.
+*   Conflictos de versiones de dependencias (`next`, `react`, `eslint`) mediante la actualización a versiones estables.
+*   Problemas de configuración del build de Next.js (`next.config.js` y `output: 'standalone'`).
+*   Conflictos de enrutamiento en Netlify (mediante la eliminación de `netlify.toml` y `_redirects`).
 
 3. Arquitectura y Tecnologías Clave:
 
@@ -85,9 +99,11 @@ Estamos en la fase de migración del frontend público a Next.js y hemos impleme
     *   Conectar el botón "Agregar al Carrito" para actualizar el estado global (`CartContext`).
     *   Implementar la funcionalidad completa del `CartModal.tsx` (ver, actualizar, eliminar productos).
     *   Reimplementar el proceso de checkout básico.
-*   **Despliegue y Pruebas:**
-    *   Desplegar el nuevo frontend Next.js (storefront) en Vercel.
-    *   Realizar pruebas de integración completas en el entorno de producción.
+*   **Despliegue del Dashboard:**
+    *   Desplegar el panel de administración (`dashboard-nextjs`) en una plataforma adecuada (ej. Vercel o Render), ya que requiere un entorno de servidor.
+*   **Pruebas Finales:**
+    *   Realizar pruebas de integración completas en el entorno de producción (Vercel).
+    *   Revisar y optimizar el rendimiento general del sitio.
 
 6. Estructura de Carpetas Relevantes:
 

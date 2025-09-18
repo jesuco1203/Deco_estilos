@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -33,7 +34,9 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.variable} font-sans pt-16`}>
                     <CartProvider>
-                      <Header />
+                      <Suspense fallback={null}>
+                        <Header />
+                      </Suspense>
                       <main id="main-content">
                         {children}
                       </main>

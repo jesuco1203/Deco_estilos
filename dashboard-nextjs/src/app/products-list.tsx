@@ -50,7 +50,7 @@ const EmptyState = () => (
         <FiPackage className="mx-auto text-5xl text-gray-400"/>
         <h2 className="mt-4 text-xl font-bold text-gray-700">No hay productos todavía</h2>
         <p className="mt-2 text-gray-500">¡Empieza por añadir tu primer producto!</p>
-        <Link href="/products/new" className="mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg inline-flex items-center transition-colors">
+        <Link href="/products/new" className="mt-6 bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition-colors">
           <FiPlus className="mr-2" />
           Añadir Producto
         </Link>
@@ -80,7 +80,7 @@ export default function ProductsList({ serverProducts }: { serverProducts: Produ
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Gestión de Productos</h1>
         {products.length > 0 && (
-            <Link href="/products/new" className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg flex items-center transition-colors duration-200">
+            <Link href="/products/new" className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full flex items-center transition-colors duration-200">
               <FiPlus className="mr-2" />
               Añadir Producto
             </Link>

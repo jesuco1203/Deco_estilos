@@ -38,7 +38,7 @@ export default function ProductCarousels({ products }: { products: Product[] }) 
           <Swiper
             modules={[Navigation]}
             spaceBetween={16}
-            slidesPerView={1} // Default for mobile
+            slidesPerView={1.5} // Default for mobile (shows 1.5 cards)
             navigation
             className="relative"
             breakpoints={{

@@ -33,7 +33,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div id="hidden-content">
+      <div id="hidden-content" className="hidden">
         <section id="nosotros" className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">

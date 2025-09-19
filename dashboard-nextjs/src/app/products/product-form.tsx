@@ -172,35 +172,44 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
 
     // Step 3: Upsert the current variants
     if (variants.length > 0) {
-        const variantsToUpsert = variants.map(v => {
-            const variantData: {
-                product_id: number;
-                size: string | null;
-                color: string | null;
-                price: number;
-                stock_quantity: number;
-                image_url: string | null;
-                id?: number;
-            } = {
+        const newVariantsToInsert: Omit<Variant, 'id'>[] = [];
+        const existingVariantsToUpdate: Variant[] = [];
+
+        variants.forEach(v => {
+            const variantData = {
                 product_id: currentProductId,
-                size: v.size.trim() === '' ? null : v.size,
-                color: v.color.trim() === '' ? null : v.color,
+                size: v.size?.trim() === '' ? null : v.size,
+                color: v.color?.trim() === '' ? null : v.color,
                 price: parseFloat(v.price),
                 stock_quantity: v.stock_quantity,
-                image_url: v.image_url.trim() === '' ? null : v.image_url,
+                image_url: v.image_url?.trim() === '' ? null : v.image_url,
             };
-            if (v.id !== undefined && v.id !== 0) { // Only include id if it's a valid existing ID
-                variantData.id = v.id;
+
+            if (v.id !== undefined && v.id !== 0) {
+                existingVariantsToUpdate.push({ ...variantData, id: v.id });
+            } else {
+                newVariantsToInsert.push(variantData);
             }
-            return variantData;
         });
 
-        const { error: upsertError } = await supabase.from('variants').upsert(variantsToUpsert, { onConflict: 'id' });
+        // Insert new variants
+        if (newVariantsToInsert.length > 0) {
+            const { error: insertError } = await supabase.from('variants').insert(newVariantsToInsert);
+            if (insertError) {
+                alert('Error al insertar nuevas variantes: ' + insertError.message);
+                setLoading(false);
+                return;
+            }
+        }
 
-        if (upsertError) {
-            alert('Error al guardar las variantes: ' + upsertError.message);
-            setLoading(false);
-            return;
+        // Update existing variants
+        if (existingVariantsToUpdate.length > 0) {
+            const { error: updateError } = await supabase.from('variants').upsert(existingVariantsToUpdate, { onConflict: 'id' });
+            if (updateError) {
+                alert('Error al actualizar variantes existentes: ' + updateError.message);
+                setLoading(false);
+                return;
+            }
         }
     }
 

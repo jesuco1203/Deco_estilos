@@ -27,14 +27,14 @@ Gestión de Productos (Dashboard):
 Resolución de Errores Críticos de Compilación y Tipado:
 *   Se han resuelto numerosos errores que impedían el despliegue en entornos de producción, incluyendo:
     *   Errores de tipos en `product/[id]/page.tsx` (definición de props y compatibilidad de tipos).
-    *   Errores de uso de `any` en `cart.ts` (corregido en `product-form.tsx`).
+    *   **Error de ESLint `@typescript-eslint/no-explicit-any`:** Resuelto en `dashboard-nextjs/src/app/products/product-form.tsx` mediante la definición explícita de tipos para `variantData`.
     *   Errores de comillas sin escapar en `page.tsx`.
     *   Conflictos de versiones de dependencias (`next`, `react`, `eslint`) mediante la actualización a versiones estables.
     *   Problemas de configuración del build de Next.js (`next.config.js` y `output: 'standalone'`).
     *   Conflictos de enrutamiento en Netlify (mediante la eliminación de `netlify.toml` y `_redirects`).
-    *   Errores de ESLint (`@typescript-eslint/no-explicit-any`, `@typescript-eslint/no-unused-vars`, `@next/next/no-img-element`).
-    *   Errores de tipado persistentes en `dashboard-nextjs/src/app/products/edit/[id]/page.tsx` (solucionado con un workaround temporal `ignoreBuildErrors` en `next.config.ts`).
+    *   Errores de ESLint (`@typescript-eslint/no-unused-vars`, `@next/next/no-img-element`).
     *   Errores de "React Hook only works in a Client Component" (añadido `use client` a componentes necesarios).
+    *   **Error al actualizar variantes existentes (`cannot insert a non-DEFAULT value into column "id"`):** Resuelto en `dashboard-nextjs/src/app/products/product-form.tsx` al cambiar la estrategia de actualización de variantes. Para variantes existentes, se utiliza una llamada `update` explícita a Supabase (en lugar de `upsert` con `onConflict: 'id'`), asegurando que la base de datos realice una actualización y no intente insertar un `id` en una columna `GENERATED ALWAYS AS IDENTITY`.
 
 3. Arquitectura y Tecnologías Clave:
 
@@ -66,12 +66,10 @@ Resolución de Errores Críticos de Compilación y Tipado:
     *   Implementar la funcionalidad completa del `CartModal.tsx` (ver, actualizar, eliminar productos).
     *   Reimplementar el proceso de checkout básico.
 *   **Despliegue del Dashboard:**
-    *   Desplegar el panel de administración (`dashboard-nextjs`) en Vercel (se han resuelto los errores de compilación, pero el despliegue final depende del usuario).
+    *   Desplegar el panel de administración (`dashboard-nextjs`) en Vercel (se han resuelto los errores de compilación, y el despliegue ya está funcionando).
 *   **Pruebas Finales:**
     *   Realizar pruebas de integración completas en el entorno de producción (Vercel).
     *   Revisar y optimizar el rendimiento general del sitio.
-*   **Problemas Conocidos (Dashboard):**
-    *   **Error al guardar variantes:** Persiste un error 400 "Bad Request" de Supabase al editar productos, con el mensaje "cannot insert a non-DEFAULT value into column \"id\"". Esto sugiere un problema de tipo de datos en la columna `size` de la tabla `variants` en la base de datos (ej. esperando un número pero recibiendo una cadena como "0.60 x 0.90 m"). **Se requiere verificar el esquema de la tabla `variants` en Supabase.**
 *   **Imágenes de Producto (Dashboard):** Las imágenes externas ahora se cargan (configuración `remotePatterns` en `next.config.ts`), pero se recomienda migrar las imágenes a Supabase Storage para una gestión unificada y mejor rendimiento.
 *   **Búsqueda de Productos (Storefront):** La búsqueda de términos con caracteres especiales (ej. "baño") aún puede no funcionar correctamente si los datos en la base de datos no están normalizados de la misma manera. La normalización actual solo afecta el término de búsqueda del usuario.
 *   **Implementación de AR (Propuesta):** Evaluar la propuesta de integrar una funcionalidad de Realidad Aumentada ("Ver en tu pared") como una micro-aplicación (`/ar`) separada dentro del mismo repositorio.

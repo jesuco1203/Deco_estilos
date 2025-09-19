@@ -25,8 +25,8 @@ export default function HeroSlider() {
         >
           <div className="slide-content h-full flex flex-col items-start justify-center text-left text-white p-8 md:p-16">
             <h1 className="title-font text-xl md:text-2xl font-light mb-4">Arte en Metal y Vidrio, a Tu Estilo</h1>
-            <p className="text-sm font-light mb-8 max-w-lg">Creamos piezas únicas a medida y te ofrecemos nuestra nueva colección de espejos decorativos listos para llevar. Tu idea, nuestra artesanía.</p>
-            <Link href="#nuestras-especialidades" id="hero-specialties-button" className="bg-white text-black hover:bg-gray-200 font-medium text-sm py-3 px-8 rounded-full transition-slow">Nuestras Especialidades</Link>
+            <p className="text-sm font-light mb-8 max-w-lg">Creamos piezas únicas que transforman tus espacios. Desde mamparas de baño hasta espejos decorativos.</p>
+
           </div>
         </SwiperSlide>
         <SwiperSlide

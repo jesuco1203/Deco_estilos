@@ -205,6 +205,7 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
         // Update existing variants
         if (existingVariantsToUpdate.length > 0) {
             console.log('Existing variants to update:', existingVariantsToUpdate);
+            const { error: updateError } = await supabase.from('variants').upsert(existingVariantsToUpdate, { onConflict: 'id' });
             if (updateError) {
                 alert('Error al actualizar variantes existentes: ' + updateError.message);
                 setLoading(false);

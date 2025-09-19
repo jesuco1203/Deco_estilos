@@ -204,9 +204,7 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
 
         // Update existing variants
         if (existingVariantsToUpdate.length > 0) {
-            console.log('Existing variants to update:', existingVariantsToUpdate);
             for (const variant of existingVariantsToUpdate) {
-                console.log('Attempting to update variant with ID:', variant.id);
                 const { id, ...updateData } = variant; // Extraer el id y el resto de los datos
                 const { error: updateError } = await supabase
                     .from('variants')

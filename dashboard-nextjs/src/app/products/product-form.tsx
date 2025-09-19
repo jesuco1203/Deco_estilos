@@ -7,11 +7,11 @@ import { useRouter } from 'next/navigation'
 // Define types for Product and Variant
 interface Variant {
   id?: number;
-  size: string;
-  color: string;
+  size: string | null;
+  color: string | null;
   price: string;
   stock_quantity: number;
-  image_url: string;
+  image_url: string | null;
 }
 
 interface Product {
@@ -175,19 +175,19 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
         const variantsToUpsert = variants.map(v => {
             const variantData: {
                 product_id: number;
-                size: string;
-                color: string;
+                size: string | null;
+                color: string | null;
                 price: number;
                 stock_quantity: number;
                 image_url: string | null;
                 id?: number;
             } = {
                 product_id: currentProductId,
-                size: v.size,
-                color: v.color,
-                price: parseFloat(v.price), // Ensure price is a number
+                size: v.size.trim() === '' ? null : v.size,
+                color: v.color.trim() === '' ? null : v.color,
+                price: parseFloat(v.price),
                 stock_quantity: v.stock_quantity,
-                image_url: v.image_url || null,
+                image_url: v.image_url.trim() === '' ? null : v.image_url,
             };
             if (v.id !== undefined && v.id !== 0) { // Only include id if it's a valid existing ID
                 variantData.id = v.id;

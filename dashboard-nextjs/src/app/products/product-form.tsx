@@ -195,7 +195,7 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
             return variantData;
         });
 
-        const { error: upsertError } = await supabase.from('variants').upsert(variantsToUpsert);
+        const { error: upsertError } = await supabase.from('variants').upsert(variantsToUpsert, { onConflict: 'id' });
 
         if (upsertError) {
             alert('Error al guardar las variantes: ' + upsertError.message);

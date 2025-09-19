@@ -173,7 +173,15 @@ export default function ProductForm({ product: initialProduct }: { product?: Pro
     // Step 3: Upsert the current variants
     if (variants.length > 0) {
         const variantsToUpsert = variants.map(v => {
-            const variantData: any = {
+            const variantData: {
+                product_id: number;
+                size: string;
+                color: string;
+                price: number;
+                stock_quantity: number;
+                image_url: string | null;
+                id?: number;
+            } = {
                 product_id: currentProductId,
                 size: v.size,
                 color: v.color,

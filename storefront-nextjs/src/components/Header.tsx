@@ -76,11 +76,11 @@ export default function Header() {
             <Link href="/#productos" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
               Productos
             </Link>
-            <Link href="/#inspiracion" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('inspiracion')}>
-              Inspiración
-            </Link>
             <Link href="/#nosotros" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('nosotros')}>
               Nosotros
+            </Link>
+            <Link href="/#inspiracion" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('inspiracion')}>
+              Inspiración
             </Link>
             <Link href="/#contacto" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
               Contacto
@@ -158,11 +158,11 @@ export default function Header() {
           <Link href="/#productos" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
             Productos
           </Link>
-          <Link href="/#inspiracion" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('inspiracion'); }}>
-            Inspiración
-          </Link>
           <Link href="/#nosotros" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('nosotros'); }}>
             Nosotros
+          </Link>
+          <Link href="/#inspiracion" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('inspiracion'); }}>
+            Inspiración
           </Link>
           <Link href="/#contacto" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
             Contacto

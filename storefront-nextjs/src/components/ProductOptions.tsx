@@ -29,12 +29,13 @@ interface ProductOptionsProps {
 const colorNameToHex: { [key: string]: string } = {
   'rojo': '#ef4444',
   'azul': '#3b82f6',
-  'verde': '#22c55e',
+  'verde': '#22c5e',
   'negro': '#111827',
   'blanco': '#f9fafb',
   'plata': '#d1d5db',
   'oro': '#f59e0b',
   'dorado': '#f59e0b',
+  'unica': '#a0aec0', // Asumiendo un gris para "Unica"
   // Add more colors as needed
 };
 
@@ -121,7 +122,7 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
         <h1 className="text-3xl lg:text-4xl font-bold mb-4">{product.name}</h1>
         <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
 
-        {uniqueColors.length > 1 && (
+        {uniqueColors.length > 0 && (
           <div className="mb-6">
             <h3 className="font-semibold mb-3 text-lg">Color: <span className="font-normal capitalize">{selectedColor}</span></h3>
             <div className="flex flex-wrap gap-2">

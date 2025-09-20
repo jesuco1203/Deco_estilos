@@ -23,6 +23,7 @@ interface Product {
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
+  const { toggleWish, isWishlisted } = useWishlist(); // Add this line
   const [isAdded, setIsAdded] = useState(false);
 
   const minPrice = product.variants.length > 0 ? Math.min(...product.variants.map(v => v.price)) : 0;

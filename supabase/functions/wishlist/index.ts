@@ -6,26 +6,41 @@ const SUPABASE_URL = Deno.env.get("SB_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SB_SERVICE_ROLE_KEY")!;
 const COOKIE_NAME = "anon_id";
 
-function getCookie(req: Request, name: string) {
+function corsHeadersFor(req: Request) {
+  const origin = req.headers.get("origin") || "";
+  // Permite tu localhost y tu dominio productivo
+  const allowed = ["http://localhost:3000", "https://deco-estilos.vercel.app"]; // Ajusta tu dominio de Vercel aquí
+  const allowOrigin = allowed.includes(origin) ? origin : allowed[0]; // fallback a localhost
+
+  return {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "content-type, authorization",
+    "Access-Control-Allow-Credentials": "true",
+    "Vary": "Origin",
+  };
+}
+
+function getCookie(req: Request, name: string) { // Reinsertado
   const cookie = req.headers.get("cookie") || "";
   const m = cookie.match(new RegExp(`${name}=([^;]+)`));
   return m ? decodeURIComponent(m[1]) : null;
 }
-function setCookie(headers: Headers, name: string, value: string) {
-  headers.append("Set-Cookie", `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=15552000; HttpOnly; SameSite=Lax; Secure`);
+
+function setCookie(headers: Headers, name: string, value: string, req: Request) {
+  const origin = req.headers.get("origin") || "";
+  const isLocalhost = origin.startsWith("http://localhost");
+  const base = `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=15552000; HttpOnly; SameSite=Lax`;
+  // En localhost no pongas Secure, en prod sí.
+  headers.append("Set-Cookie", isLocalhost ? base : `${base}; Secure`);
 }
 
 serve(async (req) => {
   const url = new URL(req.url);
   const path = url.pathname;
 
-  // CORS básico (ajusta origin si quieres restringir)
-  const headers = new Headers({
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "content-type",
-  });
+  const headers = new Headers(corsHeadersFor(req)); // Usar la nueva función
   if (req.method === "OPTIONS") return new Response("ok", { headers });
 
   // Importante: Service role salta RLS
@@ -35,7 +50,7 @@ serve(async (req) => {
   let anonId = getCookie(req, COOKIE_NAME);
   if (!anonId) {
     anonId = crypto.randomUUID();
-    setCookie(headers, COOKIE_NAME, anonId);
+    setCookie(headers, COOKIE_NAME, anonId, req); // Pasar 'req'
   }
 
   try {

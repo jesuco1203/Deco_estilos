@@ -43,6 +43,7 @@ const colorNameToHex: { [key: string]: string } = {
 
 export default function ProductOptions({ product }: ProductOptionsProps) {
   const { addToCart } = useCart();
+  const { toggleWish, isWishlisted } = useWishlist(); // Add this line
   const [isAdded, setIsAdded] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string | null>(product.variants[0]?.color || null);
   const [selectedSize, setSelectedSize] = useState<string | null>(product.variants[0]?.size || null);

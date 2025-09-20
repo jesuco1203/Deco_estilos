@@ -35,7 +35,7 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
     if (anonId) {
       const fetchWishlist = async () => {
         try {
-          const response = await fetch(`https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/list?anonId=${anonId}`, { credentials: 'include' });
+          const response = await fetch(`https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/list`, { credentials: 'include' });
           if (response.ok) {
             const data = await response.json();
             setWishlistItems(data.wishlist || []);
@@ -88,7 +88,7 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ anonId, productId, action: isCurrentlyWishlisted ? 'remove' : 'add' }),
+        body: JSON.stringify({ productId, action: isCurrentlyWishlisted ? 'remove' : 'add' }),
       });
 
       if (!response.ok) {

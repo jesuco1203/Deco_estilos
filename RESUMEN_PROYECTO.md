@@ -65,6 +65,26 @@ Resolución de Errores Críticos de Compilación y Tipado:
     *   Conectar el botón "Agregar al Carrito" para actualizar el estado global (`CartContext`).
     *   Implementar la funcionalidad completa del `CartModal.tsx` (ver, actualizar, eliminar productos).
     *   Reimplementar el proceso de checkout básico.
+*   **Implementación de Wishlist (Favoritos) con Backend Anónimo:**
+    *   **Estado Actual:** La lógica frontend (`WishlistContext.tsx`), los botones de corazón (`ProductCard.tsx`, `ProductOptions.tsx`), la página de favoritos (`wishlist/page.tsx`), la Edge Function (`supabase/functions/wishlist/index.ts`) y su configuración de variables de entorno (`SB_URL`, `SB_SERVICE_ROLE_KEY`) están implementados y desplegados.
+    *   **PENDIENTE CRÍTICO:** La base de datos **NO** tiene la tabla `contacts` ni la columna `contact_id` en `wishlists`. **Es IMPRESCINDIBLE ejecutar el siguiente SQL en el SQL Editor de Supabase para que la funcionalidad de wishlist con identificación funcione:**
+        ```sql
+        -- Crear la tabla contacts
+        create table if not exists contacts (
+          id uuid primary key default gen_random_uuid(),
+          email text unique,
+          phone text unique,
+          created_at timestamptz default now()
+        );
+
+        -- Añadir la columna contact_id a la tabla wishlists
+        alter table wishlists
+        add column if not exists contact_id uuid references contacts(id);
+        ```
+    *   **Próximos Pasos (una vez ejecutado el SQL):**
+        *   Implementar el modal de identificación (`IdentifyModal.tsx`).
+        *   Actualizar `WishlistContext.tsx` para disparar el modal y vincular el `anon_id` con el `contact_id`.
+        *   Añadir la ruta `/identify` a la Edge Function `wishlist`.
 *   **Despliegue del Dashboard:**
     *   Desplegar el panel de administración (`dashboard-nextjs`) en Vercel (se han resuelto los errores de compilación, y el despliegue ya está funcionando).
 *   **Pruebas Finales:**
@@ -72,7 +92,7 @@ Resolución de Errores Críticos de Compilación y Tipado:
     *   Revisar y optimizar el rendimiento general del sitio.
 *   **Imágenes de Producto (Dashboard):** Las imágenes externas ahora se cargan (configuración `remotePatterns` en `next.config.ts`), pero se recomienda migrar las imágenes a Supabase Storage para una gestión unificada y mejor rendimiento.
 *   **Búsqueda de Productos (Storefront):** La búsqueda de términos con caracteres especiales (ej. "baño") aún puede no funcionar correctamente si los datos en la base de datos no están normalizados de la misma manera. La normalización actual solo afecta el término de búsqueda del usuario.
-*   **Implementación de AR (Propuesta):** Evaluar la propuesta de integrar una funcionalidad de Realidad Aumentada ("Ver en tu pared") como una micro-aplicación (`/ar`) separada dentro del mismo repositorio.
+*   **Implementación de AR (Propuesta):** Evaluar la propuesta de integrar una funcionalidad de Realidad Aumentada ("Ver en tu pared") como una micro-aplicación ("/ar") separada dentro del mismo repositorio.
 
 6. Estructura de Carpetas Relevantes:
 

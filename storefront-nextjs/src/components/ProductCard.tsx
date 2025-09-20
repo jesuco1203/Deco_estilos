@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useCart, type CartItem } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext'; // Import useWishlist
 import ProductTag from './ProductTag';
+import { FiHeart } from 'react-icons/fi'; // Import heart icon
 
 interface Product {
   id: number;
@@ -58,6 +60,20 @@ export default function ProductCard({ product }: { product: Product }) {
           <img src={product.image_url || 'https://placehold.co/400x600'} alt={product.name} className="w-full h-64 object-cover" />
           
           {product.tag && <ProductTag tag={product.tag} />}
+
+          {/* Wishlist Heart Button */}
+          <button
+            onClick={(e) => {
+              e.preventDefault(); // Prevent navigating to product page
+              toggleWish(product.id);
+            }}
+            className={`absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md transition-colors duration-200 ${
+              isWishlisted(product.id) ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-500'
+            }`}
+            aria-label="Add to wishlist"
+          >
+            <FiHeart size={20} fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
+          </button>
         </div>
         <div className="p-4 h-28">
           <h3 className="font-medium text-lg mb-1 line-clamp-2">{product.name}</h3>

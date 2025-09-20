@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useCart, type CartItem } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext'; // Import useWishlist
+import { FiHeart } from 'react-icons/fi'; // Import heart icon
 
 // Corrected types based on user's schema
 type Variant = {
@@ -119,7 +121,18 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
 
       {/* Right Column: Product Info */}
       <div>
-        <h1 className="text-3xl lg:text-4xl font-bold mb-4">{product.name}</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-3xl lg:text-4xl font-bold">{product.name}</h1>
+          <button
+            onClick={() => toggleWish(product.id)}
+            className={`p-2 rounded-full transition-colors duration-200 ${
+              isWishlisted(product.id) ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-500'
+            }`}
+            aria-label="Add to wishlist"
+          >
+            <FiHeart size={28} fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
+          </button>
+        </div>
         <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
 
         {uniqueColors.length > 0 && (

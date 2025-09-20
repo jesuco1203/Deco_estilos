@@ -76,6 +76,9 @@ export default function Header() {
             <Link href="/#productos" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
               Productos
             </Link>
+            <Link href="/wishlist" className="text-gray-800 hover:text-amber-500 transition-slow font-medium"> {/* New Wishlist Link */}
+              Favoritos
+            </Link>
             <Link href="/#nosotros" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('nosotros')}>
               Nosotros
             </Link>
@@ -109,8 +112,8 @@ export default function Header() {
             <button onClick={toggleMobileSearch} className="md:hidden text-gray-800">
               <i className="fas fa-search text-xl"></i>
             </button>
-            {/* Heart Icon */}
-            <Link href="#" className="text-gray-800 hover:text-amber-500 transition-slow relative">
+            {/* Wishlist Icon */}
+            <Link href="/wishlist" className="text-gray-800 hover:text-amber-500 transition-slow relative">
               <i className="fas fa-heart text-xl"></i>
             </Link>
             {/* Cart Icon */}
@@ -157,6 +160,9 @@ export default function Header() {
           </Link>
           <Link href="/#productos" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
             Productos
+          </Link>
+          <Link href="/wishlist" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}> {/* New Wishlist Link */}
+            Favoritos
           </Link>
           <Link href="/#nosotros" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('nosotros'); }}>
             Nosotros

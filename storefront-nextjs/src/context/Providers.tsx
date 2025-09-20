@@ -8,7 +8,9 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <UIProvider>
       <CartProvider>
-        {children}
+        <WishlistProvider>
+          {children}
+        </WishlistProvider>
       </CartProvider>
     </UIProvider>
   );

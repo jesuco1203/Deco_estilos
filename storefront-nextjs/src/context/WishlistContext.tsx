@@ -1,10 +1,30 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { v4 as uuidv4 } from 'uuid'; // Importar uuid
+import IdentifyModal from '@/components/IdentifyModal'; // Importar el nuevo modal
+
+// Comprobar si el usuario ya ha sido identificado
+const isUserIdentified = () => !!localStorage.getItem('decoEstilosContactId');
+
+const getAnonId = () => {
+  if (typeof window === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|; )anon_id=([^;]+)/);
+  return match ? match[1] : null;
+};
+
+const ensureAnonId = () => {
+  if (typeof window === 'undefined') return null;
+  let anonId = getAnonId();
+  if (!anonId) {
+    anonId = (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+    const maxAge = 60 * 60 * 24 * 365; // 1 año
+    document.cookie = `anon_id=${anonId}; path=/; max-age=${maxAge}; SameSite=Lax`;
+  }
+  return anonId;
+};
 
 interface WishlistContextType {
-  wishlistItems: number[]; // Array of product IDs
+  wishlistItems: Set<number>;
   toggleWish: (productId: number) => void;
   isWishlisted: (productId: number) => boolean;
   wishlistCount: number;
@@ -17,99 +37,157 @@ interface WishlistProviderProps {
 }
 
 export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) => {
-  const [wishlistItems, setWishlistItems] = useState<number[]>([]);
-  const [anonId, setAnonId] = useState<string | null>(null); // Nuevo estado para anonId
+  const [wishlistItems, setWishlistItems] = useState<Set<number>>(new Set());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productToIdentify, setProductToIdentify] = useState<number | null>(null);
+  const [hasBeenIdentified, setHasBeenIdentified] = useState(false);
+  const [anonId, setAnonId] = useState<string | null>(null);
+  const [contactId, setContactId] = useState<string | null>(null);
 
-  // Generar o cargar anonId
   useEffect(() => {
-    let currentAnonId = localStorage.getItem('decoEstilosAnonId');
-    if (!currentAnonId) {
-      currentAnonId = uuidv4();
-      localStorage.setItem('decoEstilosAnonId', currentAnonId);
+    const identified = isUserIdentified();
+    setHasBeenIdentified(identified);
+    if (identified && typeof window !== 'undefined') {
+      setContactId(localStorage.getItem('decoEstilosContactId'));
     }
-    setAnonId(currentAnonId);
+    const ensured = ensureAnonId();
+    setAnonId(ensured);
   }, []);
 
-  // Cargar wishlist del backend cuando anonId esté disponible
   useEffect(() => {
-    if (anonId) {
-      const fetchWishlist = async () => {
-        try {
-          const response = await fetch(`https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/list`, { credentials: 'include' });
-          if (response.ok) {
-            const data = await response.json();
-            setWishlistItems(data.wishlist || []);
-          } else {
-            console.error('Failed to fetch wishlist from backend:', response.statusText);
-            // Fallback to local storage if backend fails
-            const storedWishlist = localStorage.getItem('decoEstilosWishlist');
-            if (storedWishlist) {
-              setWishlistItems(JSON.parse(storedWishlist));
+    const fetchWishlist = async () => {
+      const currentAnonId = anonId ?? ensureAnonId();
+      if (!anonId && currentAnonId) {
+        setAnonId(currentAnonId);
+      }
+      const currentContactId = contactId ?? (typeof window !== 'undefined' ? localStorage.getItem('decoEstilosContactId') : null);
+      if (!contactId && currentContactId) {
+        setContactId(currentContactId);
+      }
+      try {
+        const response = await fetch(
+          currentAnonId
+            ? `/api/wishlist/list?anonId=${encodeURIComponent(currentAnonId)}${currentContactId ? `&contactId=${encodeURIComponent(currentContactId)}` : ''}`
+            : '/api/wishlist/list',
+          {
+            credentials: 'include',
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const items = Array.isArray(data.items)
+            ? data.items
+            : Array.isArray(data.wishlist)
+              ? data.wishlist
+              : [];
+          setWishlistItems(new Set(items));
+
+          if (data.contactId) {
+            setContactId(data.contactId);
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('decoEstilosContactId', data.contactId);
+            }
+            if (!hasBeenIdentified) {
+              setHasBeenIdentified(true);
             }
           }
-        } catch (error) {
-          console.error('Error fetching wishlist:', error);
-          // Fallback to local storage if network error
-          const storedWishlist = localStorage.getItem('decoEstilosWishlist');
-          if (storedWishlist) {
-            setWishlistItems(JSON.parse(storedWishlist));
-          }
+        } else {
+          console.error('Failed to fetch wishlist from backend:', response.statusText);
         }
-      };
-      fetchWishlist();
-    }
-  }, [anonId]);
-
-  // Sincronizar wishlist con localStorage (como fallback y para consistencia)
-  useEffect(() => {
-    if (anonId) { // Solo guardar en local si ya tenemos un anonId
-      localStorage.setItem('decoEstilosWishlist', JSON.stringify(wishlistItems));
-    }
-  }, [wishlistItems, anonId]);
-
+      } catch (error) {
+        console.error('Error fetching wishlist:', error);
+      }
+    };
+    fetchWishlist();
+  }, [hasBeenIdentified, anonId, contactId]);
 
   const toggleWish = async (productId: number) => {
-    if (!anonId) {
-      console.error('Anon ID not available. Cannot toggle wish.');
+    if (!hasBeenIdentified && wishlistItems.size === 0 && !isWishlisted(productId)) {
+      setProductToIdentify(productId);
+      setIsModalOpen(true);
       return;
     }
 
-    const isCurrentlyWishlisted = wishlistItems.includes(productId);
-    const newWishlistItems = isCurrentlyWishlisted
-      ? wishlistItems.filter(id => id !== productId)
-      : [...wishlistItems, productId];
+    const isCurrentlyWishlisted = wishlistItems.has(productId);
+    const newWishlistItems = new Set(wishlistItems);
 
-    // Optimistic update
+    if (isCurrentlyWishlisted) {
+      newWishlistItems.delete(productId);
+    } else {
+      newWishlistItems.add(productId);
+    }
+
     setWishlistItems(newWishlistItems);
 
     try {
-      const response = await fetch('https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/toggle', { credentials: 'include',
+      const anonId = ensureAnonId();
+      if (!anonId) {
+        alert('No se pudo generar un identificador para tus favoritos. Por favor, actualiza la página.');
+        return;
+      }
+      const response = await fetch('/api/wishlist/toggle', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ productId, action: isCurrentlyWishlisted ? 'remove' : 'add' }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ anonId, productId }),
       });
 
       if (!response.ok) {
-        console.error('Failed to sync wishlist with backend:', response.statusText);
-        // Revert optimistic update if backend fails
-        setWishlistItems(isCurrentlyWishlisted ? [...wishlistItems, productId] : wishlistItems.filter(id => productId !== id));
-        alert('Error al actualizar favoritos. Por favor, inténtalo de nuevo.');
+        setWishlistItems(wishlistItems);
+        alert('Error al actualizar favoritos.');
       }
     } catch (error) {
-      console.error('Error syncing wishlist:', error);
-      // Revert optimistic update if network error
-      setWishlistItems(isCurrentlyWishlisted ? [...wishlistItems, productId] : wishlistItems.filter(id => productId !== id));
-      alert('Error de conexión al actualizar favoritos. Por favor, inténtalo de nuevo.');
+      setWishlistItems(wishlistItems);
+      alert('Error de conexión al actualizar favoritos.');
     }
   };
 
-  const isWishlisted = (productId: number) => {
-    return wishlistItems.includes(productId);
+  const handleIdentify = async (identity: string) => {
+    if (!productToIdentify) return;
+
+    try {
+      const anonId = ensureAnonId();
+      if (!anonId) {
+        alert('No se pudo generar un identificador para tus favoritos. Por favor, actualiza la página.');
+        return;
+      }
+
+      const response = await fetch('/api/wishlist/identify', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Anon-ID': anonId,
+          ...(contactId ? { 'X-Contact-ID': contactId } : {}),
+        },
+        body: JSON.stringify({ identity, productId: productToIdentify }),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'No se pudo guardar la información.');
+      }
+
+      const mergedItems = Array.isArray(data?.items) ? data.items : [];
+      if (data?.contactId && typeof window !== 'undefined') {
+        localStorage.setItem('decoEstilosContactId', data.contactId);
+      }
+      if (data?.contactId) {
+        setContactId(data.contactId);
+      }
+      setHasBeenIdentified(true);
+      setWishlistItems(new Set(mergedItems));
+      setProductToIdentify(null);
+    } catch (error) {
+      console.error('Error during identification:', error);
+      alert('Hubo un error al procesar tu información. Por favor, inténtalo de nuevo.');
+    } finally {
+      setIsModalOpen(false);
+    }
   };
 
-  const wishlistCount = wishlistItems.length;
+  const isWishlisted = (productId: number) => wishlistItems.has(productId);
 
   return (
     <WishlistContext.Provider
@@ -117,10 +195,15 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
         wishlistItems,
         toggleWish,
         isWishlisted,
-        wishlistCount,
+        wishlistCount: wishlistItems.size,
       }}
     >
       {children}
+      <IdentifyModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onIdentify={handleIdentify}
+      />
     </WishlistContext.Provider>
   );
 };

@@ -85,6 +85,15 @@ Resolución de Errores Críticos de Compilación y Tipado:
         *   Implementar el modal de identificación (`IdentifyModal.tsx`).
         *   Actualizar `WishlistContext.tsx` para disparar el modal y vincular el `anon_id` con el `contact_id`.
         *   Añadir la ruta `/identify` a la Edge Function `wishlist`.
+    *   **Diagnóstico del Error de CORS en Wishlist (Septiembre 2025):**
+        *   **Síntoma:** Al implementar la comunicación entre el frontend (`storefront-nextjs`) y la Edge Function de `wishlist`, se encontró un error persistente de CORS en el navegador. El error indicaba que el servidor respondía con `Access-Control-Allow-Origin: *` al realizar una petición con credenciales, lo cual está prohibido.
+        *   **Pasos de Depuración:**
+            1.  Se modificó la Edge Function para añadir las cabeceras CORS correctas, incluyendo `Access-Control-Allow-Headers` con los valores requeridos por Supabase (`authorization`, `apikey`, etc.). La función se desplegó, pero el error persistió.
+            2.  Se refactorizó por completo la lógica de la función para seguir un patrón más robusto, separando el manejo de la petición `OPTIONS` (preflight). La función se volvió a desplegar, pero el error en el navegador seguía siendo idéntico.
+            3.  Se utilizó `curl` para inspeccionar las cabeceras reales devueltas por la función desplegada, demostrando que el código en el servidor **era correcto** y devolvía las cabeceras adecuadas (`Access-Control-Allow-Origin: http://localhost:3000`).
+            4.  La discrepancia entre la respuesta correcta (vista por `curl`) y la respuesta incorrecta (vista por el navegador) apuntaba a un factor externo. Se investigaron los servicios locales en ejecución sin encontrar un culpable obvio.
+        *   **Causa Raíz Identificada:** Se descubrió que un **VPN que afectaba únicamente al tráfico del navegador** estaba activo. Este tipo de software intercepta las peticiones y puede modificar las cabeceras HTTP, lo que explica por qué el navegador recibía una cabecera `*` mientras que `curl` no.
+        *   **Solución:** Desactivar el VPN. Se procederá a reiniciar el equipo para asegurar que todos los cambios de red del VPN se reviertan y verificar la solución final.
 *   **Despliegue del Dashboard:**
     *   Desplegar el panel de administración (`dashboard-nextjs`) en Vercel (se han resuelto los errores de compilación, y el despliegue ya está funcionando).
 *   **Pruebas Finales:**

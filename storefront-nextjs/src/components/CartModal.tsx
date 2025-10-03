@@ -58,9 +58,9 @@ export default function CartModal() {
               <span className="text-lg font-bold">Total:</span>
               <span className="text-lg font-bold text-amber-600">S/ {totalPrice.toFixed(2)}</span>
             </div>
-            <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition-slow">
+            <Link href="/checkout" onClick={closeCart} className="block text-center w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition-slow">
               Proceder al Pago
-            </button>
+            </Link>
           </div>
         )}
       </div>

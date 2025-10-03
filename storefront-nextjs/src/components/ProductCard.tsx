@@ -68,7 +68,7 @@ export default function ProductCard({ product }: { product: Product }) {
               e.preventDefault(); // Prevent navigating to product page
               toggleWish(product.id);
             }}
-            className={`absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md transition-colors duration-200 ${
+            className={`absolute top-2 left-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md transition-colors duration-200 ${
               isWishlisted(product.id) ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-500'
             }`}
             aria-label="Add to wishlist"

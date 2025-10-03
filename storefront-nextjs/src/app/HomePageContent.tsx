@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
 import MainContent from './MainContent';
@@ -26,6 +27,42 @@ interface HomePageContentProps {
 
 export default function HomePageContent({ products }: HomePageContentProps) {
   const { activeSection } = useUI();
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage('');
+    setIsError(false);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setIsError(true);
+        setMessage(data.error || 'Error al suscribirse.');
+      } else {
+        setMessage('¡Gracias por suscribirte!');
+        setEmail(''); // Clear the input
+      }
+    } catch (error) {
+      setIsError(true);
+      setMessage('Error de conexión. Inténtalo de nuevo.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>

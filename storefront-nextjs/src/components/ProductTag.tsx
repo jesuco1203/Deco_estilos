@@ -5,24 +5,25 @@ interface ProductTagProps {
 }
 
 export default function ProductTag({ tag }: ProductTagProps) {
-  const getTagColor = (tagName: string) => {
-    switch (tagName.toLowerCase()) {
+  const getTagInfo = (tagName: string) => {
+    const lowerCaseTag = tagName.toLowerCase();
+    switch (lowerCaseTag) {
       case 'a medida':
-        return 'bg-sky-500';
+        return { color: 'bg-black', text: 'A medida' };
       case '15% dcto':
-        return 'bg-emerald-500';
-      case 'nuevo':
-        return 'bg-amber-500';
+        return { color: 'bg-blue-500', text: tagName };
+      case 'producto nuevo':
+        return { color: 'bg-blue-500', text: 'Producto Nuevo' };
       default:
-        return 'bg-red-500';
+        return { color: 'bg-red-500', text: tagName };
     }
   };
 
-  const colorClass = getTagColor(tag);
+  const { color: colorClass, text: displayText } = getTagInfo(tag);
 
   return (
     <div className={`absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded-full ${colorClass}`}>
-      {tag}
+      {displayText}
     </div>
   );
 }

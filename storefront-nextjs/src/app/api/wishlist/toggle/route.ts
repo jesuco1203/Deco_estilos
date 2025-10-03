@@ -1,52 +1,73 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 
-export async function POST(request: Request) {
-  const supabase = createClient(true);
-  const { anonId, productId, action } = await request.json();
+const EDGE_URL = 'https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/toggle';
 
-  if (!anonId || !productId || !action) {
-    return NextResponse.json({ error: 'Missing anonId, productId, or action' }, { status: 400 });
+const mergeCookies = (existingCookieHeader: string | null, anonId?: string | null) => {
+  const cookieMap = new Map<string, string>();
+
+  if (existingCookieHeader) {
+    existingCookieHeader.split(';').forEach(part => {
+      const trimmed = part.trim();
+      if (!trimmed) return;
+      const separatorIndex = trimmed.indexOf('=');
+      if (separatorIndex === -1) return;
+      const key = trimmed.slice(0, separatorIndex);
+      const value = trimmed.slice(separatorIndex + 1);
+      if (key) {
+        cookieMap.set(key, value);
+      }
+    });
   }
 
+  if (anonId) {
+    cookieMap.set('anon_id', anonId);
+  }
+
+  if (cookieMap.size === 0) {
+    return undefined;
+  }
+
+  return Array.from(cookieMap.entries())
+    .map(([key, value]) => `${key}=${value}`)
+    .join('; ');
+};
+
+export async function POST(req: Request) {
+  const body = await req.json(); // Parse JSON body
+  const incomingCookie = req.headers.get('cookie');
+  const mergedCookie = mergeCookies(incomingCookie, body?.anonId);
+
   try {
-    // Fetch the current wishlist for the anonId
-    const { data: existingWishlist, error: fetchError } = await supabase
-      .from('wishlists')
-      .select('items')
-      .eq('anon_id', anonId)
-      .single();
+    const res = await fetch(EDGE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(mergedCookie ? { Cookie: mergedCookie } : {}),
+      },
+      body: JSON.stringify(body),
+    });
 
-    if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 means no rows found (first time user)
-      console.error('Error fetching wishlist:', fetchError);
-      return NextResponse.json({ error: 'Failed to fetch wishlist' }, { status: 500 });
+    const text = await res.text();
+    const contentType = res.headers.get('Content-Type') ?? 'application/json';
+    const responseBody = contentType.includes('application/json') && text
+      ? JSON.parse(text)
+      : text || undefined;
+
+    if (!res.ok) {
+      console.error('Wishlist toggle proxy non-OK response:', {
+        status: res.status,
+        body: responseBody,
+      });
     }
 
-    let currentItems: number[] = existingWishlist ? existingWishlist.items : [];
-
-    if (action === 'add') {
-      if (!currentItems.includes(productId)) {
-        currentItems.push(productId);
-      }
-    } else if (action === 'remove') {
-      currentItems = currentItems.filter(id => id !== productId);
-    } else {
-      return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
-    }
-
-    // Upsert the updated wishlist
-    const { error: upsertError } = await supabase
-      .from('wishlists')
-      .upsert({ anon_id: anonId, items: currentItems }, { onConflict: 'anon_id' });
-
-    if (upsertError) {
-      console.error('Error upserting wishlist:', upsertError);
-      return NextResponse.json({ error: 'Failed to update wishlist' }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, wishlist: currentItems });
+    return typeof responseBody === 'string'
+      ? new NextResponse(responseBody, {
+          status: res.status,
+          headers: { 'Content-Type': contentType },
+        })
+      : NextResponse.json(responseBody ?? {}, { status: res.status });
   } catch (error) {
-    console.error('Unexpected error in wishlist toggle API:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Wishlist toggle proxy error:', error);
+    return NextResponse.json({ error: 'Failed to reach wishlist service' }, { status: 500 });
   }
 }

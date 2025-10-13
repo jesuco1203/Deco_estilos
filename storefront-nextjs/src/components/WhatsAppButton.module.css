@@ -10,8 +10,8 @@
   height: 60px;
   bottom: 40px;
   right: 40px;
-  background-color: #25D366;
-  color: #FFF;
+  background-color: #25d366;
+  color: #fff;
   border-radius: 50px;
   font-size: 28px;
   box-shadow: 2px 2px 3px #999;
@@ -43,7 +43,6 @@
   transition: opacity 0.3s ease-in-out; /* Anima la aparición */
 }
 
-
 /* Animación 3: Efecto al pasar el mouse (hover) */
 .whatsapp_float:hover {
   width: 240px; /* Se expande para mostrar el texto */
@@ -61,11 +60,10 @@
   visibility: visible;
 }
 
-
 /* --- Definición de las animaciones (Keyframes) --- */
 
 /* Keyframes para el pulso del botón (animando la sombra) */
- @keyframes pulse {
+@keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
   }
@@ -78,9 +76,22 @@
 }
 
 /* Keyframes para la vibración del ícono */
- @keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
-  40%, 60% { transform: translate3d(3px, 0, 0); }
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(3px, 0, 0);
+  }
 }

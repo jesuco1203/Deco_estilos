@@ -67,20 +67,6 @@ Resolución de Errores Críticos de Compilación y Tipado:
     *   Reimplementar el proceso de checkout básico.
 *   **Implementación de Wishlist (Favoritos) con Backend Anónimo:**
     *   **Estado Actual:** La lógica frontend (`WishlistContext.tsx`), los botones de corazón (`ProductCard.tsx`, `ProductOptions.tsx`), la página de favoritos (`wishlist/page.tsx`), la Edge Function (`supabase/functions/wishlist/index.ts`) y su configuración de variables de entorno (`SB_URL`, `SB_SERVICE_ROLE_KEY`) están implementados y desplegados.
-    *   **PENDIENTE CRÍTICO:** La base de datos **NO** tiene la tabla `contacts` ni la columna `contact_id` en `wishlists`. **Es IMPRESCINDIBLE ejecutar el siguiente SQL en el SQL Editor de Supabase para que la funcionalidad de wishlist con identificación funcione:**
-        ```sql
-        -- Crear la tabla contacts
-        create table if not exists contacts (
-          id uuid primary key default gen_random_uuid(),
-          email text unique,
-          phone text unique,
-          created_at timestamptz default now()
-        );
-
-        -- Añadir la columna contact_id a la tabla wishlists
-        alter table wishlists
-        add column if not exists contact_id uuid references contacts(id);
-        ```
     *   **Próximos Pasos (una vez ejecutado el SQL):**
         *   Implementar el modal de identificación (`IdentifyModal.tsx`).
         *   Actualizar `WishlistContext.tsx` para disparar el modal y vincular el `anon_id` con el `contact_id`.
@@ -103,7 +89,14 @@ Resolución de Errores Críticos de Compilación y Tipado:
 *   **Búsqueda de Productos (Storefront):** La búsqueda de términos con caracteres especiales (ej. "baño") aún puede no funcionar correctamente si los datos en la base de datos no están normalizados de la misma manera. La normalización actual solo afecta el término de búsqueda del usuario.
 *   **Implementación de AR (Propuesta):** Evaluar la propuesta de integrar una funcionalidad de Realidad Aumentada ("Ver en tu pared") como una micro-aplicación ("/ar") separada dentro del mismo repositorio.
 
-6. Estructura de Carpetas Relevantes:
+6. Avances Recientes (Octubre 2025):
+*   **Flujo de subida de imágenes corregido:** Se actualizó `dashboard-nextjs/src/app/products/product-form.tsx` para asegurar que `storage_key` se guarde correctamente al subir imágenes.
+*   **Lectura de imágenes en storefront verificada:** Se confirmó que `storefront-nextjs/src/lib/images.ts` ya prioriza `storage_key` para la visualización de imágenes.
+*   **Rutas proxy `/images/[...path]/route.ts` actualizadas:** Se modificaron las implementaciones en `dashboard-nextjs` y `storefront-nextjs` para usar `supabase.storage.download`, mejorando el control y manejo de errores.
+*   **Placeholders SVG añadidos:** Se crearon `placeholder-600x600.svg` en los directorios `public/` de `dashboard-nextjs` y `storefront-nextjs`.
+*   **Política RLS para `products` añadida:** Se creó una nueva migración `supabase/migrations/20251011_add_rls_policy_for_products.sql` para permitir que usuarios autenticados actualicen el `storage_key` de sus propios productos.
+
+7. Estructura de Carpetas Relevantes:
 
 * Frontend Público (Antiguo): /Users/jesuco1203/Documents/Deco_estilos/ (contiene index.html, product-detail.html)
 * Frontend Público (Nuevo - Next.js): /Users/jesuco1203/Documents/Deco_estilos/storefront-nextjs/

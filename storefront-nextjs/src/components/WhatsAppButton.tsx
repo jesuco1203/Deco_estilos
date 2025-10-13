@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styles from './WhatsAppButton.module.css';
-import { FaWhatsapp } from 'react-icons/fa';
+import React from "react";
+import styles from "./WhatsAppButton.module.css";
+import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsAppButton = () => {
   // Se usa el número que ya estaba en el proyecto
-  const phoneNumber = '51947432228'; 
+  const phoneNumber = "51947432228";
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
 
   return (

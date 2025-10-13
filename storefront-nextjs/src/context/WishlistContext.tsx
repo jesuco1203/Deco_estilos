@@ -1,22 +1,31 @@
-'use client';
+"use client";
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import IdentifyModal from '@/components/IdentifyModal'; // Importar el nuevo modal
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
+import IdentifyModal from "@/components/IdentifyModal"; // Importar el nuevo modal
 
 // Comprobar si el usuario ya ha sido identificado
-const isUserIdentified = () => !!localStorage.getItem('decoEstilosContactId');
+const isUserIdentified = () => !!localStorage.getItem("decoEstilosContactId");
 
 const getAnonId = () => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   const match = document.cookie.match(/(?:^|; )anon_id=([^;]+)/);
   return match ? match[1] : null;
 };
 
 const ensureAnonId = () => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   let anonId = getAnonId();
   if (!anonId) {
-    anonId = (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+    anonId =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : Math.random().toString(36).slice(2);
     const maxAge = 60 * 60 * 24 * 365; // 1 año
     document.cookie = `anon_id=${anonId}; path=/; max-age=${maxAge}; SameSite=Lax`;
   }
@@ -30,16 +39,22 @@ interface WishlistContextType {
   wishlistCount: number;
 }
 
-const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
+const WishlistContext = createContext<WishlistContextType | undefined>(
+  undefined,
+);
 
 interface WishlistProviderProps {
   children: ReactNode;
 }
 
-export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) => {
+export const WishlistProvider: React.FC<WishlistProviderProps> = ({
+  children,
+}) => {
   const [wishlistItems, setWishlistItems] = useState<Set<number>>(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [productToIdentify, setProductToIdentify] = useState<number | null>(null);
+  const [productToIdentify, setProductToIdentify] = useState<number | null>(
+    null,
+  );
   const [hasBeenIdentified, setHasBeenIdentified] = useState(false);
   const [anonId, setAnonId] = useState<string | null>(null);
   const [contactId, setContactId] = useState<string | null>(null);
@@ -47,8 +62,8 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
   useEffect(() => {
     const identified = isUserIdentified();
     setHasBeenIdentified(identified);
-    if (identified && typeof window !== 'undefined') {
-      setContactId(localStorage.getItem('decoEstilosContactId'));
+    if (identified && typeof window !== "undefined") {
+      setContactId(localStorage.getItem("decoEstilosContactId"));
     }
     const ensured = ensureAnonId();
     setAnonId(ensured);
@@ -60,18 +75,22 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
       if (!anonId && currentAnonId) {
         setAnonId(currentAnonId);
       }
-      const currentContactId = contactId ?? (typeof window !== 'undefined' ? localStorage.getItem('decoEstilosContactId') : null);
+      const currentContactId =
+        contactId ??
+        (typeof window !== "undefined"
+          ? localStorage.getItem("decoEstilosContactId")
+          : null);
       if (!contactId && currentContactId) {
         setContactId(currentContactId);
       }
       try {
         const response = await fetch(
           currentAnonId
-            ? `/api/wishlist/list?anonId=${encodeURIComponent(currentAnonId)}${currentContactId ? `&contactId=${encodeURIComponent(currentContactId)}` : ''}`
-            : '/api/wishlist/list',
+            ? `/api/wishlist/list?anonId=${encodeURIComponent(currentAnonId)}${currentContactId ? `&contactId=${encodeURIComponent(currentContactId)}` : ""}`
+            : "/api/wishlist/list",
           {
-            credentials: 'include',
-          }
+            credentials: "include",
+          },
         );
 
         if (response.ok) {
@@ -85,25 +104,32 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
 
           if (data.contactId) {
             setContactId(data.contactId);
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('decoEstilosContactId', data.contactId);
+            if (typeof window !== "undefined") {
+              localStorage.setItem("decoEstilosContactId", data.contactId);
             }
             if (!hasBeenIdentified) {
               setHasBeenIdentified(true);
             }
           }
         } else {
-          console.error('Failed to fetch wishlist from backend:', response.statusText);
+          console.error(
+            "Failed to fetch wishlist from backend:",
+            response.statusText,
+          );
         }
       } catch (error) {
-        console.error('Error fetching wishlist:', error);
+        console.error("Error fetching wishlist:", error);
       }
     };
     fetchWishlist();
   }, [hasBeenIdentified, anonId, contactId]);
 
   const toggleWish = async (productId: number) => {
-    if (!hasBeenIdentified && wishlistItems.size === 0 && !isWishlisted(productId)) {
+    if (
+      !hasBeenIdentified &&
+      wishlistItems.size === 0 &&
+      !isWishlisted(productId)
+    ) {
       setProductToIdentify(productId);
       setIsModalOpen(true);
       return;
@@ -123,22 +149,24 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
     try {
       const anonId = ensureAnonId();
       if (!anonId) {
-        alert('No se pudo generar un identificador para tus favoritos. Por favor, actualiza la página.');
+        alert(
+          "No se pudo generar un identificador para tus favoritos. Por favor, actualiza la página.",
+        );
         return;
       }
-      const response = await fetch('/api/wishlist/toggle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/wishlist/toggle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ anonId, productId }),
       });
 
       if (!response.ok) {
         setWishlistItems(wishlistItems);
-        alert('Error al actualizar favoritos.');
+        alert("Error al actualizar favoritos.");
       }
     } catch (error) {
       setWishlistItems(wishlistItems);
-      alert('Error de conexión al actualizar favoritos.');
+      alert("Error de conexión al actualizar favoritos.");
     }
   };
 
@@ -148,17 +176,19 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
     try {
       const anonId = ensureAnonId();
       if (!anonId) {
-        alert('No se pudo generar un identificador para tus favoritos. Por favor, actualiza la página.');
+        alert(
+          "No se pudo generar un identificador para tus favoritos. Por favor, actualiza la página.",
+        );
         return;
       }
 
-      const response = await fetch('/api/wishlist/identify', {
-        credentials: 'include',
-        method: 'POST',
+      const response = await fetch("/api/wishlist/identify", {
+        credentials: "include",
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Anon-ID': anonId,
-          ...(contactId ? { 'X-Contact-ID': contactId } : {}),
+          "Content-Type": "application/json",
+          "X-Anon-ID": anonId,
+          ...(contactId ? { "X-Contact-ID": contactId } : {}),
         },
         body: JSON.stringify({ identity, productId: productToIdentify }),
       });
@@ -166,12 +196,12 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(data?.error || 'No se pudo guardar la información.');
+        throw new Error(data?.error || "No se pudo guardar la información.");
       }
 
       const mergedItems = Array.isArray(data?.items) ? data.items : [];
-      if (data?.contactId && typeof window !== 'undefined') {
-        localStorage.setItem('decoEstilosContactId', data.contactId);
+      if (data?.contactId && typeof window !== "undefined") {
+        localStorage.setItem("decoEstilosContactId", data.contactId);
       }
       if (data?.contactId) {
         setContactId(data.contactId);
@@ -180,8 +210,10 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
       setWishlistItems(new Set(mergedItems));
       setProductToIdentify(null);
     } catch (error) {
-      console.error('Error during identification:', error);
-      alert('Hubo un error al procesar tu información. Por favor, inténtalo de nuevo.');
+      console.error("Error during identification:", error);
+      alert(
+        "Hubo un error al procesar tu información. Por favor, inténtalo de nuevo.",
+      );
     } finally {
       setIsModalOpen(false);
     }
@@ -211,7 +243,7 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
 export const useWishlist = (): WishlistContextType => {
   const context = useContext(WishlistContext);
   if (context === undefined) {
-    throw new Error('useWishlist must be used within a WishlistProvider');
+    throw new Error("useWishlist must be used within a WishlistProvider");
   }
   return context;
 };

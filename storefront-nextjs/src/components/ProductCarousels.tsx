@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
-import ProductCard from './ProductCard';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import ProductCard from "./ProductCard";
 
 interface Product {
   id: number;
   name: string;
   image_url: string | null;
+  storage_key: string | null;
+  product_images: { storage_key: string }[];
   tag: string | null;
   category: string;
   variants: {
@@ -21,11 +23,18 @@ interface Product {
   }[];
 }
 
-export default function ProductCarousels({ products }: { products: Product[] }) {
-  const groupedProducts = products.reduce((acc, product) => {
-    (acc[product.category] = acc[product.category] || []).push(product);
-    return acc;
-  }, {} as Record<string, Product[]>);
+export default function ProductCarousels({
+  products,
+}: {
+  products: Product[];
+}) {
+  const groupedProducts = products.reduce(
+    (acc, product) => {
+      (acc[product.category] = acc[product.category] || []).push(product);
+      return acc;
+    },
+    {} as Record<string, Product[]>,
+  );
 
   return (
     <div id="carousels-wrapper">
@@ -33,7 +42,12 @@ export default function ProductCarousels({ products }: { products: Product[] }) 
         <div key={category} className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="title-font text-3xl font-bold">{category}</h2>
-            <a href="#" className="text-amber-500 hover:text-amber-600 font-medium">Ver todos →</a>
+            <a
+              href="#"
+              className="text-amber-500 hover:text-amber-600 font-medium"
+            >
+              Ver todos →
+            </a>
           </div>
           <Swiper
             modules={[Navigation]}
@@ -42,21 +56,24 @@ export default function ProductCarousels({ products }: { products: Product[] }) 
             navigation
             className="relative"
             breakpoints={{
-              640: { // sm
+              640: {
+                // sm
                 slidesPerView: 2,
                 spaceBetween: 16,
               },
-              768: { // md
+              768: {
+                // md
                 slidesPerView: 3,
                 spaceBetween: 16,
               },
-              1024: { // lg
+              1024: {
+                // lg
                 slidesPerView: 4,
                 spaceBetween: 16,
               },
             }}
           >
-            {products.map(product => (
+            {products.map((product) => (
               <SwiperSlide key={product.id}>
                 <ProductCard product={product} />
               </SwiperSlide>

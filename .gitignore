@@ -32,3 +32,10 @@ TEST_WRITE.txt
 # Image files in root directory
 /*.png
 /*.jpeg
+
+# env (auto)
+.env*
+!.env.example
+
+# supabase temp
+supabase/.temp/

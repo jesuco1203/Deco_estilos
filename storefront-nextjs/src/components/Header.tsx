@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCart } from '@/context/CartContext';
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useUI } from '@/context/UIContext';
+import Link from "next/link";
+import Image from "next/image";
+import { useCart } from "@/context/CartContext";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useUI } from "@/context/UIContext";
 
 export default function Header() {
   const { itemCount, openCart } = useCart();
@@ -14,9 +15,10 @@ export default function Header() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSearchTerm = searchParams.get('search') || '';
+  const currentSearchTerm = searchParams.get("search") || "";
 
-  const [desktopSearchInput, setDesktopSearchInput] = useState(currentSearchTerm);
+  const [desktopSearchInput, setDesktopSearchInput] =
+    useState(currentSearchTerm);
   const [mobileSearchInput, setMobileSearchInput] = useState(currentSearchTerm);
 
   // Sync search input with URL search param
@@ -40,19 +42,23 @@ export default function Header() {
     if (term) {
       router.push(`/search?q=${encodeURIComponent(term)}`);
     } else {
-      router.push('/'); // Or maybe to '/search' to show all products?
+      router.push("/"); // Or maybe to '/search' to show all products?
     }
     setIsMobileSearchOpen(false); // Close mobile search after search
   };
 
-  const handleDesktopSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleDesktopSearchKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Enter") {
       handleSearch(desktopSearchInput);
     }
   };
 
-  const handleMobileSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleMobileSearchKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Enter") {
       handleSearch(mobileSearchInput);
     }
   };
@@ -63,29 +69,57 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center h-full">
-            <Link href="/" className="h-full">
-              <img src="https://i.imgur.com/nKN165j.png" alt="DecoEstilos Logo" className="h-full w-auto" />
+            <Link href="/" className="h-full relative">
+              <Image
+                src="https://i.imgur.com/nKN165j.png"
+                alt="DecoEstilos Logo"
+                fill
+                style={{ objectFit: "contain" }}
+                sizes="100px"
+              />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
+            <Link
+              href="/"
+              className="text-gray-800 hover:text-amber-500 transition-slow font-medium"
+            >
               Inicio
             </Link>
-            <Link href="/#productos" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
+            <Link
+              href="/#productos"
+              className="text-gray-800 hover:text-amber-500 transition-slow font-medium"
+            >
               Productos
             </Link>
-            <Link href="/wishlist" className="text-gray-800 hover:text-amber-500 transition-slow font-medium"> {/* New Wishlist Link */}
+            <Link
+              href="/wishlist"
+              className="text-gray-800 hover:text-amber-500 transition-slow font-medium"
+            >
+              {" "}
+              {/* New Wishlist Link */}
               Favoritos
             </Link>
-            <Link href="/#nosotros" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('nosotros')}>
+            <Link
+              href="/#nosotros"
+              className="text-gray-800 hover:text-amber-500 transition-slow font-medium"
+              onClick={() => showSection("nosotros")}
+            >
               Nosotros
             </Link>
-            <Link href="/#inspiracion" className="text-gray-800 hover:text-amber-500 transition-slow font-medium" onClick={() => showSection('inspiracion')}>
+            <Link
+              href="/#inspiracion"
+              className="text-gray-800 hover:text-amber-500 transition-slow font-medium"
+              onClick={() => showSection("inspiracion")}
+            >
               Inspiración
             </Link>
-            <Link href="/#contacto" className="text-gray-800 hover:text-amber-500 transition-slow font-medium">
+            <Link
+              href="/#contacto"
+              className="text-gray-800 hover:text-amber-500 transition-slow font-medium"
+            >
               Contacto
             </Link>
           </nav>
@@ -101,7 +135,11 @@ export default function Header() {
               onChange={(e) => setDesktopSearchInput(e.target.value)}
               onKeyDown={handleDesktopSearchKeyDown}
             />
-            <button onClick={() => handleSearch(desktopSearchInput)} id="desktop-search-button" className="absolute right-4 text-gray-500 hover:text-amber-500">
+            <button
+              onClick={() => handleSearch(desktopSearchInput)}
+              id="desktop-search-button"
+              className="absolute right-4 text-gray-500 hover:text-amber-500"
+            >
               <i className="fas fa-search"></i>
             </button>
           </div>
@@ -109,15 +147,24 @@ export default function Header() {
           {/* Icons (Mobile Search, Heart, Cart, Mobile Menu) */}
           <div className="flex items-center space-x-4">
             {/* Mobile Search Toggle */}
-            <button onClick={toggleMobileSearch} className="md:hidden text-gray-800">
+            <button
+              onClick={toggleMobileSearch}
+              className="md:hidden text-gray-800"
+            >
               <i className="fas fa-search text-xl"></i>
             </button>
             {/* Wishlist Icon */}
-            <Link href="/wishlist" className="text-gray-800 hover:text-amber-500 transition-slow relative">
+            <Link
+              href="/wishlist"
+              className="text-gray-800 hover:text-amber-500 transition-slow relative"
+            >
               <i className="fas fa-heart text-xl"></i>
             </Link>
             {/* Cart Icon */}
-            <button onClick={openCart} className="relative text-gray-800 hover:text-amber-500 focus:outline-none">
+            <button
+              onClick={openCart}
+              className="relative text-gray-800 hover:text-amber-500 focus:outline-none"
+            >
               <i className="fas fa-shopping-cart text-xl"></i>
               {itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -126,7 +173,10 @@ export default function Header() {
               )}
             </button>
             {/* Mobile Menu Toggle */}
-            <button onClick={toggleMobileMenu} className="md:hidden text-gray-800">
+            <button
+              onClick={toggleMobileMenu}
+              className="md:hidden text-gray-800"
+            >
               <i className="fas fa-bars text-xl"></i>
             </button>
           </div>
@@ -145,7 +195,11 @@ export default function Header() {
               onChange={(e) => setMobileSearchInput(e.target.value)}
               onKeyDown={handleMobileSearchKeyDown}
             />
-            <button onClick={() => handleSearch(mobileSearchInput)} id="mobile-search-submit-button" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-amber-500">
+            <button
+              onClick={() => handleSearch(mobileSearchInput)}
+              id="mobile-search-submit-button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-amber-500"
+            >
               <i className="fas fa-search"></i>
             </button>
           </div>
@@ -155,22 +209,54 @@ export default function Header() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden py-4 bg-white border-t" id="mobile-menu">
-          <Link href="/" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
+          <Link
+            href="/"
+            className="block py-2 px-4 text-gray-800 hover:text-amber-500"
+            onClick={toggleMobileMenu}
+          >
             Inicio
           </Link>
-          <Link href="/#productos" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
+          <Link
+            href="/#productos"
+            className="block py-2 px-4 text-gray-800 hover:text-amber-500"
+            onClick={toggleMobileMenu}
+          >
             Productos
           </Link>
-          <Link href="/wishlist" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}> {/* New Wishlist Link */}
+          <Link
+            href="/wishlist"
+            className="block py-2 px-4 text-gray-800 hover:text-amber-500"
+            onClick={toggleMobileMenu}
+          >
+            {" "}
+            {/* New Wishlist Link */}
             Favoritos
           </Link>
-          <Link href="/#nosotros" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('nosotros'); }}>
+          <Link
+            href="/#nosotros"
+            className="block py-2 px-4 text-gray-800 hover:text-amber-500"
+            onClick={() => {
+              toggleMobileMenu();
+              showSection("nosotros");
+            }}
+          >
             Nosotros
           </Link>
-          <Link href="/#inspiracion" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={() => { toggleMobileMenu(); showSection('inspiracion'); }}>
+          <Link
+            href="/#inspiracion"
+            className="block py-2 px-4 text-gray-800 hover:text-amber-500"
+            onClick={() => {
+              toggleMobileMenu();
+              showSection("inspiracion");
+            }}
+          >
             Inspiración
           </Link>
-          <Link href="/#contacto" className="block py-2 px-4 text-gray-800 hover:text-amber-500" onClick={toggleMobileMenu}>
+          <Link
+            href="/#contacto"
+            className="block py-2 px-4 text-gray-800 hover:text-amber-500"
+            onClick={toggleMobileMenu}
+          >
             Contacto
           </Link>
         </div>

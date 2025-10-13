@@ -1,15 +1,19 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-const EDGE_URL = 'https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/list';
+const EDGE_URL =
+  "https://qehmrxrrtestgxvqjjze.functions.supabase.co/wishlist/list";
 
-const mergeCookies = (existingCookieHeader: string | null, anonId?: string | null) => {
+const mergeCookies = (
+  existingCookieHeader: string | null,
+  anonId?: string | null,
+) => {
   const cookieMap = new Map<string, string>();
 
   if (existingCookieHeader) {
-    existingCookieHeader.split(';').forEach(part => {
+    existingCookieHeader.split(";").forEach((part) => {
       const trimmed = part.trim();
       if (!trimmed) return;
-      const separatorIndex = trimmed.indexOf('=');
+      const separatorIndex = trimmed.indexOf("=");
       if (separatorIndex === -1) return;
       const key = trimmed.slice(0, separatorIndex);
       const value = trimmed.slice(separatorIndex + 1);
@@ -20,7 +24,7 @@ const mergeCookies = (existingCookieHeader: string | null, anonId?: string | nul
   }
 
   if (anonId) {
-    cookieMap.set('anon_id', anonId);
+    cookieMap.set("anon_id", anonId);
   }
 
   if (cookieMap.size === 0) {
@@ -29,47 +33,52 @@ const mergeCookies = (existingCookieHeader: string | null, anonId?: string | nul
 
   return Array.from(cookieMap.entries())
     .map(([key, value]) => `${key}=${value}`)
-    .join('; ');
+    .join("; ");
 };
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const anonId = searchParams.get('anonId');
-  const contactId = searchParams.get('contactId') ?? req.headers.get('x-contact-id');
-  const incomingCookie = req.headers.get('cookie');
+  const anonId = searchParams.get("anonId");
+  const contactId =
+    searchParams.get("contactId") ?? req.headers.get("x-contact-id");
+  const incomingCookie = req.headers.get("cookie");
   const mergedCookie = mergeCookies(incomingCookie, anonId);
 
   try {
     const res = await fetch(EDGE_URL, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(mergedCookie ? { Cookie: mergedCookie } : {}),
-        ...(contactId ? { 'X-Contact-ID': contactId } : {}),
+        ...(contactId ? { "X-Contact-ID": contactId } : {}),
       },
     });
 
     const text = await res.text();
-    const contentType = res.headers.get('Content-Type') ?? 'application/json';
-    const body = contentType.includes('application/json') && text
-      ? JSON.parse(text)
-      : text || undefined;
+    const contentType = res.headers.get("Content-Type") ?? "application/json";
+    const body =
+      contentType.includes("application/json") && text
+        ? JSON.parse(text)
+        : text || undefined;
 
     if (!res.ok) {
-      console.error('Wishlist list proxy non-OK response:', {
+      console.error("Wishlist list proxy non-OK response:", {
         status: res.status,
         body,
       });
     }
 
-    return typeof body === 'string'
+    return typeof body === "string"
       ? new NextResponse(body, {
           status: res.status,
-          headers: { 'Content-Type': contentType },
+          headers: { "Content-Type": contentType },
         })
       : NextResponse.json(body ?? {}, { status: res.status });
   } catch (error) {
-    console.error('Wishlist list proxy error:', error);
-    return NextResponse.json({ error: 'Failed to reach wishlist service' }, { status: 500 });
+    console.error("Wishlist list proxy error:", error);
+    return NextResponse.json(
+      { error: "Failed to reach wishlist service" },
+      { status: 500 },
+    );
   }
 }

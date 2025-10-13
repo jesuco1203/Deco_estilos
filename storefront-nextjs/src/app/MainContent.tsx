@@ -1,10 +1,12 @@
-import ProductCarousels from '@/components/ProductCarousels';
-import { Suspense } from 'react';
+import ProductCarousels from "@/components/ProductCarousels";
+import { Suspense } from "react";
 
 interface Product {
   id: number;
   name: string;
   image_url: string | null;
+  storage_key: string | null;
+  product_images: { storage_key: string }[];
   tag: string | null;
   category: string;
   variants: {

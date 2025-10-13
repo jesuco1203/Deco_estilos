@@ -1,101 +1,223 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
-import { FiPlus, FiEdit, FiTrash2, FiPackage } from 'react-icons/fi'
-import Image from 'next/image' // Import Image component
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { FiEdit, FiPackage, FiPlus, FiTrash2 } from "react-icons/fi";
+import { createClient } from "@/lib/supabase/client";
+import { getProductImageSrc } from "@/lib/images";
 
-// Define the type for a product
-interface Product {
+interface VariantRow {
+  price: number | null;
+}
+
+interface ProductRow {
   id: number;
   name: string;
   category: string;
   image_url: string | null;
-  minPrice: number;
+  storage_key: string | null;
+  variants: VariantRow[];
 }
 
-// ProductCard component
-const ProductCard = ({ product, onDelete }: { product: Product; onDelete: (id: number) => void }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:transform hover:-translate-y-1">
-    <Link href={`/products/edit/${product.id}`}>
-        <div className="h-48 relative">
-            <Image 
-                src={product.image_url || 'https://placehold.co/600x400/e2e8f0/4a5568?text=No+Image'} 
-                alt={product.name} 
-                fill // Use fill to cover the parent div
-                style={{ objectFit: 'cover' }} // Apply object-fit via style prop
-            />
+type Product = {
+  id: number;
+  name: string;
+  category: string;
+  image_url: string | null;
+  storage_key: string | null;
+  minPrice: number;
+};
+
+function mapRows(rows: ProductRow[]): Product[] {
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    image_url: row.image_url,
+    storage_key: row.storage_key,
+    minPrice: (() => {
+      if (!row.variants?.length) return 0;
+      const prices = row.variants
+        .map((variant) =>
+          typeof variant.price === "number" ? variant.price! : null,
+        )
+        .filter(
+          (price): price is number => price !== null && !Number.isNaN(price),
+        );
+      if (prices.length === 0) return 0;
+      return Math.min(...prices);
+    })(),
+  }));
+}
+
+const ProductCard = ({
+  product,
+  onDelete,
+  index,
+}: {
+  product: Product;
+  onDelete: (id: number) => void;
+  index: number;
+}) => {
+  const src = useMemo(() => getProductImageSrc(product), [product]);
+
+  return (
+    <div className="overflow-hidden rounded-lg bg-white shadow transition-transform duration-300 hover:-translate-y-1">
+      <Link href={`/products/edit/${product.id}`}>
+        <div className="relative h-48">
+          <Image
+            src={src}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+            priority={index === 0}
+          />
         </div>
-    </Link>
-    <div className="p-4">
-      <p className="text-xs text-gray-500 uppercase font-semibold">{product.category}</p>
-      <h3 className="text-lg font-bold text-gray-800 truncate mt-1">{product.name}</h3>
-      <p className="text-amber-600 font-semibold mt-2">S/ {product.minPrice.toFixed(2)}</p>
-    </div>
-    <div className="flex justify-end space-x-2 p-4 border-t border-gray-100">
-        <Link href={`/products/edit/${product.id}`} className="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-gray-200 transition-colors">
-            <FiEdit size={18} />
+      </Link>
+      <div className="p-4">
+        <p className="text-xs font-semibold uppercase text-gray-500">
+          {product.category}
+        </p>
+        <h3 className="mt-1 truncate text-lg font-bold text-gray-800">
+          {product.name}
+        </h3>
+        <p className="mt-2 text-amber-600 font-semibold">
+          S/ {product.minPrice.toFixed(2)}
+        </p>
+      </div>
+      <div className="flex justify-end gap-2 border-t border-gray-100 p-4">
+        <Link
+          href={`/products/edit/${product.id}`}
+          className="rounded-full p-2 text-blue-500 transition-colors hover:bg-gray-200 hover:text-blue-700"
+        >
+          <FiEdit size={18} />
         </Link>
-        <button onClick={() => onDelete(product.id)} className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-gray-200 transition-colors">
-            <FiTrash2 size={18} />
+        <button
+          type="button"
+          onClick={() => onDelete(product.id)}
+          className="rounded-full p-2 text-red-500 transition-colors hover:bg-gray-200 hover:text-red-700"
+        >
+          <FiTrash2 size={18} />
         </button>
+      </div>
     </div>
+  );
+};
+
+const EmptyState = () => (
+  <div className="rounded-lg border-2 border-dashed border-gray-200 py-14 text-center">
+    <FiPackage className="mx-auto text-5xl text-gray-400" />
+    <h2 className="mt-4 text-xl font-bold text-gray-700">
+      No hay productos para esta categoría
+    </h2>
+    <p className="mt-2 text-gray-500">
+      Prueba con otra categoría o añade un producto nuevo.
+    </p>
+    <Link
+      href="/products/new"
+      className="mt-6 inline-flex items-center rounded-full bg-blue-700 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-800"
+    >
+      <FiPlus className="mr-2" /> Añadir Producto
+    </Link>
   </div>
 );
 
-// EmptyState component
-const EmptyState = () => (
-    <div className="text-center py-16 border-2 border-dashed border-gray-300 rounded-lg">
-        <FiPackage className="mx-auto text-5xl text-gray-400"/>
-        <h2 className="mt-4 text-xl font-bold text-gray-700">No hay productos todavía</h2>
-        <p className="mt-2 text-gray-500">¡Empieza por añadir tu primer producto!</p>
-        <Link href="/products/new" className="mt-6 bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition-colors">
-          <FiPlus className="mr-2" />
-          Añadir Producto
-        </Link>
-    </div>
-);
+export default function ProductsList({ category }: { category: string }) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const supabase = useMemo(() => createClient(), []);
+  const categoryKey = category ?? "all";
 
-// ProductsList component
-export default function ProductsList({ serverProducts }: { serverProducts: Product[] }) {
-  const [products, setProducts] = useState(serverProducts)
-  const supabase = createClient()
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        let query = supabase
+          .from("products")
+          .select("id, name, category, image_url, storage_key, variants(price)")
+          .order("created_at", { ascending: false });
+
+        if (categoryKey !== "all") {
+          query = query.eq("category", categoryKey);
+        }
+
+        const { data, error: fetchError } = await query;
+
+        if (fetchError) throw fetchError;
+        if (cancelled) return;
+
+        setProducts(mapRows(data ?? []));
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        if (!cancelled) setError("No se pudieron cargar los productos.");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    void fetchProducts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [categoryKey, supabase]);
 
   const handleDelete = async (productId: number) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-      const { error } = await supabase.from('products').delete().eq('id', productId)
-      if (error) {
-        console.error('Error deleting product:', error)
-        alert('Error al eliminar el producto.')
-      } else {
-        setProducts(products.filter(p => p.id !== productId))
-        alert('Producto eliminado con éxito.')
-      }
+    if (!window.confirm("¿Estás seguro de que quieres eliminar este producto?"))
+      return;
+
+    const { error: deleteError } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", productId);
+    if (deleteError) {
+      console.error("Error deleting product:", deleteError);
+      alert("Error al eliminar el producto.");
+    } else {
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+      alert("Producto eliminado con éxito.");
     }
+  };
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl bg-white px-4 py-6 text-sm text-gray-500 shadow">
+        Cargando productos…
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-2xl bg-white px-4 py-6 text-sm text-red-500 shadow">
+        {error}
+      </div>
+    );
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Gestión de Productos</h1>
-        {products.length > 0 && (
-            <Link href="/products/new" className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full flex items-center transition-colors duration-200">
-              <FiPlus className="mr-2" />
-              Añadir Producto
-            </Link>
-        )}
-      </div>
-
+    <div className="rounded-2xl bg-white px-4 py-6 shadow">
       {products.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} onDelete={handleDelete} />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onDelete={handleDelete}
+              index={index}
+            />
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }

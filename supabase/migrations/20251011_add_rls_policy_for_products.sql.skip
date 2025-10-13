@@ -1,0 +1,21 @@
+-- Habilita RLS (si no lo estaba)
+alter table if exists public.products enable row level security;
+
+-- Evita duplicar la política si ya existe
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'products'
+      and policyname = 'allow_owner_update'
+  ) then
+    create policy "allow_owner_update"
+      on public.products
+      for update
+      to authenticated
+      using (auth.uid() = user_id)
+      with check (auth.uid() = user_id);
+  end if;
+end $$;

@@ -1,9 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useMemo, useEffect } from 'react';
-import { useCart, type CartItem } from '@/context/CartContext';
-import { useWishlist } from '@/context/WishlistContext'; // Import useWishlist
-import { FiHeart } from 'react-icons/fi'; // Import heart icon
+import { useState, useMemo, useEffect } from "react";
+import Image from "next/image";
+import { useCart, type CartItem } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext"; // Import useWishlist
+import { FiHeart } from "react-icons/fi"; // Import heart icon
+import { getProductImageSrc } from "@/lib/images";
 
 // Corrected types based on user's schema
 type Variant = {
@@ -11,6 +13,7 @@ type Variant = {
   price: number;
   stock_quantity: number;
   image_url: string | null;
+  storage_key: string | null;
   color: string | null;
   size: string | null;
 };
@@ -20,6 +23,8 @@ type Product = {
   name: string;
   description: string | null;
   image_url: string | null;
+  storage_key: string | null;
+  product_images: { storage_key: string }[];
   variants: Variant[];
 };
 
@@ -29,15 +34,15 @@ interface ProductOptionsProps {
 
 // Helper to map color names to hex codes for the swatches
 const colorNameToHex: { [key: string]: string } = {
-  'rojo': '#ef4444',
-  'azul': '#3b82f6',
-  'verde': '#22c5e',
-  'negro': '#111827',
-  'blanco': '#f9fafb',
-  'plata': '#d1d5db',
-  'oro': '#f59e0b',
-  'dorado': '#f59e0b',
-  'unica': '#a0aec0', // Asumiendo un gris para "Unica"
+  rojo: "#ef4444",
+  azul: "#3b82f6",
+  verde: "#22c5e",
+  negro: "#111827",
+  blanco: "#f9fafb",
+  plata: "#d1d5db",
+  oro: "#f59e0b",
+  dorado: "#f59e0b",
+  unica: "#a0aec0", // Asumiendo un gris para "Unica"
   // Add more colors as needed
 };
 
@@ -45,30 +50,40 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
   const { addToCart } = useCart();
   const { toggleWish, isWishlisted } = useWishlist(); // Add this line
   const [isAdded, setIsAdded] = useState(false);
-  const [selectedColor, setSelectedColor] = useState<string | null>(product.variants[0]?.color || null);
-  const [selectedSize, setSelectedSize] = useState<string | null>(product.variants[0]?.size || null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(
+    product.variants[0]?.color || null,
+  );
+  const [selectedSize, setSelectedSize] = useState<string | null>(
+    product.variants[0]?.size || null,
+  );
 
   const uniqueColors = useMemo(() => {
     const colors = new Map<string, string>();
-    product.variants.forEach(v => {
+    product.variants.forEach((v) => {
       if (v.color && !colors.has(v.color)) {
-        colors.set(v.color, colorNameToHex[v.color.toLowerCase()] || '#d1d5db'); // Fallback to gray
+        colors.set(v.color, colorNameToHex[v.color.toLowerCase()] || "#d1d5db"); // Fallback to gray
       }
     });
     return Array.from(colors.entries());
   }, [product.variants]);
 
   const availableSizesForSelectedColor = useMemo(() => {
-    return [...new Set(product.variants
-      .filter(v => v.color === selectedColor && v.size)
-      .map(v => v.size!))];
+    return [
+      ...new Set(
+        product.variants
+          .filter((v) => v.color === selectedColor && v.size)
+          .map((v) => v.size!),
+      ),
+    ];
   }, [product.variants, selectedColor]);
 
   useEffect(() => {
     if (selectedColor) {
       const firstAvailableSize = availableSizesForSelectedColor[0];
       if (firstAvailableSize) {
-        const isCurrentSizeAvailable = availableSizesForSelectedColor.includes(selectedSize!);
+        const isCurrentSizeAvailable = availableSizesForSelectedColor.includes(
+          selectedSize!,
+        );
         if (!isCurrentSizeAvailable) {
           setSelectedSize(firstAvailableSize);
         }
@@ -80,15 +95,22 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
 
   const selectedVariant = useMemo(() => {
     if (availableSizesForSelectedColor.length === 0 && selectedColor) {
-      return product.variants.find(v => v.color === selectedColor);
+      return product.variants.find((v) => v.color === selectedColor);
     }
-    return product.variants.find(v => v.color === selectedColor && v.size === selectedSize);
-  }, [product.variants, selectedColor, selectedSize, availableSizesForSelectedColor]);
+    return product.variants.find(
+      (v) => v.color === selectedColor && v.size === selectedSize,
+    );
+  }, [
+    product.variants,
+    selectedColor,
+    selectedSize,
+    availableSizesForSelectedColor,
+  ]);
 
   const handleAddToCart = () => {
     if (!selectedVariant) return;
 
-    const itemToAdd: Omit<CartItem, 'quantity'> = {
+    const itemToAdd: Omit<CartItem, "quantity"> = {
       id: selectedVariant.id,
       productId: product.id,
       name: product.name,
@@ -105,17 +127,35 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
     }, 2000);
   };
 
-  const mainImage = selectedVariant?.image_url || product.image_url || 'https://placehold.co/600x600';
+  const variantSrc = selectedVariant
+    ? getProductImageSrc({
+        storage_key: selectedVariant?.storage_key ?? null,
+        image_url: selectedVariant?.image_url ?? null,
+      })
+    : null;
+
+  const productStorageKey =
+    product?.product_images?.[0]?.storage_key ?? product?.storage_key ?? null;
+
+  const productSrc = getProductImageSrc({
+    storage_key: productStorageKey,
+    image_url: product?.image_url ?? null,
+  });
+
+  const mainImage = variantSrc ?? productSrc;
 
   return (
     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
       {/* Left Column: Image Gallery */}
       <div>
-        <div className="bg-gray-100 rounded-lg mb-4">
-          <img 
-            src={mainImage} 
+        <div className="relative bg-gray-100 rounded-lg mb-4 aspect-square">
+          <Image
+            src={mainImage}
             alt={product.name}
-            className="w-full h-full object-cover rounded-lg aspect-square"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            style={{ objectFit: "cover" }}
+            className="rounded-lg"
           />
         </div>
       </div>
@@ -127,24 +167,34 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
           <button
             onClick={() => toggleWish(product.id)}
             className={`p-2 rounded-full transition-colors duration-200 ${
-              isWishlisted(product.id) ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-500'
+              isWishlisted(product.id)
+                ? "text-red-500 hover:text-red-600"
+                : "text-gray-400 hover:text-red-500"
             }`}
             aria-label="Add to wishlist"
           >
-            <FiHeart size={28} fill={isWishlisted(product.id) ? 'currentColor' : 'none'} />
+            <FiHeart
+              size={28}
+              fill={isWishlisted(product.id) ? "currentColor" : "none"}
+            />
           </button>
         </div>
-        <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          {product.description}
+        </p>
 
         {uniqueColors.length > 0 && (
           <div className="mb-6">
-            <h3 className="font-semibold mb-3 text-lg">Color: <span className="font-normal capitalize">{selectedColor}</span></h3>
+            <h3 className="font-semibold mb-3 text-lg">
+              Color:{" "}
+              <span className="font-normal capitalize">{selectedColor}</span>
+            </h3>
             <div className="flex flex-wrap gap-2">
               {uniqueColors.map(([name, hex]) => (
-                <button 
-                  key={name} 
+                <button
+                  key={name}
                   onClick={() => setSelectedColor(name)}
-                  className={`w-10 h-10 rounded-full border-2 transition-transform duration-200 ${selectedColor === name ? 'border-amber-500 scale-110' : 'border-gray-200'}`}
+                  className={`w-10 h-10 rounded-full border-2 transition-transform duration-200 ${selectedColor === name ? "border-amber-500 scale-110" : "border-gray-200"}`}
                   style={{ backgroundColor: hex }}
                   title={name}
                 />
@@ -157,11 +207,11 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
           <div className="mb-8">
             <h3 className="font-semibold mb-3 text-lg">Tamaño:</h3>
             <div className="flex flex-wrap gap-3">
-              {availableSizesForSelectedColor.map(size => (
-                <button 
-                  key={size} 
+              {availableSizesForSelectedColor.map((size) => (
+                <button
+                  key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 border rounded-lg transition-colors duration-200 ${selectedSize === size ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-gray-800 border-gray-300 hover:border-gray-400'}`}
+                  className={`px-4 py-2 border rounded-lg transition-colors duration-200 ${selectedSize === size ? "bg-amber-500 text-white border-amber-500" : "bg-white text-gray-800 border-gray-300 hover:border-gray-400"}`}
                 >
                   {size}
                 </button>
@@ -171,15 +221,17 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
         )}
 
         <div className="text-3xl font-bold mb-6">
-          {selectedVariant ? `S/ ${selectedVariant.price.toFixed(2)}` : 'Selecciona las opciones'}
+          {selectedVariant
+            ? `S/ ${selectedVariant.price.toFixed(2)}`
+            : "Selecciona las opciones"}
         </div>
 
-        <button 
+        <button
           onClick={handleAddToCart}
           disabled={!selectedVariant || isAdded}
-          className={`w-full text-white font-bold py-3 px-6 rounded-full transition-all duration-300 ${isAdded ? 'bg-teal-500' : 'bg-amber-500 hover:bg-amber-600'} disabled:bg-gray-300 disabled:cursor-not-allowed`}
+          className={`w-full text-white font-bold py-3 px-6 rounded-full transition-all duration-300 ${isAdded ? "bg-teal-500" : "bg-amber-500 hover:bg-amber-600"} disabled:bg-gray-300 disabled:cursor-not-allowed`}
         >
-          {isAdded ? '¡Añadido al carrito!' : 'Añadir al Carrito'}
+          {isAdded ? "¡Añadido al carrito!" : "Añadir al Carrito"}
         </button>
       </div>
     </div>

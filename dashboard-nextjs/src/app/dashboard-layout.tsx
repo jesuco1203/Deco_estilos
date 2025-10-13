@@ -2,10 +2,61 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, Suspense } from "react";
 import { FiGrid, FiLogOut, FiPlusSquare, FiX } from "react-icons/fi";
 import { createClient } from "@/lib/supabase/client";
 import { PRODUCT_CATEGORIES } from "@/constants/categories";
+
+function CategoryButtons({
+  setMobileMenuOpen,
+}: {
+  setMobileMenuOpen: (open: boolean) => void;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const selectedCategory = searchParams?.get("category") ?? "all";
+
+  return (
+    <div className="mt-8 space-y-3 md:hidden">
+      <p className="text-sm font-semibold text-white/80">Categorías</p>
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => {
+            setMobileMenuOpen(false);
+            router.replace("/", { scroll: false });
+          }}
+          className={`rounded-full px-3 py-1 text-sm transition ${
+            selectedCategory === "all"
+              ? "bg-amber-500 text-white"
+              : "bg-white/10 text-white hover:bg-white/20"
+          }`}
+        >
+          Todas
+        </button>
+        {PRODUCT_CATEGORIES.map((cat) => (
+          <button
+            type="button"
+            key={cat.slug}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              router.replace(`/?category=${encodeURIComponent(cat.slug)}`, {
+                scroll: false,
+              });
+            }}
+            className={`rounded-full px-3 py-1 text-sm transition ${
+              selectedCategory === cat.slug
+                ? "bg-amber-500 text-white"
+                : "bg-white/10 text-white hover:bg-white/20"
+            }`}
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function DashboardLayout({
   children,
@@ -14,10 +65,8 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const selectedCategory = searchParams?.get("category") ?? "all";
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -40,7 +89,9 @@ export default function DashboardLayout({
         </Link>
         <Link
           href="/products/new"
-          className={`${linkClasses} ${pathname === "/products/new" ? activeLinkClasses : ""}`}
+          className={`${linkClasses} ${
+            pathname === "/products/new" ? activeLinkClasses : ""
+          }`}
         >
           <FiPlusSquare className="mr-3" />
           <span>Añadir Producto</span>
@@ -52,44 +103,9 @@ export default function DashboardLayout({
           <span>Cerrar Sesión</span>
         </button>
       </div>
-      <div className="mt-8 space-y-3 md:hidden">
-        <p className="text-sm font-semibold text-white/80">Categorías</p>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              router.replace("/", { scroll: false });
-            }}
-            className={`rounded-full px-3 py-1 text-sm transition ${
-              selectedCategory === "all"
-                ? "bg-amber-500 text-white"
-                : "bg-white/10 text-white hover:bg-white/20"
-            }`}
-          >
-            Todas
-          </button>
-          {PRODUCT_CATEGORIES.map((cat) => (
-            <button
-              type="button"
-              key={cat.slug}
-              onClick={() => {
-                setMobileMenuOpen(false);
-                router.replace(`/?category=${encodeURIComponent(cat.slug)}`, {
-                  scroll: false,
-                });
-              }}
-              className={`rounded-full px-3 py-1 text-sm transition ${
-                selectedCategory === cat.slug
-                  ? "bg-amber-500 text-white"
-                  : "bg-white/10 text-white hover:bg-white/20"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
-      </div>
+      <Suspense fallback={<div className="mt-8 h-24" />}>
+        <CategoryButtons setMobileMenuOpen={setMobileMenuOpen} />
+      </Suspense>
     </>
   );
 

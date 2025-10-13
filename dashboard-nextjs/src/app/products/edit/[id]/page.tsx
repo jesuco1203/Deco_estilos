@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { createClient } from "@/lib/supabase/server";
 import ProductForm from "@/app/products/product-form";
 import { notFound } from "next/navigation";

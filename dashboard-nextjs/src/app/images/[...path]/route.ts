@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
@@ -22,7 +24,7 @@ function guessContentType(path: string) {
 
 export async function GET(
   _request: Request,
-  context: { params: Promise<{ path: string[] }> },
+  context: { params: Promise<{ path:string[] }> },
 ) {
   const { path } = await context.params;
   const storagePath = path.join("/");

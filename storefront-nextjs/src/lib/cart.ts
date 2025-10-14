@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { resolveImageSrc, PLACEHOLDER } from "@/lib/images";
 
 // --- Definiciones de Tipos ---
 interface Variant {
@@ -8,6 +9,7 @@ interface Variant {
   color: string;
   price: number;
   image_url: string | null;
+  storage_key?: string | null;
 }
 
 interface CartItem {
@@ -49,6 +51,16 @@ export function addToCart(
   if (existingItemIndex > -1) {
     cart[existingItemIndex].quantity += quantity;
   } else {
+    const resolvedImage =
+      resolveImageSrc({
+        storage_key: variant.storage_key ?? null,
+        image_url: variant.image_url ?? null,
+      }) ??
+      resolveImageSrc({
+        image_url: product_image_url,
+      }) ??
+      PLACEHOLDER;
+
     cart.push({
       productId: variant.product_id,
       variantId: variant.id,
@@ -56,7 +68,7 @@ export function addToCart(
       size: variant.size,
       color: variant.color,
       price: variant.price,
-      image_url: variant.image_url || product_image_url,
+      image_url: resolvedImage,
       quantity: quantity,
     });
   }

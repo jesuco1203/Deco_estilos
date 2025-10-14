@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useCart, type CartItem } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext"; // Import useWishlist
 import { FiHeart } from "react-icons/fi"; // Import heart icon
-import { getProductImageSrc } from "@/lib/images";
+import { resolveImageSrc, PLACEHOLDER } from "@/lib/images";
 
 // Corrected types based on user's schema
 type Variant = {
@@ -13,7 +13,7 @@ type Variant = {
   price: number;
   stock_quantity: number;
   image_url: string | null;
-  storage_key: string | null;
+  storage_key?: string | null;
   color: string | null;
   size: string | null;
 };
@@ -24,7 +24,7 @@ type Product = {
   description: string | null;
   image_url: string | null;
   storage_key: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   variants: Variant[];
 };
 
@@ -107,15 +107,39 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
     availableSizesForSelectedColor,
   ]);
 
+  const featuredImage = useMemo(() => {
+    const galleryImage = product.product_images?.find((img) =>
+      Boolean(resolveImageSrc(img)),
+    );
+    return (
+      resolveImageSrc({
+        storage_key: galleryImage?.storage_key ?? product.storage_key,
+        image_url: galleryImage?.image_url ?? product.image_url,
+      }) ?? null
+    );
+  }, [product]);
+
   const handleAddToCart = () => {
     if (!selectedVariant) return;
+
+    const variantImage = resolveImageSrc({
+      storage_key: selectedVariant?.storage_key ?? null,
+      image_url: selectedVariant?.image_url ?? null,
+    });
+    const fallbackProductImage = resolveImageSrc({
+      storage_key: product.storage_key ?? null,
+      image_url: product.image_url ?? null,
+    });
+
+    const imageForCart =
+      variantImage ?? featuredImage ?? fallbackProductImage ?? PLACEHOLDER;
 
     const itemToAdd: Omit<CartItem, "quantity"> = {
       id: selectedVariant.id,
       productId: product.id,
       name: product.name,
       price: selectedVariant.price,
-      image: selectedVariant.image_url || product.image_url,
+      image: imageForCart,
       color: selectedVariant.color,
       size: selectedVariant.size,
     };
@@ -127,22 +151,44 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
     }, 2000);
   };
 
-  const variantSrc = selectedVariant
-    ? getProductImageSrc({
+  const variantImage = selectedVariant
+    ? resolveImageSrc({
         storage_key: selectedVariant?.storage_key ?? null,
         image_url: selectedVariant?.image_url ?? null,
       })
     : null;
 
-  const productStorageKey =
-    product?.product_images?.[0]?.storage_key ?? product?.storage_key ?? null;
-
-  const productSrc = getProductImageSrc({
-    storage_key: productStorageKey,
-    image_url: product?.image_url ?? null,
+  const fallbackProductImage = resolveImageSrc({
+    storage_key: product.storage_key ?? null,
+    image_url: product.image_url ?? null,
   });
 
-  const mainImage = variantSrc ?? productSrc;
+  const mainImage =
+    variantImage ?? featuredImage ?? fallbackProductImage ?? PLACEHOLDER;
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.info("[ProductOptions] Loaded product", {
+        id: product.id,
+        name: product.name,
+        image_url: product.image_url,
+        storage_key: product.storage_key,
+        product_images: product.product_images,
+      });
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.info("[ProductOptions] Image resolution", {
+        featuredImage,
+        variantImage,
+        fallbackProductImage,
+        mainImage,
+        selectedVariant,
+      });
+    }
+  }, [featuredImage, variantImage, fallbackProductImage, mainImage, selectedVariant]);
 
   return (
     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">

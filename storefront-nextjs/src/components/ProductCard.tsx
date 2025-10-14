@@ -7,6 +7,7 @@ import { useCart, type CartItem } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import ProductTag from "./ProductTag";
 import { FiHeart } from "react-icons/fi";
+import { resolveImageSrc, PLACEHOLDER } from "@/lib/images";
 
 interface Product {
   id: number;
@@ -14,13 +15,14 @@ interface Product {
   image_url: string | null;
   storage_key: string | null;
   tag: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   variants: {
     id: number;
     price: number;
     color: string | null;
     size: string | null;
     image_url: string | null;
+    storage_key?: string | null;
   }[];
 }
 
@@ -29,9 +31,15 @@ export default function ProductCard({ product }: { product: Product }) {
   const { toggleWish, isWishlisted } = useWishlist(); // Add this line
   const [isAdded, setIsAdded] = useState(false);
 
-  const src = product.image_url?.trim()
-    ? product.image_url
-    : "/placeholder-600x600.svg";
+  const galleryImage = product.product_images?.find((img) =>
+    Boolean(resolveImageSrc(img)),
+  );
+
+  const featuredImage =
+    resolveImageSrc({
+      storage_key: galleryImage?.storage_key ?? product.storage_key,
+      image_url: galleryImage?.image_url ?? product.image_url,
+    }) ?? PLACEHOLDER;
 
   const minPrice =
     product.variants.length > 0
@@ -49,12 +57,18 @@ export default function ProductCard({ product }: { product: Product }) {
     // For the main page, we add the first variant by default
     const variantToAdd = product.variants[0];
 
+    const variantImage =
+      resolveImageSrc({
+        storage_key: variantToAdd?.storage_key ?? null,
+        image_url: variantToAdd?.image_url ?? null,
+      }) ?? featuredImage ?? PLACEHOLDER;
+
     const itemToAdd: Omit<CartItem, "quantity"> = {
       id: variantToAdd.id,
       productId: product.id,
       name: product.name,
       price: variantToAdd.price,
-      image: variantToAdd.image_url || product.image_url,
+      image: variantImage,
       color: variantToAdd.color,
       size: variantToAdd.size,
     };
@@ -71,7 +85,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link href={`/product/${product.id}`} className="block">
         <div className="relative aspect-[3/2]">
           <Image
-            src={src}
+            src={featuredImage ?? PLACEHOLDER}
             alt={product.name}
             fill
             className="object-cover"

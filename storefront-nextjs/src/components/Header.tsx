@@ -69,13 +69,14 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center h-full">
-            <Link href="/" className="h-full relative">
+            <Link href="/" className="h-full relative w-40">
               <Image
-                src="https://i.imgur.com/nKN165j.png"
+                src="/logo.png"
                 alt="DecoEstilos Logo"
                 fill
                 style={{ objectFit: "contain" }}
-                sizes="100px"
+                sizes="160px"
+                priority
               />
             </Link>
           </div>

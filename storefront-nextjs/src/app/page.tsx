@@ -5,7 +5,9 @@ export default async function HomePage() {
   const supabase = await createClient();
   const { data: products, error } = await supabase
     .from("products")
-    .select("*, storage_key, variants(*), product_images(storage_key)");
+    .select(
+      "id, name, description, category, tag, image_url, storage_key, product_images(storage_key), variants(id, price, color, size, image_url, stock_quantity)",
+    );
 
   if (error) {
     console.error("Error fetching products in HomePage:", error);

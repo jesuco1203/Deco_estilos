@@ -7,13 +7,14 @@ interface Product {
   image_url: string | null;
   storage_key: string | null;
   tag: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   variants: {
     id: number;
     price: number;
     color: string | null;
     size: string | null;
     image_url: string | null;
+    storage_key?: string | null;
   }[];
 }
 
@@ -23,7 +24,7 @@ export default async function WishlistPage() {
   const { data: products, error } = await supabase
     .from("products")
     .select(
-      "id, name, image_url, storage_key, tag, product_images(storage_key), variants(id, price, color, size, image_url)",
+      "id, name, image_url, storage_key, tag, product_images(storage_key), variants(id, price, color, size, image_url, stock_quantity)",
     );
 
   if (error) {

@@ -11,7 +11,7 @@ interface Product {
   name: string;
   image_url: string | null;
   storage_key: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   tag: string | null;
   category: string;
   variants: {
@@ -20,6 +20,7 @@ interface Product {
     color: string | null;
     size: string | null;
     image_url: string | null;
+    storage_key?: string | null;
   }[];
 }
 

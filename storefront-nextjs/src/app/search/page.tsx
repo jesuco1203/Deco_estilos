@@ -1,11 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import SearchResults from "./SearchResults";
 
-export default async function SearchPage({
-  searchParams,
-}: {
+interface SearchPageProps {
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
+}
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
   const supabase = await createClient();
   const searchTerm = (searchParams.q as string) || "";
 
@@ -14,7 +14,11 @@ export default async function SearchPage({
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "");
 
-  let query = supabase.from("products").select("*, variants(*)");
+  let query = supabase
+    .from("products")
+    .select(
+      "id, name, description, category, tag, image_url, storage_key, product_images(storage_key), variants(id, price, color, size, image_url, stock_quantity)",
+    );
 
   if (normalizedSearchTerm) {
     query = query.or(

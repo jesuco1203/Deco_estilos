@@ -32,8 +32,9 @@ export default function IdentifyModal({
     try {
       await onIdentify(identity);
       // El onClose será llamado por el contexto si la identificación es exitosa
-    } catch (err: any) {
-      setError(err.message || "Ocurrió un error.");
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Ocurrió un error.";
+      setError(errorMessage);
     }
     setIsLoading(false);
   };

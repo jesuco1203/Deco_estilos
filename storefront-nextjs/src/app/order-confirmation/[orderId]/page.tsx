@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function OrderConfirmationPage({
-  params,
-}: {
+interface OrderConfirmationPageProps {
   params: { orderId: string };
-}) {
+}
+
+export default function OrderConfirmationPage({ params }: OrderConfirmationPageProps) {
   const { orderId } = params;
   const router = useRouter();
   const [countdown, setCountdown] = useState(5);

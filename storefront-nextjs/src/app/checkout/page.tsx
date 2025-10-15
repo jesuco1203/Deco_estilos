@@ -51,8 +51,9 @@ export default function CheckoutPage() {
       const result = await response.json();
       clearCart(); // Clear the cart after successful order
       router.push(`/order-confirmation/${result.orderId}`); // Redirect to confirmation page
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+      alert(errorMessage);
       console.error("Error placing order:", error);
     } finally {
       setLoading(false);

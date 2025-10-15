@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
+interface CartItem {
+  productId: number;
+  id: number; // variant ID
+  quantity: number;
+  price: number;
+}
+
 export async function POST(request: Request) {
   const supabase = await createClient();
   const { formData, cartItems, contactId } = await request.json();
@@ -27,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     // 2. Insert into order_items table
-    const orderItemsToInsert = cartItems.map((item: any) => ({
+    const orderItemsToInsert = cartItems.map((item: CartItem) => ({
       order_id: order.id,
       product_id: item.productId,
       variant_id: item.id, // variant ID
@@ -51,10 +58,11 @@ export async function POST(request: Request) {
       message: "Order placed successfully",
       orderId: order.id,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Server error during checkout:", error);
+    const errorMessage = error instanceof Error ? error.message : "Internal server error";
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: errorMessage },
       { status: 500 },
     );
   }

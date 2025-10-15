@@ -7,14 +7,16 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default async function ProductPage(props: Props) {
-  const id = props.params.id; // Access id here
+export default async function ProductPage({ params }: Props) {
+  const id = params.id; // Access id here
   const supabase = await createClient();
   // Fetch product and its variants.
   // The join with colors and sizes might need adjustment based on actual table names.
   const { data: product, error } = await supabase
     .from("products")
-    .select("*, storage_key, variants(*), product_images(storage_key)")
+    .select(
+      "id, name, description, category, tag, image_url, storage_key, product_images(storage_key), variants(id, price, color, size, image_url, stock_quantity)",
+    )
     .eq("id", id)
     .single();
 

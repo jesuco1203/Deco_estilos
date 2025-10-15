@@ -9,7 +9,7 @@ interface Product {
   name: string;
   image_url: string | null;
   storage_key: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   tag: string | null;
   category: string;
   variants: {
@@ -18,6 +18,7 @@ interface Product {
     color: string | null;
     size: string | null;
     image_url: string | null;
+    storage_key?: string | null;
   }[];
 }
 
@@ -40,7 +41,7 @@ export default function SearchResults({
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center my-12">
-        Resultados de búsqueda para: "{searchTerm}"
+        Resultados de búsqueda para: &quot;{searchTerm}&quot;
       </h1>
       <div ref={resultsRef}>
         {products.length > 0 ? (

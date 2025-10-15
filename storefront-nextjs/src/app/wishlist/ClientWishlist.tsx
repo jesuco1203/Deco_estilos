@@ -3,6 +3,7 @@
 import { useWishlist } from "@/context/WishlistContext";
 import ProductCard from "@/components/ProductCard";
 import { FiHeart } from "react-icons/fi";
+import Link from "next/link";
 
 interface Product {
   id: number;
@@ -10,13 +11,14 @@ interface Product {
   image_url: string | null;
   storage_key: string | null;
   tag: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   variants: {
     id: number;
     price: number;
     color: string | null;
     size: string | null;
     image_url: string | null;
+    storage_key?: string | null;
   }[];
 }
 
@@ -44,12 +46,12 @@ export default function ClientWishlist({ products }: ClientWishlistProps) {
           <p className="mt-2 text-gray-500">
             ¡Explora nuestros productos y añade tus favoritos!
           </p>
-          <a
+          <Link
             href="/"
             className="mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition-colors"
           >
             Explorar Productos
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

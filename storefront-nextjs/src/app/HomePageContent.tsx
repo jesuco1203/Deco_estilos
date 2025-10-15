@@ -12,7 +12,7 @@ interface Product {
   name: string;
   image_url: string | null;
   storage_key: string | null;
-  product_images: { storage_key: string }[];
+  product_images: { storage_key: string | null; image_url?: string | null }[];
   tag: string | null;
   category: string;
   variants: {
@@ -21,6 +21,7 @@ interface Product {
     color: string | null;
     size: string | null;
     image_url: string | null;
+    storage_key?: string | null;
   }[];
 }
 
@@ -88,7 +89,7 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                     fill
                     style={{ objectFit: "cover" }}
                     className="rounded-lg shadow-lg"
-                    sizes="100vw"
+                    sizes="(min-width: 768px) 50vw, 100vw"
                   />
                 </div>
                 <div className="md:w-1/2">
@@ -162,16 +163,17 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                   <i className="fas fa-star"></i>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "La mampara que encargué superó mis expectativas. Calidad y
-                  diseño impecables. El servicio al cliente fue excelente."
+                  &quot;La mampara que encargué superó mis expectativas. Calidad y
+                  diseño impecables. El servicio al cliente fue excelente.&quot;
                 </p>
                 <div className="flex items-center">
                   <Image
-                    src="https://randomuser.me/api/portraits/women/43.jpg"
+                    src="/images/testimonials/maria.png"
                     alt="María González"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full mr-3"
+                    priority={false}
                   />
                   <div>
                     <h4 className="font-medium">María González</h4>
@@ -188,17 +190,18 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                   <i className="fas fa-star-half-alt"></i>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "El espejo decorativo es tal como en la foto. Llegó muy bien
+                  &quot;El espejo decorativo es tal como en la foto. Llegó muy bien
                   empaquetado y antes de lo esperado. Definitivamente volveré a
-                  comprar."
+                  comprar.&quot;
                 </p>
                 <div className="flex items-center">
                   <Image
-                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    src="/images/testimonials/carlos.png"
                     alt="Carlos Martínez"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full mr-3"
+                    priority={false}
                   />
                   <div>
                     <h4 className="font-medium">Carlos Martínez</h4>
@@ -215,17 +218,18 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                   <i className="fas fa-star"></i>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "El servicio de diseño a medida fue increíble. Me ayudaron a
+                  &quot;El servicio de diseño a medida fue increíble. Me ayudaron a
                   crear la estantería perfecta para mi sala. ¡Encantada con el
-                  resultado!."
+                  resultado!.&quot;
                 </p>
                 <div className="flex items-center">
                   <Image
-                    src="https://randomuser.me/api/portraits/women/65.jpg"
+                    src="/images/testimonials/maria.png"
                     alt="Laura Sánchez"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full mr-3"
+                    priority={false}
                   />
                   <div>
                     <h4 className="font-medium">Laura Sánchez</h4>
@@ -247,44 +251,44 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 espacios con nuestros productos usando #DecoEstilos
               </p>
               <div className="instagram-feed">
-                <div className="overflow-hidden rounded-lg relative">
+                <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80"
+                    src="/images/inspiracion/inspiracion-1.png"
                     alt="Instagram post"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 768px) 45vw, 25vw"
                   />
                 </div>
-                <div className="overflow-hidden rounded-lg relative">
+                <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80"
+                    src="/images/inspiracion/inspiracion-2.png"
                     alt="Instagram post"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 768px) 45vw, 25vw"
                   />
                 </div>
-                <div className="overflow-hidden rounded-lg relative">
+                <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                    src="/images/inspiracion/inspiracion-3.png"
                     alt="Instagram post"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 768px) 45vw, 25vw"
                   />
                 </div>
-                <div className="overflow-hidden rounded-lg relative">
+                <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="https://esdefer.com/wp-content/uploads/2023/12/interrior-plano-vacio-elementos-decoracion.jpg"
+                    src="/images/inspiracion/inspiracion-4.png"
                     alt="Instagram post"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 768px) 45vw, 25vw"
                   />
                 </div>{" "}
               </div>

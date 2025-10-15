@@ -84,7 +84,7 @@ export default function HomePageContent({ products }: HomePageContentProps) {
               <div className="flex flex-col md:flex-row items-center">
                 <div className="relative md:w-1/2 mb-8 md:mb-0 md:pr-8 aspect-video">
                   <Image
-                    src="https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80"
+                    src="/images/nosotros/nosotros.webp"
                     alt="Nuestra tienda"
                     fill
                     style={{ objectFit: "cover" }}
@@ -168,12 +168,11 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 </p>
                 <div className="flex items-center">
                   <Image
-                    src="/images/testimonials/maria.png"
+                    src="/images/testimonials/maria.webp"
                     alt="María González"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full mr-3"
-                    priority={false}
                   />
                   <div>
                     <h4 className="font-medium">María González</h4>
@@ -196,12 +195,11 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 </p>
                 <div className="flex items-center">
                   <Image
-                    src="/images/testimonials/carlos.png"
+                    src="/images/testimonials/carlos.webp"
                     alt="Carlos Martínez"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full mr-3"
-                    priority={false}
                   />
                   <div>
                     <h4 className="font-medium">Carlos Martínez</h4>
@@ -224,12 +222,11 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 </p>
                 <div className="flex items-center">
                   <Image
-                    src="/images/testimonials/maria.png"
+                    src="/images/testimonials/laura.webp"
                     alt="Laura Sánchez"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full mr-3"
-                    priority={false}
                   />
                   <div>
                     <h4 className="font-medium">Laura Sánchez</h4>
@@ -253,8 +250,8 @@ export default function HomePageContent({ products }: HomePageContentProps) {
               <div className="instagram-feed">
                 <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="/images/inspiracion/inspiracion-1.png"
-                    alt="Instagram post"
+                    src="/images/inspiracion/1.webp"
+                    alt="Instagram post 1"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
@@ -263,8 +260,8 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 </div>
                 <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="/images/inspiracion/inspiracion-2.png"
-                    alt="Instagram post"
+                    src="/images/inspiracion/2.webp"
+                    alt="Instagram post 2"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
@@ -273,8 +270,8 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 </div>
                 <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="/images/inspiracion/inspiracion-3.png"
-                    alt="Instagram post"
+                    src="/images/inspiracion/3.webp"
+                    alt="Instagram post 3"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"
@@ -283,8 +280,8 @@ export default function HomePageContent({ products }: HomePageContentProps) {
                 </div>
                 <div className="relative aspect-[1/1] overflow-hidden rounded-lg">
                   <Image
-                    src="/images/inspiracion/inspiracion-4.png"
-                    alt="Instagram post"
+                    src="/images/inspiracion/4.webp"
+                    alt="Instagram post 4"
                     fill
                     style={{ objectFit: "cover" }}
                     className="transition-slow hover:scale-105"

@@ -78,76 +78,76 @@ export default function HomePageContent({ products }: HomePageContentProps) {
 
       {/* Sections previously in MainContent */}
       <div id="hidden-content">
-        {activeSection === "nosotros" && (
-          <section id="nosotros" className="py-16 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="flex flex-col md:flex-row items-center">
-                <div className="relative md:w-1/2 mb-8 md:mb-0 md:pr-8 aspect-video">
-                  <Image
-                    src="/images/nosotros/nosotros.webp"
-                    alt="Nuestra tienda"
-                    fill
-                    style={{ objectFit: "cover" }}
-                    className="rounded-lg shadow-lg"
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                  />
-                </div>
-                <div className="md:w-1/2">
-                  <h2 className="title-font text-3xl font-bold mb-4">
-                    Fabricantes de Diseño
-                  </h2>
-                  <p className="text-gray-600 mb-4">
-                    Desde 2010, nos especializamos en la fabricación de
-                    productos decorativos y funcionales a medida. Mamparas,
-                    espejos y estructuras metálicas creadas artesanalmente según
-                    tus necesidades.
-                  </p>
-                  <p className="text-gray-600 mb-6">
-                    Ahora ampliamos nuestro catálogo con una línea de productos
-                    estándar, manteniendo nuestra esencia de calidad y diseño
-                    personalizado. Cada pieza es fabricada por nuestro equipo de
-                    expertos artesanos.
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <div className="flex items-center">
-                      <div className="bg-amber-100 text-amber-500 rounded-full p-3 mr-3">
-                        <i className="fas fa-medal text-xl"></i>
-                      </div>
-                      <div>
-                        <h4 className="font-bold">Calidad Garantizada</h4>
-                        <p className="text-gray-600 text-sm">
-                          Productos seleccionados
-                        </p>
-                      </div>
+      {activeSection === "nosotros" && (
+        <section id="nosotros" className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row-reverse items-center md:items-start gap-8">
+              <div className="w-full md:w-1/2 space-y-4">
+                <h2 className="title-font text-3xl font-bold">
+                  Fabricantes de Diseño
+                </h2>
+                <p className="text-gray-600">
+                  Desde 2010, nos especializamos en la fabricación de productos
+                  decorativos y funcionales a medida. Mamparas, espejos y
+                  estructuras metálicas creadas artesanalmente según tus
+                  necesidades.
+                </p>
+                <p className="text-gray-600">
+                  Ahora ampliamos nuestro catálogo con una línea de productos
+                  estándar, manteniendo nuestra esencia de calidad y diseño
+                  personalizado. Cada pieza es fabricada por nuestro equipo de
+                  expertos artesanos.
+                </p>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 text-left">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-amber-100 text-amber-500 rounded-full p-3">
+                      <i className="fas fa-medal text-xl"></i>
                     </div>
-                    <div className="flex items-center">
-                      <div className="bg-amber-100 text-amber-500 rounded-full p-3 mr-3">
-                        <i className="fas fa-truck text-xl"></i>
-                      </div>
-                      <div>
-                        <h4 className="font-bold">Envío Rápido</h4>
-                        <p className="text-gray-600 text-sm">
-                          Entrega en 2-5 días
-                        </p>
-                      </div>
+                    <div>
+                      <h4 className="font-bold">Calidad Garantizada</h4>
+                      <p className="text-gray-600 text-sm">
+                        Productos seleccionados
+                      </p>
                     </div>
-                    <div className="flex items-center">
-                      <div className="bg-amber-100 text-amber-500 rounded-full p-3 mr-3">
-                        <i className="fas fa-headset text-xl"></i>
-                      </div>
-                      <div>
-                        <h4 className="font-bold">Soporte 24/7</h4>
-                        <p className="text-gray-600 text-sm">
-                          Estamos para ayudarte
-                        </p>
-                      </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-amber-100 text-amber-500 rounded-full p-3">
+                      <i className="fas fa-truck text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-bold">Envío Rápido</h4>
+                      <p className="text-gray-600 text-sm">
+                        Entrega en 2-5 días
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-amber-100 text-amber-500 rounded-full p-3">
+                      <i className="fas fa-headset text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-bold">Soporte 24/7</h4>
+                      <p className="text-gray-600 text-sm">
+                        Estamos para ayudarte
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
+              <div className="relative w-full md:w-1/2 md:pl-8 aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+                <Image
+                  src="/images/nosotros/nosotros.webp"
+                  alt="Nuestra tienda"
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  priority
+                />
+              </div>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
+      )}
         <section className="py-16">
           <div className="container mx-auto px-4">
             <h2 className="title-font text-3xl font-bold text-center mb-12">

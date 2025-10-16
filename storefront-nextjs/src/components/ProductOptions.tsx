@@ -257,7 +257,11 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 border rounded-lg transition-colors duration-200 ${selectedSize === size ? "bg-amber-500 text-white border-amber-500" : "bg-white text-gray-800 border-gray-300 hover:border-gray-400"}`}
+                  className={`px-4 py-2 border rounded-lg transition-colors duration-200 ${
+                    selectedSize === size
+                      ? "bg-[#d9c034] text-gray-900 border-[#d9c034]"
+                      : "bg-white text-gray-800 border-gray-300 hover:border-gray-400"
+                  }`}
                 >
                   {size}
                 </button>
@@ -275,7 +279,11 @@ export default function ProductOptions({ product }: ProductOptionsProps) {
         <button
           onClick={handleAddToCart}
           disabled={!selectedVariant || isAdded}
-          className={`w-full text-white font-bold py-3 px-6 rounded-full transition-all duration-300 ${isAdded ? "bg-teal-500" : "bg-amber-500 hover:bg-amber-600"} disabled:bg-gray-300 disabled:cursor-not-allowed`}
+          className={`w-full font-bold py-3 px-6 rounded-full transition-all duration-300 ${
+            isAdded
+              ? "bg-teal-500 text-white"
+              : "bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900"
+          } disabled:bg-gray-300 disabled:text-gray-600 disabled:cursor-not-allowed`}
         >
           {isAdded ? "¡Añadido al carrito!" : "Añadir al Carrito"}
         </button>

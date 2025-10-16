@@ -43,7 +43,7 @@ export default function OrderConfirmationPage({ params }: OrderConfirmationPageP
       </p>
       <button
         onClick={() => router.push("/")}
-        className="mt-8 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition-slow"
+        className="mt-8 bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-bold py-3 px-6 rounded-lg transition-slow"
       >
         Volver a la página principal
       </button>

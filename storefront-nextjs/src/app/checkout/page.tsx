@@ -69,7 +69,7 @@ export default function CheckoutPage() {
         </p>
         <button
           onClick={() => router.push("/")}
-          className="mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-full transition-slow"
+          className="mt-6 bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-bold py-2 px-4 rounded-full transition-slow"
         >
           Volver a la tienda
         </button>
@@ -188,7 +188,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition-slow"
+              className="w-full bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-bold py-3 px-6 rounded-lg transition-slow"
             >
               {loading ? "Procesando..." : "Realizar Pedido"}
             </button>

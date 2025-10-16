@@ -126,7 +126,11 @@ export default function ProductCard({ product }: { product: Product }) {
         <button
           onClick={handleAddToCart}
           disabled={isAdded || product.variants.length === 0}
-          className={`add-to-cart-btn w-full text-white font-bold py-2 px-4 rounded-full transition-all duration-300 ${isAdded ? "bg-teal-500" : "bg-amber-500 hover:bg-amber-600"} disabled:bg-gray-300 disabled:cursor-not-allowed`}
+          className={`add-to-cart-btn w-full font-bold py-2 px-4 rounded-full transition-all duration-300 ${
+            isAdded
+              ? "bg-teal-500 text-white"
+              : "bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900"
+          } disabled:bg-gray-300 disabled:text-gray-600 disabled:cursor-not-allowed`}
         >
           {isAdded ? "¡Añadido!" : "Añadir al Carrito"}
         </button>

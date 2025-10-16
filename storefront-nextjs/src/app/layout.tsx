@@ -39,7 +39,9 @@ export default function RootLayout({
         />
         <link rel="icon" href="https://i.imgur.com/nKN165j.png" />
       </head>
-      <body className={`${poppins.variable} font-sans pt-16`}>
+      <body
+        className={`${poppins.variable} font-sans pt-16 bg-[#E6F4EA] min-h-screen`}
+      >
         <Providers>
           <Suspense fallback={null}>
             <Header />

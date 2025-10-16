@@ -93,7 +93,7 @@ export default function IdentifyModal({
           <div className="p-4 border-t border-gray-200">
             <button
               type="submit"
-              className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400"
+              className="w-full bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-bold py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400"
               disabled={isLoading}
             >
               {isLoading ? "Guardando..." : "Continuar"}

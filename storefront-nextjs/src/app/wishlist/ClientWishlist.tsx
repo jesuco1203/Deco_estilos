@@ -48,7 +48,7 @@ export default function ClientWishlist({ products }: ClientWishlistProps) {
           </p>
           <Link
             href="/"
-            className="mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition-colors"
+            className="mt-6 bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-bold py-2 px-4 rounded-full inline-flex items-center transition-colors"
           >
             Explorar Productos
           </Link>

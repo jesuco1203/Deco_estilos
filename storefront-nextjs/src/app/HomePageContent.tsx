@@ -311,7 +311,7 @@ export default function HomePageContent({ products }: HomePageContentProps) {
             </p>
             <Link
               href="#contacto"
-              className="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-slow inline-block"
+              className="bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-medium py-3 px-8 rounded-full transition-slow inline-block"
             >
               Solicita tu presupuesto
             </Link>
@@ -319,7 +319,7 @@ export default function HomePageContent({ products }: HomePageContentProps) {
         </section>
       </div>
 
-      <section className="py-16 bg-amber-500 text-white">
+      <section className="py-16 bg-[#d9c034] text-gray-900">
         <div className="container mx-auto px-4 text-center">
           <h2 className="title-font text-3xl font-bold mb-4">
             Suscríbete a nuestro newsletter
@@ -336,7 +336,7 @@ export default function HomePageContent({ products }: HomePageContentProps) {
             />
             <button
               type="submit"
-              className="bg-gray-800 hover:bg-gray-900 px-6 py-3 rounded-r-full font-medium transition-slow"
+              className="bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 px-6 py-3 rounded-r-full font-medium transition-slow"
             >
               Suscribirse
             </button>

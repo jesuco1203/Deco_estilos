@@ -127,7 +127,7 @@ export default function CartModal() {
             <Link
               href="/checkout"
               onClick={closeCart}
-              className="block text-center w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition-slow"
+              className="block text-center w-full bg-[#d9c034] hover:bg-[#c0ad2d] text-gray-900 font-bold py-3 px-6 rounded-lg transition-slow"
             >
               Proceder al Pago
             </Link>

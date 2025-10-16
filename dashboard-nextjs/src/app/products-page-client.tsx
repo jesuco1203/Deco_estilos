@@ -12,12 +12,14 @@ export default function ProductsPageClient() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const categories = useMemo(() => PRODUCT_CATEGORIES, []);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const categoryFromParams = searchParams?.get("category") ?? "all";
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    categoryFromParams,
+  );
 
   useEffect(() => {
-    const current = searchParams?.get("category") ?? "all";
-    setSelectedCategory(current);
-  }, [searchParams]);
+    setSelectedCategory(categoryFromParams);
+  }, [categoryFromParams]);
 
   const handleCategoryChange = (slug: string) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
@@ -44,8 +46,8 @@ export default function ProductsPageClient() {
         <div className="grid grid-cols-[1fr_auto] items-center gap-2">
           <CategoryScroller
             categories={categories}
-            value={selectedCategory}
-            onChange={handleCategoryChange}
+            selected={selectedCategory}
+            onSelect={handleCategoryChange}
             className="py-1"
           />
           <Link

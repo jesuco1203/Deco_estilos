@@ -1,9 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
 import ProductCard from "./ProductCard";
 
 interface Product {
@@ -43,18 +42,16 @@ export default function ProductCarousels({
         <div key={category} className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="title-font text-3xl font-bold">{category}</h2>
-            <a
-              href="#"
+            <Link
+              href={`/search?category=${encodeURIComponent(category)}`}
               className="text-amber-500 hover:text-amber-600 font-medium"
             >
               Ver todos →
-            </a>
+            </Link>
           </div>
           <Swiper
-            modules={[Navigation]}
             spaceBetween={16}
             slidesPerView={1.5} // Default for mobile (shows 1.5 cards)
-            navigation
             className="relative"
             breakpoints={{
               640: {

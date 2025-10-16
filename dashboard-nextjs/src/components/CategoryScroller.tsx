@@ -1,53 +1,54 @@
 "use client";
 
-type Category = {
-  id: string | number;
+type CategoryOption = {
   name: string;
   slug: string;
 };
 
-type Props = {
-  categories: Category[];
-  value: string;
-  onChange: (slug: string) => void;
+type CategoryScrollerProps = {
+  categories: CategoryOption[];
+  selected: string;
+  onSelect: (slug: string) => void;
   className?: string;
 };
 
+const baseClass =
+  "whitespace-nowrap rounded-full border px-3 py-1 text-sm transition";
+
+const selectedClass = "border-amber-600 bg-amber-600 text-white";
+const idleClass = "border-gray-200 bg-white text-gray-700 hover:bg-gray-50";
+
 export default function CategoryScroller({
   categories,
-  value,
-  onChange,
+  selected,
+  onSelect,
   className = "",
-}: Props) {
+}: CategoryScrollerProps) {
   return (
-    <div className={`overflow-x-auto no-scrollbar ${className}`}>
-      <div className="flex min-w-full gap-2 whitespace-nowrap">
+    <div
+      className={`no-scrollbar flex gap-2 overflow-x-auto py-2 ${className}`}
+    >
+      <button
+        type="button"
+        onClick={() => onSelect("all")}
+        className={`${baseClass} ${
+          selected === "all" ? selectedClass : idleClass
+        }`}
+      >
+        Todas
+      </button>
+      {categories.map((category) => (
         <button
           type="button"
-          onClick={() => onChange("all")}
-          className={`inline-flex items-center rounded-full border px-3 py-1 text-sm transition ${
-            value === "all"
-              ? "border-amber-600 bg-amber-600 text-white"
-              : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+          key={category.slug}
+          onClick={() => onSelect(category.slug)}
+          className={`${baseClass} ${
+            selected === category.slug ? selectedClass : idleClass
           }`}
         >
-          Todas
+          {category.name}
         </button>
-        {categories.map((cat) => (
-          <button
-            type="button"
-            key={cat.slug}
-            onClick={() => onChange(cat.slug)}
-            className={`inline-flex items-center rounded-full border px-3 py-1 text-sm transition ${
-              value === cat.slug
-                ? "border-amber-600 bg-amber-600 text-white"
-                : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-            }`}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
+      ))}
     </div>
   );
 }

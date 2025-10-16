@@ -212,7 +212,10 @@ export default function ProductForm({
       name: product.name,
       description: product.description,
       category: product.category,
-      image_url: product.image_url?.trim() || null,
+      image_url:
+        product.storage_key && product.storage_key.trim().length > 0
+          ? null
+          : product.image_url?.trim() || null,
       storage_key: product.storage_key ?? null,
       tag: product.tag === "Ninguna" ? null : product.tag,
     };

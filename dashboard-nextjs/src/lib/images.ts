@@ -7,7 +7,7 @@ type ProductLike = {
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
-function getSupabasePublicUrl(key: string) {
+export function getSupabasePublicUrl(key: string) {
   if (!SUPABASE_URL) return null;
   const trimmed = key.replace(/^products\//, "");
   const encoded = trimmed

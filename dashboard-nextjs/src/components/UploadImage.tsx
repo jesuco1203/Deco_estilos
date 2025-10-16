@@ -2,6 +2,7 @@
 
 import React from "react";
 import { createClient } from "@/lib/supabase/client";
+import { getSupabasePublicUrl } from "@/lib/images";
 
 type UploadImageProps = {
   initialUrl?: string | null;
@@ -94,12 +95,10 @@ export default function UploadImage({
       if (error) throw error;
 
       const storageKey = data?.path ?? objectKey;
-      const { data: pub } = supabase.storage
-        .from("products")
-        .getPublicUrl(storageKey);
+      const publicUrl = getSupabasePublicUrl(storageKey) ?? objectUrl;
 
       onUploaded({
-        publicUrl: pub.publicUrl,
+        publicUrl,
         storage_key: storageKey,
         fileName: file.name,
         fileSize: file.size,

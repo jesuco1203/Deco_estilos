@@ -65,13 +65,13 @@ const ProductCard = ({
   return (
     <div className="overflow-hidden rounded-lg bg-white shadow transition-transform duration-300 hover:-translate-y-1">
       <Link href={`/products/edit/${product.id}`}>
-        <div className="relative h-48">
+        <div className="relative w-full aspect-[4/3]">
           <Image
             src={src}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover"
+            className="object-contain"
             priority={index === 0}
           />
         </div>

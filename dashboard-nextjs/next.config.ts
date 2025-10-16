@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "qehmrxrrtestgxvqjjze.supabase.co",
-        pathname: "/storage/v1/object/public/products/**",
+        pathname: "/storage/v1/object/**",
       },
       {
         protocol: "https",
@@ -36,6 +36,7 @@ const nextConfig: NextConfig = {
         hostname: "upload.wikimedia.org",
       },
     ],
+    formats: ["image/avif", "image/webp"],
   },
   async headers() {
     return [

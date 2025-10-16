@@ -2,9 +2,15 @@ const { createClient } = require('@supabase/supabase-js');
 const fetch = require('node-fetch');
 const path = require('path');
 
+// Node-only migration script. Run with `node tools/migrate_images.js`.
+
 // Supabase configuration
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'YOUR_SUPABASE_URL';
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY';
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables');
+}
 
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
@@ -43,7 +49,7 @@ async function migrateImages() {
     return;
   }
 
-  for (const product of products) {
+  for (const product of products ?? []) {
     // Migrate product image
     if (product.image_url && product.image_url.startsWith('http') && !product.image_url.includes('supabase.co/storage')) {
       try {
@@ -71,7 +77,7 @@ async function migrateImages() {
     }
 
     // Migrate variant images
-    for (const variant of product.variants) {
+    for (const variant of product.variants ?? []) {
       if (variant.image_url && variant.image_url.startsWith('http') && !variant.image_url.includes('supabase.co/storage')) {
         try {
           console.log(`Migrating variant image for variant ID ${variant.id} (product ID ${product.id}): ${variant.image_url}`);

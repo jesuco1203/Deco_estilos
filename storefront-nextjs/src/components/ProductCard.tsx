@@ -81,48 +81,48 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="product-card bg-white rounded-lg overflow-hidden shadow-md transition-slow w-full flex flex-col">
-      <Link href={`/product/${product.id}`} className="block">
-        <div className="relative aspect-[3/2]">
-          <Image
-            src={featuredImage ?? PLACEHOLDER}
-            alt={product.name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          />
-
-          {product.tag && <ProductTag tag={product.tag} />}
-
-          {/* Wishlist Heart Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault(); // Prevent navigating to product page
-              toggleWish(product.id);
-            }}
-            className={`absolute top-2 left-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md transition-colors duration-200 ${
-              isWishlisted(product.id)
-                ? "text-red-500 hover:text-red-600"
-                : "text-gray-400 hover:text-red-500"
-            }`}
-            aria-label="Add to wishlist"
-          >
-            <FiHeart
-              size={20}
-              fill={isWishlisted(product.id) ? "currentColor" : "none"}
+    <div className="product-card group bg-white rounded-lg overflow-hidden shadow-md transition-slow w-full flex flex-col">
+      <Link href={`/product/${product.id}`} className="block flex-1">
+        <div className="flex h-full flex-col">
+          <div className="relative w-full pt-[70%]">
+            <Image
+              src={featuredImage ?? PLACEHOLDER}
+              alt={product.name}
+              fill
+              className="object-cover rounded-t-lg"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
-          </button>
-        </div>
-        <div className="p-4 h-28">
-          <h3 className="font-medium text-lg mb-1 line-clamp-2">
-            {product.name}
-          </h3>
-          <span className="font-bold text-lg">
-            S/ {minPrice > 0 ? minPrice.toFixed(2) : "Consultar"}
-          </span>
+
+            {product.tag && <ProductTag tag={product.tag} />}
+
+            {/* Wishlist Heart Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault(); // Prevent navigating to product page
+                toggleWish(product.id);
+              }}
+              className={`absolute top-2 left-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md transition-colors duration-200 ${
+                isWishlisted(product.id)
+                  ? "text-red-500 hover:text-red-600"
+                  : "text-gray-400 hover:text-red-500"
+              }`}
+              aria-label="Add to wishlist"
+            >
+              <FiHeart
+                size={20}
+                fill={isWishlisted(product.id) ? "currentColor" : "none"}
+              />
+            </button>
+          </div>
+          <div className="flex flex-col gap-1 px-4 py-3">
+            <h3 className="font-medium text-lg line-clamp-2">{product.name}</h3>
+            <span className="font-bold text-lg">
+              S/ {minPrice > 0 ? minPrice.toFixed(2) : "Consultar"}
+            </span>
+          </div>
         </div>
       </Link>
-      <div className="p-4 pt-0 mt-auto">
+      <div className="px-4 pb-4 transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100">
         <button
           onClick={handleAddToCart}
           disabled={isAdded || product.variants.length === 0}
